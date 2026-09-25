@@ -2,15 +2,14 @@
 
 #let ex = exercice(
   meta: (
-    titre: "Extrait Centrale 2022 : Palindromes et rationalité",
+    titre: "Palindromes et rationalité",
     chapitres: ("langages-reguliers", "automates-finis"),
     algorithmes: (),
     structures: (),
     langages: ("OCaml",),
     difficulte: 3,
     niveaux: ("MPI", "MP"),
-    concours: none,
-    reference: "Centrale 2022, extrait (épreuve non précisée dans la source)",
+    concours: (nom: "Centrale", annee: 2022),
   ),
   contenu: (
     [Soit $w ∈ Σ^*$. On note $tilde(w)$ le mot obtenu à partir de $w$ en

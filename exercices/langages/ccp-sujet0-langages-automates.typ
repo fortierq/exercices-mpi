@@ -11,7 +11,6 @@
     difficulte: 3,
     niveaux: ("MPI",),
     concours: none,
-    reference: "CCP, sujet zéro MPI",
   ),
   contenu: (
     question([Rappeler la définition d'un langage régulier.]),

@@ -29,6 +29,7 @@
   Consulter d’abord le [référentiel concis pour les IA](docs/programme.md), qui distingue notions exigibles, outils après rappel et exclusions.
   Respecter `lib/programme.typ` et `docs/programme.md` ; toute extension exige une référence de section et de page. Ne pas inventer d’étiquette pour une tâche.
 - Renseigner le champ obligatoire `langages` avec les langages de       programmation effectivement utilisés dans l’énoncé ou le corrigé : `("C",)`, `("OCaml",)`, `("SQL",)`, `("Python",)` ou plusieurs de ces valeurs. Utiliser `()` pour un exercice sans langage de programmation, par exemple en présence de pseudocode seulement.
+- Utiliser uniquement `concours` pour une attribution : `none` ou `(nom: "…", annee: …, filiere: "…")`. La filière est `"MPI"` par défaut. Choisir le concours et la filière dans `lib/concours.typ` ; ne pas utiliser de champ `reference` ni inventer une année.
 
 ## Présentation
 

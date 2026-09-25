@@ -10,8 +10,7 @@
     langages: ("OCaml",),
     difficulte: 3,
     niveaux: ("MPI",),
-    concours: none,
-    reference: "EPITA 2023 MPI (d'après le nom du fichier source)",
+    concours: (nom: "EPITA", annee: 2023),
   ),
   contenu: (
     [On appelle mot de Dyck un mot $m$ sur l'alphabet ${a,b}$ tel que $m$ contient

@@ -10,7 +10,7 @@
     difficulte: 4,
     niveaux: ("MPI", "MP"),
     duree: none,
-    concours: (nom: "ENS", annee: 2019, epreuve: "oral", filiere: "MP"),
+    concours: (nom: "ENS Ulm", annee: 2019, filiere: "MP"),
   ),
   debut: 0,
   contenu: (
