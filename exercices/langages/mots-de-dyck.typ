@@ -1,4 +1,5 @@
 #import "/lib/exercices.typ": exercice, question
+#import "/ressources/colle1-langages-automates/figures.typ": arbre-dyck
 
 #let ex = exercice(
   meta: (
@@ -69,7 +70,7 @@
     question([
       Dessiner l'arbre associé au mot de Dyck $m=a a b a b b$. Les nœuds ne portent pas d'étiquettes.
     ], solution: [
-      #align(center, image("/ressources/colle1-langages-automates/arbre-dyck.svg", width: 65mm))
+      #align(center, arbre-dyck())
     ]),
     [On définit le type suivant :
       #raw("type arbre = F | N of arbre * arbre;;", lang: "ocaml", block: true)],

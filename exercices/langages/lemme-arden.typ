@@ -1,4 +1,5 @@
 #import "/lib/exercices.typ": exercice, question
+#import "/ressources/colle1-langages-automates/figures.typ": arden-1, arden-2
 
 #let ex = exercice(
   meta: (
@@ -110,7 +111,7 @@
 
       Dans la question 9, on considère l'automate
       $A=({a,b},{q_0,q_1,q_2},{q_0},{q_0,q_2},δ)$ suivant :
-      #align(center, image("/ressources/colle1-langages-automates/arden-1.svg", width: 100mm))
+      #align(center, arden-1())
       Pour $i ∈ {0,1,2}$, on note
       $L_i={m ∈ Σ^* | δ^*(q_i,m) ∩ F ≠ ∅}$ le langage des mots qui font aboutir
       à un état final à partir de $q_i$. Déterminer $L(A)$ revient donc à déterminer $L_0$.
@@ -133,7 +134,7 @@
     ]),
     question([
       En utilisant une méthode similaire, déterminer le langage reconnu par l'automate suivant :
-      #align(center, image("/ressources/colle1-langages-automates/arden-2.svg", width: 80mm))
+      #align(center, arden-2())
     ], solution: [
       Les langages associés aux trois états vérifient
       $ cases(L_0=a L_0+a L_1, L_1=a L_1+b L_0+ε, L_2=b L_1). $

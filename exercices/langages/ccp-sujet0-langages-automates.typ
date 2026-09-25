@@ -1,4 +1,5 @@
 #import "/lib/exercices.typ": exercice, question
+#import "/ressources/colle1-langages-automates/figures.typ": automate-ccp
 
 #let ex = exercice(
   meta: (
@@ -25,7 +26,7 @@
     ]),
     question([
       On considère l'automate non déterministe suivant :
-      #align(center, image("/ressources/colle1-langages-automates/automate-ccp.jpg", width: 65mm))
+      #align(center, automate-ccp())
       #enum(numbering: "(a)",
         [Déterminiser cet automate.],
         [Construire une expression régulière dénotant le langage reconnu par cet automate.],

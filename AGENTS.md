@@ -31,6 +31,12 @@
 
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras.
 
+## Figures
+
+- Générer les figures (automates, arbres, graphes, schémas…) depuis des sources Typst avec [CeTZ](https://typst.app/universe/package/cetz/), [finite](https://typst.app/universe/package/finite/) pour les automates, ou un autre paquet adapté.
+- Conserver le code des figures dans le dépôt et les générer lors de la compilation ; ne pas recopier une image matricielle ni écrire un SVG à la main lorsqu'une figure peut être reconstruite avec ces outils.
+- Fixer les versions des paquets dans les imports. Préserver les informations de la figure source : étiquettes, transitions, états initiaux et finaux, structure des arbres.
+
 ## Compilation et vérification
 
 - Lancer `nix develop path:. -c make check` ; compiler énoncés, corrigés et modèles.

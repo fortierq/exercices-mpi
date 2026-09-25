@@ -1,3 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="210" viewBox="0 0 240 210">
-<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="black"/></marker></defs>
-<g fill="none" stroke="black" stroke-width="1.5"><path d="M140 15 L80 75"/><path d="M140 15 L200 75"/><path d="M80 75 L40 135"/><path d="M80 75 L120 135"/><path d="M120 135 L90 195"/><path d="M120 135 L150 195"/><circle cx="140" cy="15" r="5" fill="white"/><circle cx="80" cy="75" r="5" fill="white"/><circle cx="200" cy="75" r="5" fill="white"/><circle cx="40" cy="135" r="5" fill="white"/><circle cx="120" cy="135" r="5" fill="white"/><circle cx="90" cy="195" r="5" fill="white"/><circle cx="150" cy="195" r="5" fill="white"/></g></svg>
