@@ -16,7 +16,7 @@
     [Soit $w ∈ Σ^*$. On note $tilde(w)$ le mot obtenu à partir de $w$ en
       inversant l'ordre des lettres et on dit que le mot $w$ est un palindrome
       si $tilde(w)=w$.],
-    question([Écrire une fonction 'palindrome' de signature 'string → bool'
+    question([Écrire une fonction ```ocaml palindrome``` de signature ```ocaml string -> bool```
       qui teste, en temps linéaire, si un mot est un palindrome.]),
     [Pour un alphabet $Σ$, on note $"Pal"(Σ)$ l'ensemble des palindromes de $Σ^*$.],
     question([Montrer que si $Σ$ est un alphabet à une lettre, alors $"Pal"(Σ)$ est régulier.]),

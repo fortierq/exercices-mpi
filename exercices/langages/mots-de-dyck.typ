@@ -30,14 +30,25 @@
     ]),
     [On représente dans la suite en OCaml un mot sur l'alphabet ${a,b}$ par la liste
       de ses lettres. On définit les types suivants :
-      #raw("type lettre = A | B\ntype mot = lettre list", lang: "ocaml", block: true)
-      Le mot $m=a a b a b b$ sera donc représenté par la liste '#raw("[A; A; B; A; B; B]", lang: "ocaml")'.],
+      ```ocaml
+      type lettre = A | B
+      type mot = lettre list
+      ```
+      Le mot $m=a a b a b b$ sera donc représenté par la liste ```ocaml [A; A; B; A; B; B]```.
+    ],
     question([
-      Écrire une fonction 'verifie_dyck' de type 'mot → bool' renvoyant un booléen
+      Écrire une fonction ```ocaml verifie_dyck``` de type ```ocaml mot -> bool``` renvoyant un booléen
       indiquant si le mot passé en entrée est de Dyck.
     ], solution: [
       On utilise un argument pour mémoriser le nombre de 'A' déjà vus moins le nombre de 'B'.
-      #raw("let verifie_dyck m =\n  let rec aux n m = match m with\n    | [] -> n = 0\n    | A::q -> aux (n + 1) q\n    | B::q -> n > 0 && aux (n - 1) q in\n  aux 0 m", lang: "ocaml", block: true)
+      ```ocaml
+      let verifie_dyck m =
+        let rec aux n m = match m with
+          | [] -> n = 0
+          | A::q -> aux (n + 1) q
+          | B::q -> n > 0 && aux (n - 1) q in
+        aux 0 m
+      ```
     ]),
     [On admet la propriété suivante : tout mot $m$ de Dyck non vide se décompose
       de manière unique sous la forme $m=a u b v$, où $u$ et $v$ sont des mots de Dyck.
@@ -53,14 +64,28 @@
       - $a a b b a b=a u b v$ avec $u=a b$ et $v=a b$.
     ]),
     question([
-      Écrire une fonction 'decompo_dyck' de type 'mot → mot \* mot', prenant en
+      Écrire une fonction ```ocaml decompo_dyck``` de type ```ocaml mot -> mot * mot```, prenant en
       entrée un mot $m$ supposé non vide et de Dyck (il est inutile de le vérifier),
       et renvoyant le couple $(u,v)$ tel que $m=a u b v$.
     ], solution: [
       On fait le même comptage qu'en question 2 et l'on s'arrête au premier préfixe
-      contenant autant de 'A' que de 'B'. La fonction 'List.tl' renvoie la queue
+      contenant autant de ```ocaml A``` que de ```ocaml B```. La fonction ```ocaml List.tl``` renvoie la queue
       d'une liste non vide ; elle retire ici le 'A' initial.
-      #raw("let decompo_dyck m =\n  let rec aux n m = match m with\n    | [] -> failwith \"decompo_dyck\"\n    | A::q ->\n      let uq, vq = aux (n + 1) q in\n      A::uq, vq\n    | B::q ->\n      if n = 1 then [], q\n      else\n        let uq, vq = aux (n - 1) q in\n        B::uq, vq in\n  let u, v = aux 0 m in\n  List.tl u, v", lang: "ocaml", block: true)
+      ```ocaml
+      let decompo_dyck m =
+        let rec aux n m = match m with
+          | [] -> failwith "decompo_dyck"
+          | A::q ->
+            let uq, vq = aux (n + 1) q in
+            A::uq, vq
+          | B::q ->
+            if n = 1 then [], q
+            else
+              let uq, vq = aux (n - 1) q in
+              B::uq, vq in
+        let u, v = aux 0 m in
+        List.tl u, v
+      ```
     ]),
     [Il existe une bijection naturelle entre les arbres binaires stricts (tout nœud
       possède $0$ ou $2$ fils) et les mots de Dyck, basée sur cette décomposition :
@@ -73,16 +98,28 @@
       #align(center, arbre-dyck())
     ]),
     [On définit le type suivant :
-      #raw("type arbre = F | N of arbre * arbre;;", lang: "ocaml", block: true)],
+      ```ocaml
+      type arbre = F | N of arbre * arbre
+      ```],
     question([
-      Écrire une fonction 'mot_a_arbre' de type 'mot → arbre' renvoyant l'arbre
+      Écrire une fonction ```ocaml mot_a_arbre``` de type ```ocaml mot -> arbre``` renvoyant l'arbre
       binaire strict associé à un mot de Dyck (on ne vérifiera pas que le mot
       passé en entrée est bien de Dyck).
     ], solution: [
-      #raw("let rec mot_a_arbre m = match m with\n  | [] -> F\n  | _ ->\n    let u, v = decompo_dyck m in\n    N(mot_a_arbre u, mot_a_arbre v)", lang: "ocaml", block: true)
+      ```ocaml
+      let rec mot_a_arbre m = match m with
+        | [] -> F
+        | _ ->
+          let u, v = decompo_dyck m in
+          N(mot_a_arbre u, mot_a_arbre v)
+      ```
     ]),
-    question([Écrire une fonction 'arbre_a_mot' de type 'arbre → mot' faisant l'inverse.], solution: [
-      #raw("let rec arbre_a_mot a = match a with\n  | F -> []\n  | N(u, v) -> A::(arbre_a_mot u)@(B::(arbre_a_mot v))", lang: "ocaml", block: true)
+    question([Écrire une fonction ```ocaml arbre_a_mot``` de type ```ocaml arbre -> mot``` faisant l'inverse.], solution: [
+      ```ocaml
+      let rec arbre_a_mot a = match a with
+        | F -> []
+        | N(u, v) -> A::(arbre_a_mot u)@(B::(arbre_a_mot v))
+      ```
     ]),
     question([Montrer que le langage $L$ des mots de Dyck n'est pas rationnel.], solution: [
       Supposons $L$ rationnel et soit $n ≥ 1$ donné par le lemme de l'étoile.
