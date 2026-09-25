@@ -55,10 +55,10 @@ Les expressions, l'ordre des questions et les méthodes de preuve sont conservé
 ```sh
 nix develop path:.
 make watch-feuille FEUILLE=td-langage
-make watch-feuille FEUILLE=td-langage CORRIGE=true
+make watch-feuille FEUILLE=td-langage C=true
 ```
 
 Le PDF de prévisualisation est `build/feuilles/td-langage-apercu.pdf`.
-Utiliser `OPEN=0` pour surveiller sans ouvrir VS Code. Pour surveiller simultanément
+Utiliser `O=0` pour surveiller sans ouvrir VS Code. Pour surveiller simultanément
 les deux variantes, utiliser des sorties distinctes en appelant Typst directement :
 les deux commandes ci-dessus partagent la même sortie de prévisualisation.

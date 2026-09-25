@@ -186,9 +186,9 @@ make exercices                         # Tous les exercices, avec et sans corrig
 make feuilles                          # Toutes les feuilles, avec et sans corrigé
 make build/exercices/langage/ensembles-inevitables/enonce.pdf
 make build/feuilles/langages-corrige.pdf
-make watch EXO=langage/ensembles-inevitables
-make watch EXO=langage/ensembles-inevitables CORRIGE=true
-make watch-feuille FEUILLE=langages CORRIGE=true
+make watch E=langage/ensembles-inevitables
+make watch E=langage/ensembles-inevitables C=true
+make watch-feuille FEUILLE=langages C=true
 make clean
 ```
 
@@ -197,8 +197,8 @@ Les modes `watch` ouvrent le PDF dans la fenêtre VS Code existante et recompile
 Sur macOS, cette ouverture utilise `open -a "Visual Studio Code"`, sans script
 intermédiaire. Sur Linux, elle utilise `code --reuse-window`. Un visualiseur PDF
 dans VS Code est nécessaire (par exemple `vscode-pdf` ou LaTeX Workshop).
-La commande peut être remplacée avec `OPEN_PDF='code --reuse-window'`.
-Passer `OPEN=0` pour désactiver l’ouverture.
+La commande peut être remplacée avec `O_PDF='code --reuse-window'`.
+Passer `O=0` pour désactiver l’ouverture.
 Les exercices et feuilles sont découverts automatiquement : aucun ajout au
 Makefile n’est nécessaire. Les feuilles sont placées directement dans `feuilles/`.
 Éviter les noms de feuilles finissant par `-corrige`, suffixe réservé aux sorties.

@@ -4,14 +4,16 @@
 TYPST ?= typst
 PYTHON ?= python3
 TYPST_FLAGS := --root . --ignore-system-fonts
-EXO ?= langage/ensembles-inevitables
+E ?= langage/ensembles-inevitables
 FEUILLE ?= langages
-CORRIGE ?= false
-OPEN ?= 1
+C ?= true
+O ?= 1
+E_SANS_EXTENSION := $(patsubst %.typ,%,$(E))
+E_SANS_PREFIXE := $(patsubst exercices/%,%,$(E_SANS_EXTENSION))
 ifeq ($(shell uname -s),Darwin)
-OPEN_PDF ?= open -a "Visual Studio Code"
+O_PDF ?= open -a "Visual Studio Code"
 else
-OPEN_PDF ?= code --reuse-window
+O_PDF ?= code --reuse-window
 endif
 
 EXERCICES := $(patsubst exercices/%.typ,%,$(shell find exercices -mindepth 2 -maxdepth 2 -name '*.typ' | sort))
@@ -21,7 +23,7 @@ SOURCES := $(shell find lib modeles exercices feuilles $(wildcard ressources) -t
 PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf build/exercices/$(ex)/corrige.pdf)
 PDF_FEUILLES := $(foreach f,$(FEUILLES),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
 
-.PHONY: all exercices feuilles catalogue check watch watch-feuille clean help
+.PHONY: all exercices feuilles catalogue check w w-feuille clean help
 all: exercices feuilles catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FEUILLES)
@@ -54,19 +56,19 @@ check: all
 	$(TYPST) compile $(TYPST_FLAGS) modeles/feuille.typ build/modeles/feuille.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/feuille.typ build/modeles/feuille-corrige.pdf
 
-watch:
-	@test -f "exercices/$(EXO).typ" || { echo "Exercice introuvable : $(EXO)"; exit 1; }
-	@mkdir -p "build/exercices/$(EXO)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$(EXO).typ" --input "corrige=$(CORRIGE)" modeles/fiche.typ "build/exercices/$(EXO)/apercu.pdf"
-	@if [ "$(OPEN)" = "1" ]; then $(OPEN_PDF) "build/exercices/$(EXO)/apercu.pdf"; fi
-	$(TYPST) watch $(TYPST_FLAGS) --input "exercice=/exercices/$(EXO).typ" --input "corrige=$(CORRIGE)" modeles/fiche.typ "build/exercices/$(EXO)/apercu.pdf"
+w:
+	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }
+	@mkdir -p "build/exercices/$(E_SANS_PREFIXE)"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" modeles/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
+	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"; fi
+	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" modeles/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
 
-watch-feuille:
+w-feuille:
 	@test -f "feuilles/$(FEUILLE).typ" || { echo "Feuille introuvable : $(FEUILLE)"; exit 1; }
 	@mkdir -p build/feuilles
-	$(TYPST) compile $(TYPST_FLAGS) --input "corrige=$(CORRIGE)" "feuilles/$(FEUILLE).typ" "build/feuilles/$(FEUILLE)-apercu.pdf"
-	@if [ "$(OPEN)" = "1" ]; then $(OPEN_PDF) "build/feuilles/$(FEUILLE)-apercu.pdf"; fi
-	$(TYPST) watch $(TYPST_FLAGS) --input "corrige=$(CORRIGE)" "feuilles/$(FEUILLE).typ" "build/feuilles/$(FEUILLE)-apercu.pdf"
+	$(TYPST) compile $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(FEUILLE).typ" "build/feuilles/$(FEUILLE)-apercu.pdf"
+	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/feuilles/$(FEUILLE)-apercu.pdf"; fi
+	$(TYPST) w $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(FEUILLE).typ" "build/feuilles/$(FEUILLE)-apercu.pdf"
 
 clean:
 	rm -rf build
@@ -74,7 +76,7 @@ clean:
 help:
 	@echo "make                  Énoncés, corrigés, feuilles et catalogue JSON"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
-	@echo "make watch EXO=langage/ensembles-inevitables [CORRIGE=true] [OPEN=0]"
-	@echo "make watch-feuille FEUILLE=langages [CORRIGE=true] [OPEN=0]"
+	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
+	@echo "make w-feuille FEUILLE=langages [C=true] [O=0]"
 	@echo "make catalogue        Régénérer build/catalogue.json"
 	@echo "make clean            Supprimer uniquement build/"

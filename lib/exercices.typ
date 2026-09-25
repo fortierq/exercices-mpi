@@ -82,8 +82,9 @@
         let c = ex.meta.concours
         [#c.nom · #c.epreuve · #c.annee #h(1em)]
       }
-      Difficulté : #ex.meta.difficulte/5
-      #if ex.meta.duree != none [ #h(1em) Durée indicative : #ex.meta.duree min]
+      Chapitres : #ex.meta.chapitres.join(", ") |
+      Difficulté : #ex.meta.difficulte/5 |
+      #if ex.meta.duree != none [ Durée indicative : #ex.meta.duree min]
     ])
   }
   let i = ex.debut

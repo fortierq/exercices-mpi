@@ -39,7 +39,7 @@
 
 ## Commits
 
-- Pour chaque nouvel modification significative, créer une pull request dédiée après les vérifications,
+- Pour chaque nouvel modification significative (ajout d'un nouvel exercice, modification structurelle...), créer une pull request dédiée après les vérifications,
   sans demander de confirmation supplémentaire. Inclure l’exercice et des commentaires pertinents éventuels.
 - Ne pas créer d'autre fichier de commentaires, si non demandé par l’utilisateur.
 - Ne pas inclure les modifications de l’utilisateur sans rapport avec l’exercice.
