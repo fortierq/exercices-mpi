@@ -11,7 +11,6 @@
     niveaux: ("MPI", "MP"),
     concours: none,
     reference: "Centrale 2022, extrait (épreuve non précisée dans la source)",
-    source: "exos-src/exos/automata/centrale_22/1/centrale_22_1.tex",
   ),
   contenu: (
     [Soit $w ∈ Σ^*$. On note $tilde(w)$ le mot obtenu à partir de $w$ en

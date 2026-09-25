@@ -11,7 +11,6 @@
     niveaux: ("MPI",),
     concours: none,
     reference: "CCP, sujet zéro MPI",
-    source: "exos-src/exos/automata/ccp_sujet0_mpi/ccp_sujet0_mpi.tex",
   ),
   contenu: (
     question([Rappeler la définition d'un langage régulier.]),

@@ -10,7 +10,6 @@
     difficulte: 3,
     niveaux: ("MPI",),
     concours: none,
-    source: "cours-src/langage/langage/td/td_langage.tex",
     reference: "exos-src/exos/language/hamming/hamming.tex",
   ),
   contenu: (

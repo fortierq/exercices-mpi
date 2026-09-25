@@ -10,8 +10,6 @@
     difficulte: 4,
     niveaux: ("MPI",),
     concours: none,
-    source: "cours-src/langage/ds/guher/arden_guher.tex",
-    source-corrige: "cours-src/langage/ds/guher/arden_guher_cor.tex",
   ),
   contenu: (
     [On utilise $+$ à la place de $∪$ et $|$.

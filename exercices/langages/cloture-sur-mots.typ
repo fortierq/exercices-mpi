@@ -10,7 +10,6 @@
     difficulte: 4,
     niveaux: ("MPI",),
     concours: none,
-    source: "cours-src/langage/langage/td/td_langage.tex",
     reference: "Oral ENS informatique ; exos-src/exos/language/cloture_sur_mot (année non indiquée)",
   ),
   contenu: (

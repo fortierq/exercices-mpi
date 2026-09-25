@@ -11,7 +11,6 @@
     niveaux: ("MPI", "MP"),
     duree: none,
     concours: (nom: "ENS", annee: 2019, epreuve: "oral", filiere: "MP"),
-    source: "exos-src/exos/language/ensembles_inevitables",
   ),
   debut: 0,
   contenu: (

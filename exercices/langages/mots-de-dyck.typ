@@ -11,7 +11,6 @@
     niveaux: ("MPI",),
     concours: none,
     reference: "EPITA 2023 MPI (d'après le nom du fichier source)",
-    source: "exos-src/exos/language/dyck/dyck_23_epita_mpi.tex",
   ),
   contenu: (
     [On appelle mot de Dyck un mot $m$ sur l'alphabet ${a,b}$ tel que $m$ contient

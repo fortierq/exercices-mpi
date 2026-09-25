@@ -10,7 +10,6 @@
     difficulte: 3,
     niveaux: ("MPI",),
     concours: none,
-    source: "exos-src/exos/language/sqrt/sqrt.tex",
   ),
   contenu: (
     [Soit $L$ un langage rationnel sur un alphabet $Σ$.
