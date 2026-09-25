@@ -2,7 +2,7 @@
 
 Source : [échange partagé « Proposer une structure Union Find »](https://chatgpt.com/share/6aa7e009-3684-83eb-bfb1-b4e953c5cc86?ogimg=plain).
 
-L’exercice `exercices/structures-de-donnees/union-find-union-constante/exercice.typ`
+L’exercice `exercices/structures-de-donnees/union-find-union-constante.typ`
 reprend les deux demandes de l’échange : union en temps constant avec recherche
 en O(n²), puis avec recherche en O(n) dans le pire cas. Le corrigé reprend la
 matrice d’adjacence, puis la reconstruction progressive d’une forêt couvrante.
