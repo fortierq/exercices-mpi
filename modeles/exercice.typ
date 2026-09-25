@@ -5,9 +5,9 @@
     id: "mon-exercice",
     titre: "Titre de l'exercice",
     chapitres: ("graphes",), // doivent apparaître dans lib/programme.typ
-    algorithmes: ("parcours-en-profondeur",), 
-    structures: ("graphe-oriente",),
-    langages: (),
+    algorithmes: ("parcours-en-profondeur",), // doivent apparaître dans lib/programme.typ
+    structures: ("graphe-oriente",), // doivent apparaître dans lib/programme.typ
+    langages: (), // C, OCaml, SQL et/ou Python
     difficulte: 2,
     niveaux: ("MPI",),
     duree: 20, // Minutes ; none si non estimée.

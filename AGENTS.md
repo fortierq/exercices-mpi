@@ -6,7 +6,7 @@
 
 ## Structure et conversion
 
-- Utiliser les modèles Typst dans `modeles/` pour créer un [exercice](modeles/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin.
+- Utiliser les modèles Typst dans `modeles/` pour créer/modifier un [exercice](modeles/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin. S'inspirer aussi si besoin des exercices similaires dans `exercices/`.
 - Lire l’API actuelle dans `lib/exercices.typ` avant toute modification. Préserver les modifications de l’utilisateur.
 - Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Une feuille `feuilles/<nom>.typ` assemble ces objets dans l’ordre voulu.
 - Corriger uniquement les erreurs importantes : hypothèse indispensable,
@@ -39,8 +39,8 @@
 
 ## Commits
 
-- Pour chaque nouvel exercice, créer une pull request dédiée après les vérifications,
-  sans demander de confirmation supplémentaire. Inclure l’exercice, sa note
-  éventuelle et les modifications directement nécessaires à son intégration.
+- Pour chaque nouvel modification significative, créer une pull request dédiée après les vérifications,
+  sans demander de confirmation supplémentaire. Inclure l’exercice et des commentaires pertinents éventuels.
+- Ne pas créer d'autre fichier de commentaires, si non demandé par l’utilisateur.
 - Ne pas inclure les modifications de l’utilisateur sans rapport avec l’exercice.
 - Indiquer dans la réponse finale la pull request créée et les vérifications effectuées.
