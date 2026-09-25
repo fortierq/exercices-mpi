@@ -4,11 +4,11 @@
 #let question(enonce, solution: none) = (type: "question", enonce: enonce, solution: solution)
 
 #let exercice(meta: (:), contenu: (), debut: 1) = {
-  let champs = ("id", "titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
+  let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
     assert(champ in meta, message: "Métadonnée manquante : " + champ)
   }
-  assert(type(meta.id) == str and meta.id != "", message: "id doit être une chaîne non vide")
+  assert(not ("id" in meta), message: "id est déduit du nom du fichier .typ")
   assert(type(meta.titre) == str and meta.titre != "", message: "titre doit être une chaîne non vide")
   for champ in ("chapitres", "algorithmes", "structures", "langages") {
     assert(type(meta.at(champ)) == array, message: champ + " doit être un tableau")

@@ -8,7 +8,7 @@
 
 - Utiliser les modèles Typst dans `modeles/` pour créer/modifier un [exercice](modeles/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin. S'inspirer aussi si besoin des exercices similaires dans `exercices/`.
 - Lire l’API actuelle dans `lib/exercices.typ` avant toute modification. Préserver les modifications de l’utilisateur.
-- Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Une feuille `feuilles/<nom>.typ` assemble ces objets dans l’ordre voulu.
+- Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Son identifiant est le nom du fichier sans l'extension `.typ` ; il doit être unique dans toute la banque et ne figure pas dans `meta`. Une feuille `feuilles/<nom>.typ` assemble ces objets dans l’ordre voulu.
 - Corriger uniquement les erreurs importantes : hypothèse indispensable,
   énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l’utilisateur pour toute modification de présentation ou de contenu.
 
@@ -18,6 +18,7 @@
 - Noter un graphe `G = (S, A)`, où `S` est l’ensemble des sommets et `A`
   l’ensemble des arcs (ou des arêtes pour un graphe non orienté). Utiliser ces notations de façon cohérente dans les énoncés, corrigés et modèles.
 - Pour la programmation en MP2I ou MPI, utiliser exclusivement C, OCaml ou Python, dans les questions comme dans les solutions. Le pseudocode reste possible lorsqu’une question demande seulement de décrire un algorithme.
+- Utiliser les caractères Unicode pour les symboles mathématiques, par exemple `Σ` pour l’alphabet, `ε` pour le mot vide, `∪` pour l’union, `∩` pour l’intersection, `*` pour l’étoile de Kleene, `→` pour la flèche d’une fonction, `∀` et `∃` pour les quantificateurs. 
 
 ## Métadonnées
 
@@ -33,7 +34,7 @@
 ## Compilation et vérification
 
 - Lancer `nix develop path:. -c make check` ; compiler énoncés, corrigés et modèles.
-  Le catalogue valide les métadonnées et l’unicité des identifiants.
+  Le catalogue valide les métadonnées et l’unicité des identifiants déduits des noms de fichiers.
 - Ne pas inspecter les PDF générés.
 - Communiquer les fichiers concernés, les corrections et les vérifications réelles.
 

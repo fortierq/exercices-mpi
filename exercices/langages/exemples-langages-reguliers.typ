@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "exemples-langages-reguliers",
     titre: "Exemples de langages réguliers",
     chapitres: ("langages-reguliers",),
     algorithmes: (),

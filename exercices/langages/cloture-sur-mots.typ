@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "cloture-sur-mots",
     titre: "Clôture par sur-mot (oral ENS info)",
     chapitres: ("langages-reguliers", "automates-finis",),
     algorithmes: (),

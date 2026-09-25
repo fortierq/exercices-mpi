@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "ajout-arcs-forte-connexite",
     titre: "Nombre minimal d'arcs à ajouter pour rendre un graphe fortement connexe",
     chapitres: ("graphes",),
     algorithmes: ("kosaraju", "parcours-en-profondeur"),

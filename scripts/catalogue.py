@@ -26,11 +26,11 @@ def catalogue(typst):
         # Le constructeur Typst valide les champs communs ; ici, on contrôle
         # l’unicité à l’échelle de toute la banque, même en cas de filtrage.
         meta = json.loads(result.stdout)
-        identifier = meta["id"]
+        identifier = source.stem
         if identifier in identifiers:
             raise ValueError(f"Identifiant dupliqué : {identifier} ({relative})")
         identifiers.add(identifier)
-        entries.append({**meta, "fichier": relative})
+        entries.append({**meta, "id": identifier, "fichier": relative})
     return entries
 
 

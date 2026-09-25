@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": feuille
-#import "/exercices/langage/ensembles-inevitables.typ": ex as ensembles-inevitables
+#import "/exercices/langages/ensembles-inevitables.typ": ex as ensembles-inevitables
 
 #show: feuille.with(
   titre: ensembles-inevitables.meta.titre,

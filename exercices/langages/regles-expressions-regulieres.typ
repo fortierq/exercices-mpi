@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "regles-expressions-regulieres",
     titre: "Règles sur les expressions régulières",
     chapitres: ("langages-reguliers",),
     algorithmes: (),

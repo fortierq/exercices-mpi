@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "distance-de-hamming",
     titre: "Distance de Hamming",
     chapitres: ("langages-reguliers", "recursivite-et-induction",),
     algorithmes: (),

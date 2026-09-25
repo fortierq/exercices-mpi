@@ -56,9 +56,10 @@ mkdir -p exercices/graphes
 cp modeles/exercice.typ exercices/graphes/detection-cycle.typ
 ```
 
-Modifier son `id` (unique dans toute la banque), son titre, ses métadonnées et ses
-questions. Utiliser des noms de dossiers et fichiers sans espaces, de préférence
-en minuscules avec des tirets. Chaque fichier `exercices/<chapitre>/<identifiant>.typ` exporte `ex`.
+Modifier son titre, ses métadonnées et ses questions. Utiliser des noms de dossiers et
+fichiers sans espaces, de préférence en minuscules avec des tirets. L'identifiant
+exporté est le nom du fichier sans l'extension `.typ` et doit être unique dans toute la
+banque. Chaque fichier `exercices/<chapitre>/<identifiant>.typ` exporte `ex`.
 Les fichiers Typst de ces dossiers sont tous des exercices ; placer les éventuels
 modules auxiliaires hors de `exercices/`.
 
@@ -67,7 +68,6 @@ modules auxiliaires hors de `exercices/`.
 
 #let ex = exercice(
   meta: (
-    id: "detection-cycle",
     titre: "Détecter un cycle",
     chapitres: ("graphes",),
     algorithmes: ("parcours-en-profondeur",),

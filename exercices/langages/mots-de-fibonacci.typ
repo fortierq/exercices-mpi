@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "mots-de-fibonacci",
     titre: "Mots de Fibonacci",
     chapitres: ("langages-reguliers",),
     algorithmes: (),

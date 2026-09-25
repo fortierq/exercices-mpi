@@ -1,10 +1,10 @@
 #import "/lib/exercices.typ": feuille
-#import "/exercices/langage/mots-qui-commutent.typ": ex as commutation
-#import "/exercices/langage/mots-de-fibonacci.typ": ex as fibonacci
-#import "/exercices/langage/regles-expressions-regulieres.typ": ex as regles
-#import "/exercices/langage/exemples-langages-reguliers.typ": ex as exemples
-#import "/exercices/langage/distance-de-hamming.typ": ex as hamming
-#import "/exercices/langage/cloture-sur-mots.typ": ex as sur-mots
+#import "/exercices/langages/mots-qui-commutent.typ": ex as commutation
+#import "/exercices/langages/mots-de-fibonacci.typ": ex as fibonacci
+#import "/exercices/langages/regles-expressions-regulieres.typ": ex as regles
+#import "/exercices/langages/exemples-langages-reguliers.typ": ex as exemples
+#import "/exercices/langages/distance-de-hamming.typ": ex as hamming
+#import "/exercices/langages/cloture-sur-mots.typ": ex as sur-mots
 
 #show: feuille.with(
   titre: "Langages réguliers",

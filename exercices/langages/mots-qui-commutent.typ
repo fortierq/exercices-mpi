@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "mots-qui-commutent",
     titre: "Mots qui commutent",
     chapitres: ("langages-reguliers",),
     algorithmes: (),

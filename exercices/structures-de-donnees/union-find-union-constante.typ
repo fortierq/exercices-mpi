@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "union-find-union-constante",
     titre: "Union-Find avec union en temps constant",
     chapitres: ("structures-de-donnees", "graphes"),
     algorithmes: ("parcours-en-profondeur",),

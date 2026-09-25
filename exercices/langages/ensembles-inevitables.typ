@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "ensembles-inevitables",
     titre: "Ensembles inévitables de mots",
     chapitres: ("langages-reguliers", "automates-finis", "graphes",),
     algorithmes: ("recherche-par-force-brute", "parcours-en-profondeur", "determinisation"),

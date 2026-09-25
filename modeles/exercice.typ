@@ -2,7 +2,6 @@
 
 #let ex = exercice(
   meta: (
-    id: "mon-exercice",
     titre: "Titre de l'exercice",
     chapitres: ("graphes",), // doivent apparaître dans lib/programme.typ
     algorithmes: ("parcours-en-profondeur",), // doivent apparaître dans lib/programme.typ
