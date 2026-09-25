@@ -30,7 +30,7 @@ def catalogue(typst):
         if identifier in identifiers:
             raise ValueError(f"Identifiant dupliqué : {identifier} ({relative})")
         identifiers.add(identifier)
-        entries.append({**meta, "id": identifier, "fichier": relative})
+        entries.append({**meta, "fichier": relative})
     return entries
 
 

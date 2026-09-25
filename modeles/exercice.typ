@@ -10,8 +10,8 @@
     difficulte: 2,
     niveaux: ("MPI",),
     duree: 20, // Minutes ; none si non estimée.
-    concours: none, // Ou (nom: "ENS Ulm", annee: 2019, epreuve: "oral", filiere: "MP").
-    // Les champs supplémentaires (auteur, références, mots-clés…) sont libres.
+    concours: none, // Ou (nom: "ENS Ulm", annee: 2019, filiere: "MP").
+    // Les champs supplémentaires (auteur, mots-clés…) sont libres.
   ),
   contenu: (
     [On considère un graphe orienté fini $G = (S, A)$.],

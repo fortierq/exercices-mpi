@@ -10,7 +10,6 @@
     difficulte: 2,
     niveaux: ("MPI",),
     concours: none,
-    source: "cours-src/langage/langage/td/td_langage.tex",
   ),
   contenu: (
 

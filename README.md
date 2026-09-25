@@ -119,7 +119,7 @@ tableaux, etc.
 | `difficulte` | entier de 1 à 5, obligatoire | Estimation pédagogique |
 | `niveaux` | tableau de chaînes | `()`, `("MPI",)`, `("MP", "MPI")`… |
 | `duree` | entier positif ou `none` | Minutes, estimation facultative |
-| `concours` | dictionnaire ou `none` | `nom`, `annee`, `epreuve`, éventuellement `filiere` |
+| `concours` | dictionnaire ou `none` | `nom`, `annee`, `filiere` (par défaut : `"MPI"`) ; valeurs dans `lib/concours.typ` |
 
 Échelle proposée : 1 = application directe ; 2 = exercice standard ;
 3 = plusieurs idées à combiner ; 4 = exercice difficile ; 5 = très difficile.

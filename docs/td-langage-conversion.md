@@ -17,7 +17,7 @@ La feuille `feuilles/td-langage.typ` reprend les six exercices dans l'ordre :
 Les solutions sont reprises dans les fichiers des exercices. Les conditions de
 commutation forment une sous-liste dans une seule question. Les métadonnées de
 difficulté sont des estimations ; aucune date de concours n'est inventée.
-L'attribution « oral ENS info » est conservée dans le dernier titre et sa référence.
+L'attribution « oral ENS info » est conservée dans le dernier titre ; aucune année n'étant connue, elle n'est pas renseignée dans `concours`.
 
 ## Corrections importantes
 

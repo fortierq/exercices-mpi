@@ -1,4 +1,5 @@
 #import "programme.typ": chapitres-programme, algorithmes-programme, structures-programme
+#import "concours.typ": concours-possibles, filieres-possibles
 
 // Aucun paquet externe : les exercices sont des données Typst ordinaires.
 #let question(enonce, solution: none) = (type: "question", enonce: enonce, solution: solution)
@@ -38,15 +39,23 @@
   let duree = meta.at("duree", default: none)
   assert(duree == none or (type(duree) == int and duree > 0),
     message: "duree doit être un entier strictement positif ou none")
+  assert(not ("reference" in meta), message: "Utiliser concours au lieu de reference")
   let concours = meta.at("concours", default: none)
-  if concours != none {
+  let concours-normalise = if concours != none {
     assert(type(concours) == dictionary, message: "concours doit être un dictionnaire ou none")
-    for champ in ("nom", "annee", "epreuve") {
+    for champ in ("nom", "annee") {
       assert(champ in concours, message: "Champ de concours manquant : " + champ)
     }
-    assert(type(concours.nom) == str and type(concours.epreuve) == str,
-      message: "Le nom et l'épreuve du concours doivent être des chaînes")
-    assert(type(concours.annee) == int, message: "L'année du concours doit être un entier")
+    assert(type(concours.nom) == str and concours.nom in concours-possibles,
+      message: "nom doit être un concours connu")
+    assert(type(concours.annee) == int and concours.annee > 0,
+      message: "L'année du concours doit être un entier strictement positif")
+    let filiere = concours.at("filiere", default: "MPI")
+    assert(type(filiere) == str and filiere in filieres-possibles,
+      message: "filiere doit être une filière connue")
+    (..concours, filiere: filiere)
+  } else {
+    none
   }
   assert(type(debut) == int and debut >= 0, message: "debut doit être un entier positif ou nul")
   assert(type(contenu) == array, message: "contenu doit être un tableau de textes et de questions")
@@ -61,7 +70,7 @@
   }
   assert(nombre-questions > 0, message: "Un exercice doit contenir au moins une question")
   (
-    meta: (concours: none, niveaux: (), duree: none, ..meta),
+    meta: (niveaux: (), duree: none, ..meta, concours: concours-normalise),
     contenu: contenu,
     debut: debut,
   )
@@ -80,7 +89,7 @@
     block(above: 0pt, below: 9pt, text(size: 9pt, fill: luma(35%))[
       #if ex.meta.concours != none {
         let c = ex.meta.concours
-        [#c.nom · #c.epreuve · #c.annee #h(1em)]
+        [#c.nom · #c.annee · #c.filiere #h(1em)]
       }
       Chapitres : #ex.meta.chapitres.join(", ") |
       Difficulté : #ex.meta.difficulte/5 |
