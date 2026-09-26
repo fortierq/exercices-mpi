@@ -7,12 +7,15 @@ OCAML ?= ocaml
 TYPST_FLAGS := --root . --ignore-system-fonts
 E ?= langage/ensembles-inevitables
 F ?= langages
+S ?= centrale-2022-mp-informatique
 C ?= true
 O ?= 1
 E_SANS_EXTENSION := $(patsubst %.typ,%,$(E))
 E_SANS_PREFIXE := $(patsubst exercices/%,%,$(E_SANS_EXTENSION))
 F_SANS_EXTENSION := $(patsubst %.typ,%,$(F))
 F_SANS_PREFIXE := $(patsubst feuilles/%,%,$(F_SANS_EXTENSION))
+S_SANS_EXTENSION := $(patsubst %.typ,%,$(S))
+S_SANS_PREFIXE := $(patsubst sujets/%,%,$(S_SANS_EXTENSION))
 ifeq ($(shell uname -s),Darwin)
 O_PDF ?= open -a "Visual Studio Code"
 else
@@ -28,7 +31,7 @@ PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf buil
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
 PDF_SUJETS := $(foreach s,$(SUJETS),build/sujets/$(s)/enonce.pdf build/sujets/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles sujets catalogue check test w wf clean help
+.PHONY: all exercices feuilles sujets catalogue check test w wf ws clean help
 all: exercices feuilles sujets catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
@@ -91,6 +94,13 @@ wf:
 	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"; fi
 	$(TYPST) w $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
 
+ws:
+	@test -f "sujets/$(S_SANS_PREFIXE).typ" || { echo "Sujet introuvable : $(S)"; exit 1; }
+	@mkdir -p "build/sujets/$(S_SANS_PREFIXE)"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/sujets/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" modeles/fiche.typ "build/sujets/$(S_SANS_PREFIXE)/apercu.pdf"
+	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/sujets/$(S_SANS_PREFIXE)/apercu.pdf"; fi
+	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/sujets/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" modeles/fiche.typ "build/sujets/$(S_SANS_PREFIXE)/apercu.pdf"
+
 clean:
 	rm -rf build
 
@@ -100,5 +110,6 @@ help:
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
 	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
 	@echo "make wf F=langages [C=true] [O=0]"
+	@echo "make ws S=centrale-2022-mp-informatique [C=true] [O=0]"
 	@echo "make catalogue        Régénérer build/catalogue.json"
 	@echo "make clean            Supprimer uniquement build/"

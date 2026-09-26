@@ -14,8 +14,7 @@
   block(above: 12pt, below: 12pt, breakable: false)[
     #heading(level: niveau)[
       #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
-        [#prefixe -],
-        [#titre],
+        [#prefixe -- #titre],
         [#if concours != none {
           text(size: 8pt, fill: luma(35%).transparentize(30%))[
             #texte-concours(concours)
@@ -141,7 +140,7 @@
     let prefixe = if numero == none { "I" } else { numbering("I", numero) }
     titre-exercice(ex.meta.titre, prefixe, concours: ex.meta.concours)
   }
-  if details {
+  if details and corrige {
     block(above: 0pt, below: 9pt, text(size: 9pt, fill: luma(35%))[
       #if ex.meta.concours != none {
         let c = ex.meta.concours
@@ -149,7 +148,7 @@
       }
       Chapitres : #ex.meta.chapitres.join(", ") |
       Difficulté : #ex.meta.difficulte/5 |
-      #if ex.meta.duree != none [ Durée indicative : #ex.meta.duree min]
+      #if ex.meta.duree != none [ Durée : #ex.meta.duree min]
     ])
   }
   let i = ex.debut

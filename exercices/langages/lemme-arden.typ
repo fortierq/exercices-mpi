@@ -14,9 +14,9 @@
     concours: none
   ),
   contenu: (
-    [On utilise $+$ à la place de $∪$ et $|$.
+    [Dans cet exercice, on utilise $+$ à la place de $∪$ et $|$.
 
-      Partie 1 — Lemme d'Arden
+      == I -- Lemme d'Arden
 
       Dans cette partie, $Σ$ est un alphabet et $K,L ∈ cal(P)(Σ^*)$ sont deux
       langages sur cet alphabet. On y étudie l'équation $(E) : X=K X+L$
@@ -53,7 +53,7 @@
       Non : pour $Σ={a}$, $K={ε}$ et $L={a}$, les langages ${a}$ et $a^*$
       sont deux solutions distinctes de $X=K X+L$.
     ]),
-    [Partie 2 — Systèmes d'équations aux langages
+    [== II -- Systèmes d'équations aux langages
 
       Dans cette partie, $Σ={a,b}$. On note $L_1$ le langage des mots ayant un
       nombre pair de $b$ et $L_2$ celui des mots ayant un nombre impair de $b$.
@@ -92,9 +92,9 @@
       Les unicités garanties par le lemme d'Arden assurent que les deux expressions
       de l'énoncé dénotent bien le même langage $L_2$.
     ]),
-    [Partie 3 — Langage reconnu par un automate
+    [== III -- Langage reconnu par un automate
 
-      Le but de cette partie est de décrire une méthode permettant de déterminer
+      Le but de cette == décrire une méthode permettant de déterminer
       le langage reconnu par un automate. Un automate est la donnée de
       $A=(Σ,Q,I,F,δ)$, où $Σ$ est un alphabet, $Q$ un ensemble fini d'états,
       $I ⊆ Q$ et $F ⊆ Q$ les ensembles des états initiaux et finaux, et $δ$
@@ -162,7 +162,7 @@
       #emph[Remarque : cette méthode de détermination du langage reconnu par un
         automate n'est pas exigible au programme, mais peut être utile.]
     ]),
-    [Partie 4 — Les langages reconnus sont réguliers
+    [== IV -- Les langages reconnus sont réguliers
 
       L'objectif est de prouver l'une des implications du théorème de Kleene :
       tout langage reconnaissable par un automate est régulier.],
@@ -199,7 +199,7 @@
       la formule de $X_n$ donne celle de la dernière par les stabilités usuelles.
     ]),
     question([
-      Soit $L$ un langage reconnaissable par un automate. En s'inspirant de la partie 3,
+      Soit $L$ un langage reconnaissable par un automate. En s'inspirant de la ==
       montrer que $L$ est l'une des composantes d'une solution d'un système
       d'équations aux langages qu'on déterminera et en déduire que $L$ est régulier.
     ], solution: [

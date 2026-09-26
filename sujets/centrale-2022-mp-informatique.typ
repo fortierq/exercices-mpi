@@ -222,7 +222,7 @@
     algorithmes: ("determinisation", "diviser-pour-regner"),
     structures: ("liste", "tableau", "arbre"),
     langages: ("OCaml",), difficulte: 4,
-    niveaux: ("MP", "MPI"), duree: 240,
+    niveaux: ("MP", "MPI"), duree: 180,
     concours: concours,
   ),
   contenu: (
