@@ -210,19 +210,27 @@ typst compile --root . --ignore-system-fonts \
   --input exercice=/sujets/mon-sujet.typ modeles/fiche.typ build/mon-sujet.pdf
 ```
 
-Pour réutiliser une partie dans la banque, exporter directement son extraction :
+Pour partager une partie, la définir dans une variable exportée du sujet,
+puis placer cette variable dans son `contenu`. C’est le cas de `palindromes`
+dans Centrale : le sujet et l’exercice utilisent exactement le même objet.
+L’exercice autonome ajoute les rappels nécessaires et ses métadonnées :
 
 ```typst
-#import "/lib/exercices.typ": extraire-partie
-#import "/sujets/centrale-2022-mp-informatique.typ": ex as sujet
+#import "/lib/exercices.typ": exercice
+#import "/sujets/centrale-2022-mp-informatique.typ": palindromes
 
-#let ex = extraire-partie(sujet, "I.B", meta: (niveaux: ("MPI", "MP"),))
+#let ex = exercice(
+  meta: (..palindromes.meta, titre: palindromes.titre, niveaux: ("MPI", "MP")),
+  contenu: palindromes.contexte + palindromes.contenu,
+)
 ```
 
-Les énoncés et solutions ne sont pas recopiés. C'est ainsi que fonctionne
-`exercices/langages/palindromes-et-rationalite.typ`, avec les sept questions
-6 à 12. Son nom de fichier est conservé pour les imports existants ; son
-titre devient « Palindromes et régularité » selon les conventions de la banque.
+Aucune recherche par numéro ni copie des questions ou solutions n’est nécessaire.
+Le fichier `exercices/langages/palindromes-et-rationalite.typ` conserve son nom
+pour les imports existants et réutilise ainsi les sept questions de I.B.
+
+`extraire-partie(sujet, "I.B")` reste disponible pour sélectionner une partie
+qui n’a pas été exportée séparément.
 
 L'extrait commence à 1 par défaut. Passer `numerotation-originale: true`
 conserve les numéros continus du sujet Typst, notamment lorsqu’une partie

@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": question, exercice, partie, extraire-partie, aplatir, nombre-questions
-#import "/sujets/centrale-2022-mp-informatique.typ": ex as sujet
+#import "/sujets/centrale-2022-mp-informatique.typ": ex as sujet, palindromes
 #import "/exercices/langages/palindromes-et-rationalite.typ": ex
 
 #assert(nombre-questions(sujet.contenu) == 50)
@@ -65,3 +65,8 @@ Vérification des sujets et de l'extraction réussie.
 ))
 #assert(extraire-partie(renumerote, "palindromes").contenu
   == extraire-partie(autre, "palindromes").contenu)
+
+// L’exercice autonome réutilise directement l’objet exporté par le sujet.
+#assert(sujet.contenu.filter(b => type(b) == dictionary).first().contenu.at(1) == palindromes)
+#assert(ex.contenu == palindromes.contexte + palindromes.contenu)
+#assert(ex.meta.concours == palindromes.meta.concours)

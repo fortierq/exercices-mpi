@@ -1,6 +1,8 @@
-#import "/lib/exercices.typ": extraire-partie
-#import "/sujets/centrale-2022-mp-informatique.typ": ex as sujet
+#import "/lib/exercices.typ": exercice
+#import "/sujets/centrale-2022-mp-informatique.typ": palindromes
 
-// Une seule source pour I.B (Q6–Q12), ses définitions et ses solutions.
-// L'identifiant du fichier reste inchangé pour les feuilles existantes.
-#let ex = extraire-partie(sujet, "I.B", meta: (niveaux: ("MPI", "MP"),))
+// La partie est partagée avec le sujet ; seuls ses rappels sont ajoutés ici.
+#let ex = exercice(
+  meta: (..palindromes.meta, titre: palindromes.titre, niveaux: ("MPI", "MP")),
+  contenu: palindromes.contexte + palindromes.contenu,
+)

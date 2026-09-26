@@ -118,6 +118,101 @@
   ),
 )
 
+#let concours = (nom: "Centrale", annee: 2022, filiere: "MP")
+
+// Partie partagée avec l’exercice autonome sur les palindromes.
+#let palindromes = partie("I.B", "Palindromes et régularité",
+  contexte: ([Sur un alphabet fini $Σ$, on note $tilde(w)$ le miroir du mot
+    $w$, obtenu en inversant l'ordre de ses lettres ; $tilde(ε)=ε$.],),
+  meta: (
+    concours: concours,
+    chapitres: ("langages-reguliers", "automates-finis"),
+    algorithmes: (), structures: (), langages: ("OCaml",), difficulte: 3,
+  ),
+  contenu: (
+    [Soit $w ∈ Σ^*$. Le mot $w$ est un palindrome si $tilde(w)=w$.],
+    question([Écrire une fonction ```ocaml palindrome``` de signature
+      ```ocaml string -> bool``` qui teste, en temps linéaire, si un mot est
+      un palindrome.], solution: [
+      #code("Q6")
+      On compare les lettres symétriques jusqu'au milieu du mot.
+      L'appel d'indice $i$ vérifie les paires restantes ; $floor(n/2)-i$ décroît
+      tant qu'un appel récursif est effectué. Le mot vide est accepté.
+      Au plus $floor(n/2)$ comparaisons donnent un coût $O(n+1)$, linéaire
+      dans le pire cas. L'appel récursif est terminal, donc l'espace
+      auxiliaire est constant.
+    ]),
+    [On rappelle que pour $0 ≤ i < $```ocaml String.length s```, le $i$-ième
+      caractère de la chaîne ```ocaml s``` est obtenu par ```ocaml s.[i]```.
+      Pour un alphabet $Σ$, on note $"Pal"(Σ)$ l'ensemble des palindromes de $Σ^*$.],
+    question([Montrer que si $Σ$ est un alphabet à une lettre, alors
+      $"Pal"(Σ)$ est régulier.], solution: [
+      Si $Σ={a}$, tout mot est de la forme $a^n$ et est un palindrome.
+      Ainsi $"Pal"(Σ)=a^*$.
+    ]),
+    question([Montrer que si $Σ$ contient au moins deux lettres, alors
+      $"Pal"(Σ)$ n'est pas régulier. On pourra utiliser un automate et un
+      mot de $"Pal"(Σ) ∩ a^* b a^*$.], solution: [
+      Choisissons deux lettres distinctes $a,b ∈ Σ$. Si $"Pal"(Σ)$ était
+      régulier, son intersection $K$ avec $a^* b a^*$ le serait aussi.
+      Or $K={a^n b a^n | n ∈ NN}$. Supposons qu'un automate déterministe
+      à $p$ états reconnaisse $K$. Sur le chemin étiqueté $a^p b a^p$,
+      deux des $p+1$ états atteints après $ε,a,…,a^p$ sont égaux.
+      Il existe donc $0 ≤ i < j ≤ p$ tels que l'on puisse répéter le
+      segment de $j-i$ lettres $a$. L'automate accepte alors
+      $a^(p+j-i) b a^p$, qui n'appartient pas à $K$ : contradiction.
+    ]),
+    [Soit $L ⊆ Σ^*$ un langage reconnu par $A=(Q,I,F,T)$. Pour
+      $(q,q') ∈ Q^2$, on note $L_(q,q')$ le langage des mots étiquetant
+      un chemin de $q$ à $q'$ dans $A$.],
+    question([Montrer que $L_(q,q')$ est reconnaissable et exprimer
+      $L_A$ en fonction des langages $L_(q,q')$.], solution: [
+      L'automate $(Q,{q},{q'},T)$ reconnaît $L_(q,q')$.
+      Un chemin est acceptant s'il part d'un état initial et arrive à un
+      état final, d'où
+      $ L_A=union_(i ∈ I) union_(f ∈ F) L_(i,f). $
+    ]),
+    question([Montrer que $"Pal"(Σ) ∩ (Σ^2)^*={u tilde(u) | u ∈ Σ^*}$.],
+      solution: [
+        Le langage $(Σ^2)^*$ contient exactement les mots de longueur paire.
+        Tout $u tilde(u)$ est un palindrome de longueur $2 abs(u)$.
+        Réciproquement, si un palindrome a longueur $2n$, sa seconde moitié
+        est le miroir de sa première moitié $u$. Il vaut donc $u tilde(u)$.
+        L'égalité reste vraie pour $u=ε$.
+      ]),
+    [Soit $L$ un langage régulier reconnu par $A=(Q,I,F,T)$. On définit
+      $D(L)={w tilde(w) | w ∈ L}$ et $R(L)={w ∈ Σ^* | w tilde(w) ∈ L}$.],
+    question([Décrire simplement $D(a^* b)$ et $R(a^* b^* a^*)$.], solution: [
+      On a
+      $ D(a^* b)={a^n b b a^n | n ∈ NN}, quad R(a^* b^* a^*)=a^* b^*. $
+      Pour la seconde égalité, si $w tilde(w) ∈ a^* b^* a^*$,
+      son préfixe $w$ appartient à ce même langage et n'utilise que $a,b$.
+      Un tel mot $w$ comportant un $b$ puis un $a$ fait apparaître
+      un facteur $b a^+ b$ dans $w tilde(w)$, impossible dans
+      $a^* b^* a^*$. Ainsi $w ∈ a^* b^*$ ; réciproquement
+      $w=a^i b^j$ donne $w tilde(w)=a^i b^(2j) a^i$.
+    ]),
+    question([Les langages $D(L)$ et $R(L)$ sont-ils reconnaissables ?
+      On pourra faire intervenir les langages $L_(q,q')$ définis ci-dessus.],
+      solution: [
+        $D(L)$ ne l'est pas toujours : pour $L=a^* b$, le langage
+        ${a^n b b a^n | n ∈ NN}$ ne peut être reconnu par un automate fini.
+        Le même argument de répétition d'une boucle dans le premier bloc
+        de $a$ que pour les palindromes donne une contradiction.
+
+        En revanche, $R(L)$ est toujours reconnaissable. Un chemin
+        acceptant étiqueté $w tilde(w)$ passe, après $w$, par un état
+        $q ∈ Q$. On a donc
+        $ R(L)=union_(i ∈ I) union_(q ∈ Q) union_(f ∈ F)
+          (L_(i,q) ∩ tilde(L_(q,f))). $
+        Chaque langage de chemins est reconnaissable. Le miroir est
+        reconnaissable en inversant les transitions et en échangeant
+        états initiaux et finaux. Les stabilités par intersection et
+        union finies concluent.
+      ]),
+  ),
+)
+
 // Source : épreuve Centrale-Supélec 2022, MP, option informatique, 9 pages.
 // Le PDF fourni porte la mention CC BY-NC-SA.
 #let ex = exercice(
@@ -128,7 +223,7 @@
     structures: ("liste", "tableau", "arbre"),
     langages: ("OCaml",), difficulte: 4,
     niveaux: ("MP", "MPI"), duree: 240,
-    concours: (nom: "Centrale", annee: 2022, filiere: "MP"),
+    concours: concours,
   ),
   contenu: (
     [
@@ -247,96 +342,7 @@
           en temps et en espace supplémentaire ; les listes d'états sont partagées.
         ]),
       )),
-      partie("I.B", "Palindromes et régularité",
-        contexte: ([Sur un alphabet fini $Σ$, on note $tilde(w)$ le miroir du mot
-          $w$, obtenu en inversant l'ordre de ses lettres ; $tilde(ε)=ε$.],),
-        meta: (
-          chapitres: ("langages-reguliers", "automates-finis"),
-          algorithmes: (), structures: (), langages: ("OCaml",), difficulte: 3,
-        ),
-        contenu: (
-          [Soit $w ∈ Σ^*$. Le mot $w$ est un palindrome si $tilde(w)=w$.],
-          question([Écrire une fonction ```ocaml palindrome``` de signature
-            ```ocaml string -> bool``` qui teste, en temps linéaire, si un mot est
-            un palindrome.], solution: [
-            #code("Q6")
-            On compare les lettres symétriques jusqu'au milieu du mot.
-            L'appel d'indice $i$ vérifie les paires restantes ; $floor(n/2)-i$ décroît
-            tant qu'un appel récursif est effectué. Le mot vide est accepté.
-            Au plus $floor(n/2)$ comparaisons donnent un coût $O(n+1)$, linéaire
-            dans le pire cas. L'appel récursif est terminal, donc l'espace
-            auxiliaire est constant.
-          ]),
-          [On rappelle que pour $0 ≤ i < $```ocaml String.length s```, le $i$-ième
-            caractère de la chaîne ```ocaml s``` est obtenu par ```ocaml s.[i]```.
-            Pour un alphabet $Σ$, on note $"Pal"(Σ)$ l'ensemble des palindromes de $Σ^*$.],
-          question([Montrer que si $Σ$ est un alphabet à une lettre, alors
-            $"Pal"(Σ)$ est régulier.], solution: [
-            Si $Σ={a}$, tout mot est de la forme $a^n$ et est un palindrome.
-            Ainsi $"Pal"(Σ)=a^*$.
-          ]),
-          question([Montrer que si $Σ$ contient au moins deux lettres, alors
-            $"Pal"(Σ)$ n'est pas régulier. On pourra utiliser un automate et un
-            mot de $"Pal"(Σ) ∩ a^* b a^*$.], solution: [
-            Choisissons deux lettres distinctes $a,b ∈ Σ$. Si $"Pal"(Σ)$ était
-            régulier, son intersection $K$ avec $a^* b a^*$ le serait aussi.
-            Or $K={a^n b a^n | n ∈ NN}$. Supposons qu'un automate déterministe
-            à $p$ états reconnaisse $K$. Sur le chemin étiqueté $a^p b a^p$,
-            deux des $p+1$ états atteints après $ε,a,…,a^p$ sont égaux.
-            Il existe donc $0 ≤ i < j ≤ p$ tels que l'on puisse répéter le
-            segment de $j-i$ lettres $a$. L'automate accepte alors
-            $a^(p+j-i) b a^p$, qui n'appartient pas à $K$ : contradiction.
-          ]),
-          [Soit $L ⊆ Σ^*$ un langage reconnu par $A=(Q,I,F,T)$. Pour
-            $(q,q') ∈ Q^2$, on note $L_(q,q')$ le langage des mots étiquetant
-            un chemin de $q$ à $q'$ dans $A$.],
-          question([Montrer que $L_(q,q')$ est reconnaissable et exprimer
-            $L_A$ en fonction des langages $L_(q,q')$.], solution: [
-            L'automate $(Q,{q},{q'},T)$ reconnaît $L_(q,q')$.
-            Un chemin est acceptant s'il part d'un état initial et arrive à un
-            état final, d'où
-            $ L_A=union_(i ∈ I) union_(f ∈ F) L_(i,f). $
-          ]),
-          question([Montrer que $"Pal"(Σ) ∩ (Σ^2)^*={u tilde(u) | u ∈ Σ^*}$.],
-            solution: [
-              Le langage $(Σ^2)^*$ contient exactement les mots de longueur paire.
-              Tout $u tilde(u)$ est un palindrome de longueur $2 abs(u)$.
-              Réciproquement, si un palindrome a longueur $2n$, sa seconde moitié
-              est le miroir de sa première moitié $u$. Il vaut donc $u tilde(u)$.
-              L'égalité reste vraie pour $u=ε$.
-            ]),
-          [Soit $L$ un langage régulier reconnu par $A=(Q,I,F,T)$. On définit
-            $D(L)={w tilde(w) | w ∈ L}$ et $R(L)={w ∈ Σ^* | w tilde(w) ∈ L}$.],
-          question([Décrire simplement $D(a^* b)$ et $R(a^* b^* a^*)$.], solution: [
-            On a
-            $ D(a^* b)={a^n b b a^n | n ∈ NN}, quad R(a^* b^* a^*)=a^* b^*. $
-            Pour la seconde égalité, si $w tilde(w) ∈ a^* b^* a^*$,
-            son préfixe $w$ appartient à ce même langage et n'utilise que $a,b$.
-            Un tel mot $w$ comportant un $b$ puis un $a$ fait apparaître
-            un facteur $b a^+ b$ dans $w tilde(w)$, impossible dans
-            $a^* b^* a^*$. Ainsi $w ∈ a^* b^*$ ; réciproquement
-            $w=a^i b^j$ donne $w tilde(w)=a^i b^(2j) a^i$.
-          ]),
-          question([Les langages $D(L)$ et $R(L)$ sont-ils reconnaissables ?
-            On pourra faire intervenir les langages $L_(q,q')$ définis ci-dessus.],
-            solution: [
-              $D(L)$ ne l'est pas toujours : pour $L=a^* b$, le langage
-              ${a^n b b a^n | n ∈ NN}$ ne peut être reconnu par un automate fini.
-              Le même argument de répétition d'une boucle dans le premier bloc
-              de $a$ que pour les palindromes donne une contradiction.
-
-              En revanche, $R(L)$ est toujours reconnaissable. Un chemin
-              acceptant étiqueté $w tilde(w)$ passe, après $w$, par un état
-              $q ∈ Q$. On a donc
-              $ R(L)=union_(i ∈ I) union_(q ∈ Q) union_(f ∈ F)
-                (L_(i,q) ∩ tilde(L_(q,f))). $
-              Chaque langage de chemins est reconnaissable. Le miroir est
-              reconnaissable en inversant les transitions et en échangeant
-              états initiaux et finaux. Les stabilités par intersection et
-              union finies concluent.
-            ]),
-        ),
-      ),
+      palindromes,
       partie("I.C", "Déterminisation", contenu: (
         [Pour tout automate non déterministe $A=(Q,I,F,T)$, on définit le
           déterminisé accessible $A_"det"=(Y,{I},F',δ)$, où $Y ⊆ cal(P)(Q)$ est
