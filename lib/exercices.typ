@@ -87,7 +87,7 @@
 }
 
 // Présentation inspirée de texmf/tex/latex/{exam.cls,exercise.cls,code.sty}.
-#let afficher-exercice(ex, numero: none, corrige: false, details: true, afficher-titre: true) = {
+#let afficher-exercice(ex, numero: none, corrige: false, details: true, afficher-titre: true, numerotation: "1.") = {
   show strong: it => it.body
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
@@ -127,7 +127,7 @@
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
     block(width: 100%, above: 8pt, below: 0pt,
-      enum(start: i, numbering: "1.",
+      enum(start: i, numbering: numerotation,
         indent: 0pt, body-indent: 0.5em, q.enonce),
     )
     if corrige {

@@ -2,8 +2,9 @@
 
 Une banque d’exercices indépendante des feuilles : chaque exercice décrit ses
 métadonnées et une suite de textes libres et de questions avec leurs solutions. Les feuilles
-importent ces objets dans l’ordre souhaité. Aucun paquet Typst externe, aucune
-base de données et aucune dépendance Python à installer.
+importent ces objets dans l’ordre souhaité. Les sujets de concours réunissent
+des parties dont on peut extraire les exercices. Les figures utilisent CeTZ et
+finite, avec des versions fixées. Aucune base de données ni dépendance Python à installer.
 
 ## Démarrer
 
@@ -24,10 +25,10 @@ nix develop path:. -c make check
 `path:.` inclut les nouveaux fichiers même s’ils ne sont pas encore suivis par
 Git. Une fois les fichiers ajoutés à Git, `nix develop` fonctionne aussi.
 `flake.lock` verrouille les versions, dont **Typst 0.15.1**. Le shell fournit
-Typst, GNU Make et Python 3, sur macOS et Linux (Intel et ARM).
+Typst, GNU Make, Python 3 et OCaml, sur macOS et Linux (Intel et ARM).
 Pour mettre à jour volontairement : `nix flake update --flake path:.`, puis `make check`.
 
-Sans Nix, installer ces trois outils (Typst 0.15.1 ou ultérieur), puis utiliser
+Sans Nix, installer ces quatre outils (Typst 0.15.1 ou ultérieur), puis utiliser
 les mêmes commandes Make. Avec direnv et nix-direnv, le fichier `.envrc` est
 également fourni ; son activation par `direnv allow` est facultative.
 
@@ -38,6 +39,11 @@ lib/exercices.typ                           API et mise en page partagées
 modeles/exercice.typ               Exercice minimal à copier
 modeles/fiche.typ                           Point d’entrée pour un exercice isolé
 modeles/feuille.typ                         Feuille minimale à copier
+lib/sujets.typ                             Parties, extraction et mise en page des sujets
+modeles/sujet-concours.typ                  Sujet minimal à copier
+modeles/epreuve.typ                         Point d’entrée pour un sujet ou son corrigé
+sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
+ressources/centrale-2022-mp-informatique/    Parties, figures et code OCaml partagé
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
 docs/ensembles-inevitables-migration.md      Provenance et corrections de la source
 feuilles/langages.typ                       Exemple de feuille réutilisant l’exercice
@@ -179,6 +185,57 @@ affiché uniquement sur la première page. Il n’y a pas de sous-titre ; le cor
 ajoute « : corrigé » au titre. Les titres des exercices sont en gras ; le corps et les numéros des questions
 restent sans gras. Chaque solution commence par « Solution. » souligné. Les fichiers LaTeX ne sont pas nécessaires à la compilation.
 
+## Sujets de concours et extraits
+
+Copier `modeles/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
+exporte `sujet`, construit avec `sujet-concours` : métadonnées communes aux
+exercices, `preambule` et `contenu`. Celui-ci mêle des textes, des `question`
+et des `partie`. Les parties peuvent contenir des sous-parties ; chacune a
+un identifiant unique dans le sujet (`"I"`, `"I.B"`, `"II.A.1"`…).
+La numérotation des questions est continue dans le sujet, sous la forme « Q 1. ».
+
+```sh
+make sujets
+make build/sujets/centrale-2022-mp-informatique/corrige.pdf
+typst compile --root . --ignore-system-fonts \
+  --input sujet=/sujets/mon-sujet.typ modeles/epreuve.typ build/mon-sujet.pdf
+```
+
+Pour réutiliser une partie dans la banque, exporter directement son extraction :
+
+```typst
+#import "/lib/sujets.typ": extraire-partie
+#import "/sujets/centrale-2022-mp-informatique.typ": sujet
+
+#let ex = extraire-partie(sujet, "I.B", meta: (niveaux: ("MPI", "MP"),))
+```
+
+Les énoncés et solutions ne sont pas recopiés. C'est ainsi que fonctionne
+`exercices/langages/palindromes-et-rationalite.typ`, avec les sept questions
+Q6 à Q12. Son nom de fichier est conservé pour les imports existants ; son
+titre devient « Palindromes et régularité » selon les conventions de la banque.
+
+L'extrait commence à 1 par défaut. Passer `numerotation-originale: true`
+conserve les numéros du sujet, notamment lorsqu'une partie renvoie à d'autres
+questions par leur numéro. `meta` permet de préciser le titre, la difficulté,
+les chapitres, les langages et la durée de l'extrait. Les métadonnées des
+parties parentes puis de la partie extraite sont héritées ; le titre devient
+celui de la partie et la durée totale du concours est retirée. L'attribution
+`concours` est conservée.
+
+Une partie peut déclarer `contexte: ([Rappel…],)`. Ces rappels sont ajoutés
+uniquement à l'extrait, dans l'ordre des parties parentes, puis de la partie
+choisie. Le préambule global n'est pas copié automatiquement : ajouter les
+définitions réellement nécessaires au `contexte`. Les titres et textes des
+sous-parties sélectionnées restent présents. Pour I.B, le rappel du miroir
+rend l'exercice autonome.
+
+Les trois figures du sujet Centrale 2022 sont reconstruites en Typst. Les
+fragments OCaml affichés proviennent de `ressources/centrale-2022-mp-informatique/corrige.ml`,
+également exécuté par les tests : une correction du code se répercute dans le
+document. Les notions de Brzozowski, Conway et Antimirov sont introduites dans
+le sujet ; leurs solutions utilisent les outils du programme.
+
 ## Compiler et travailler en continu
 
 ```sh
@@ -237,11 +294,13 @@ dans le petit fichier Typst de la feuille.
 
 ## Vérifier
 
-`make check` compile les énoncés, les corrigés, les feuilles et les deux modèles
-avec et sans solutions ; il exporte également le catalogue, ce qui valide les
-métadonnées et l’unicité des identifiants. `nix flake check path:.` exécute les
+`make check` compile les énoncés, les corrigés, les feuilles, les sujets et les
+modèles avec et sans solutions ; il exporte également le catalogue, ce qui
+valide les métadonnées et l’unicité des identifiants. Il vérifie l'extraction
+des parties et exécute les tests du corrigé OCaml (déterminisation, minimalité,
+palindromes, simplification et Conway). `nix flake check path:.` exécute les
 mêmes vérifications dans une dérivation Nix sur la plateforme courante.
-Ces vérifications ne remplacent pas une relecture mathématique et visuelle.
+Ces vérifications ne remplacent pas une relecture mathématique.
 
 La conversion initiale, ses choix et les erreurs corrigées sont documentés dans
 [les notes de migration](docs/ensembles-inevitables-migration.md).

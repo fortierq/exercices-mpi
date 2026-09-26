@@ -3,6 +3,7 @@
 
 TYPST ?= typst
 PYTHON ?= python3
+OCAML ?= ocaml
 TYPST_FLAGS := --root . --ignore-system-fonts
 E ?= langage/ensembles-inevitables
 F ?= langages
@@ -20,15 +21,26 @@ endif
 
 EXERCICES := $(patsubst exercices/%.typ,%,$(shell find exercices -mindepth 2 -maxdepth 2 -name '*.typ' | sort))
 FS := $(patsubst feuilles/%.typ,%,$(wildcard feuilles/*.typ))
+SUJETS := $(patsubst sujets/%.typ,%,$(wildcard sujets/*.typ))
 # Dépendances conservatrices : un import ou une image modifiés déclenchent la compilation.
-SOURCES := $(shell find lib modeles exercices feuilles $(wildcard ressources) -type f | sort)
+SOURCES := $(shell find lib modeles exercices feuilles sujets $(wildcard ressources) -type f | sort)
 PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf build/exercices/$(ex)/corrige.pdf)
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
+PDF_SUJETS := $(foreach s,$(SUJETS),build/sujets/$(s)/enonce.pdf build/sujets/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles catalogue check w wf clean help
-all: exercices feuilles catalogue
+.PHONY: all exercices feuilles sujets catalogue check test w wf clean help
+all: exercices feuilles sujets catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
+sujets: $(PDF_SUJETS)
+
+build/sujets/%/enonce.pdf: sujets/%.typ $(SOURCES) Makefile
+	@mkdir -p "$(@D)"
+	$(TYPST) compile $(TYPST_FLAGS) --input "sujet=/sujets/$*.typ" modeles/epreuve.typ "$@"
+
+build/sujets/%/corrige.pdf: sujets/%.typ $(SOURCES) Makefile
+	@mkdir -p "$(@D)"
+	$(TYPST) compile $(TYPST_FLAGS) --input "sujet=/sujets/$*.typ" --input corrige=true modeles/epreuve.typ "$@"
 
 build/exercices/%/enonce.pdf: exercices/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
@@ -51,12 +63,19 @@ catalogue:
 	$(PYTHON) scripts/catalogue.py --typst "$(TYPST)" --sortie build/catalogue.json
 
 # Compile aussi les modèles, afin qu’ils restent utilisables lors des évolutions de la bibliothèque.
-check: all
+check: all test
 	@mkdir -p build/modeles
 	$(TYPST) compile $(TYPST_FLAGS) modeles/fiche.typ build/modeles/exercice.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/fiche.typ build/modeles/exercice-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) modeles/feuille.typ build/modeles/feuille.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/feuille.typ build/modeles/feuille-corrige.pdf
+	$(TYPST) compile $(TYPST_FLAGS) modeles/epreuve.typ build/modeles/sujet.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/epreuve.typ build/modeles/sujet-corrige.pdf
+
+test:
+	@mkdir -p build/tests
+	$(TYPST) compile $(TYPST_FLAGS) tests/sujets.typ build/tests/sujets.pdf
+	$(OCAML) -I ressources/centrale-2022-mp-informatique tests/centrale-2022.ml
 
 w:
 	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }
@@ -76,7 +95,8 @@ clean:
 	rm -rf build
 
 help:
-	@echo "make                  Énoncés, corrigés, feuilles et catalogue JSON"
+	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"
+	@echo "make sujets           Compiler les sujets de concours et leurs corrigés"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
 	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
 	@echo "make wf F=langages [C=true] [O=0]"
