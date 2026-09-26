@@ -27,7 +27,7 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
-#let sujet-concours(meta: (:), preambule: [], contenu: ()) = {
+#let sujet-concours(meta: (:), contenu: ()) = {
   let identifiants(blocs) = {
     let ids = ()
     for bloc in blocs {
@@ -37,10 +37,9 @@
   }
   let ids = identifiants(contenu)
   assert(ids.len() == ids.dedup().len(), message: "Identifiant de partie dupliqué")
-  assert(type(preambule) == content)
   // Réutiliser la validation des exercices, y compris celle des métadonnées.
   let valide = exercice(meta: meta, contenu: aplatir(contenu))
-  (meta: valide.meta, preambule: preambule, contenu: contenu)
+  (meta: valide.meta, contenu: contenu)
 }
 
 #let extraire-partie(sujet, id, meta: (:), numerotation-originale: false) = {
@@ -76,7 +75,7 @@
 // Même pipeline que modeles/fiche.typ : feuille puis afficher-exercice.
 #let epreuve(sujet, corrige: false, body) = {
   let ex = exercice(meta: sujet.meta,
-    contenu: (sujet.preambule,) + aplatir(sujet.contenu))
+    contenu: aplatir(sujet.contenu))
   show: feuille.with(
     titre: ex.meta.titre,
     niveau: ex.meta.niveaux.join(" / "),

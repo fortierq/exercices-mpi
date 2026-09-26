@@ -24,8 +24,8 @@
 // Les textes intercalés ne comptent pas comme questions ; les rappels des
 // parties parentes s'ajoutent dans l'ordre, sans embarquer le sujet entier.
 #let q = question([Question commune.], solution: [Solution commune.])
-#let exemple = sujet-concours(meta: sujet.meta, preambule: [Préambule global.], contenu: (
-  q,
+#let exemple = sujet-concours(meta: sujet.meta, contenu: (
+  [Introduction globale.], q,
   partie("A", "Parent", contexte: ([Rappel parent.],), contenu: (
     [Texte non numéroté.], q,
     partie("A.1", "Enfant", contexte: ([Rappel enfant.],),

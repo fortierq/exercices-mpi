@@ -9,8 +9,8 @@
     difficulte: 2, niveaux: ("MPI",), duree: 240,
     concours: none, // Renseigner le concours, l'année et la filière attestés.
   ),
-  preambule: [Les réponses doivent être justifiées. On fixe un alphabet $Σ$.],
   contenu: (
+    [Les réponses doivent être justifiées. On fixe un alphabet $Σ$.],
     partie("I", "Langages", contenu: (
       partie("I.A", "Langages finis", contexte: ([On fixe un alphabet $Σ$.],), contenu: (
         question([Montrer qu'un langage fini sur $Σ$ est régulier.],

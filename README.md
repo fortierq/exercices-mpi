@@ -43,7 +43,7 @@ lib/sujets.typ                             Parties, extraction et mise en page d
 modeles/sujet-concours.typ                  Sujet minimal à copier
 modeles/epreuve.typ                         Point d’entrée pour un sujet ou son corrigé
 sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
-ressources/centrale-2022-mp-informatique/    Parties, figures et code OCaml partagé
+ressources/centrale-2022-mp-informatique/    Code OCaml affiché et testé
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
 docs/ensembles-inevitables-migration.md      Provenance et corrections de la source
 feuilles/langages.typ                       Exemple de feuille réutilisant l’exercice
@@ -189,8 +189,10 @@ restent sans gras. Chaque solution commence par « Solution. » souligné. Les f
 
 Copier `modeles/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
 exporte `sujet`, construit avec `sujet-concours` : métadonnées communes aux
-exercices, `preambule` et `contenu`. Celui-ci mêle des textes, des `question`
-et des `partie`. Les parties peuvent contenir des sous-parties ; chacune a
+exercices et `contenu`. Celui-ci mêle des textes, des `question` et des `partie`.
+Les définitions et consignes initiales sont de simples blocs de texte au début
+de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
+figures) tient dans un seul fichier Typst. Les parties peuvent contenir des sous-parties ; chacune a
 un identifiant unique dans le sujet (`"I"`, `"I.B"`, `"II.A.1"`…).
 La mise en page utilise directement `feuille` et `afficher-exercice` de
 `lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
@@ -227,12 +229,13 @@ celui de la partie et la durée totale du concours est retirée. L'attribution
 
 Une partie peut déclarer `contexte: ([Rappel…],)`. Ces rappels sont ajoutés
 uniquement à l'extrait, dans l'ordre des parties parentes, puis de la partie
-choisie. Le préambule global n'est pas copié automatiquement : ajouter les
+choisie. Les textes placés hors de la partie ne sont pas copiés automatiquement : ajouter les
 définitions réellement nécessaires au `contexte`. Les titres et textes des
 sous-parties sélectionnées restent présents. Pour I.B, le rappel du miroir
 rend l'exercice autonome.
 
-Les trois figures du sujet Centrale 2022 sont reconstruites en Typst. Les
+Les figures du sujet Centrale 2022 et de son corrigé sont définies dans le
+fichier du sujet et générées en Typst. Les
 fragments OCaml affichés proviennent de `ressources/centrale-2022-mp-informatique/corrige.ml`,
 également exécuté par les tests : une correction du code se répercute dans le
 document. Les notions de Brzozowski, Conway et Antimirov sont introduites dans
