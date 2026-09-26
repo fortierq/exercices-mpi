@@ -2,7 +2,7 @@
 
 ## Consignes générales
 
-- Rester concis, précis et simple si possible.
+- Rester concis, précis et simple si possible. Refactoriser les abstractions devenues inutiles.
 
 ## Structure, ajout et conversion
 
@@ -10,12 +10,15 @@
 - Utiliser les modèles Typst dans `modeles/` pour créer/modifier un [exercice](modeles/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin. S'inspirer aussi si besoin des exercices similaires dans `exercices/`.
 - Lire l’API actuelle dans `lib/exercices.typ` avant toute modification.
 - Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Son identifiant est le nom du fichier sans l'extension `.typ` ; il doit être unique dans toute la banque et ne figure pas dans `meta`. Une feuille `feuilles/<nom>.typ` assemble ces objets dans l’ordre voulu.
+- Sujets et exercices utilisent `exercice` et `modeles/fiche.typ`. Garder chaque sujet dans un seul fichier ; exporter les parties réutilisées dans des variables et les importer dans les exercices, sans duplication ni recherche par numéro.
+- Placer introductions et définitions dans `contenu` ; ajouter explicitement les rappels nécessaires dans l’exercice autonome.
 
 ## Contenu
 
 - Les sujets et corrections doivent utiliser les outils du programme : [résume du programme](docs/programme.md). Les sujets peuvent introduire de nouvelles notions.
 - Utiliser les chapitres de /Users/qfortier/repo/cours-src (fichiers de la forme poly_*.tex) pour une référence de cours.
 - Corriger uniquement les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l’utilisateur pour toute modification de présentation ou de contenu.
+- Pour déterminiser, dessiner l'automate plutôt que donner la table de transition. 
 
 ## Notations et programmation
 
@@ -24,7 +27,7 @@
   l’ensemble des arcs (ou des arêtes pour un graphe non orienté). Utiliser ces notations de façon cohérente dans les énoncés, corrigés et modèles.
 - Pour la programmation en MP2I ou MPI, utiliser exclusivement C, OCaml ou Python, dans les questions comme dans les solutions. Le pseudocode reste possible lorsqu’une question demande seulement de décrire un algorithme.
 - Utiliser les caractères Unicode pour les symboles mathématiques, par exemple `Σ` pour l’alphabet, `ε` pour le mot vide, `∪` pour l’union, `∩` pour l’intersection, `*` pour l’étoile de Kleene, `→` pour la flèche d’une fonction (sauf en programmation), `∀` et `∃` pour les quantificateurs. 
-- Utiliser régulier au lieu de rationnel pour un langage ou expression régulière. Utiliser hors-contexte au lieu de langage algébrique.
+- Utiliser régulier au lieu de rationnel pour un langage ou expression régulière. Utiliser hors-contexte au lieu de langage algébrique. Utiliser | au lieu de + sur les expressions régulières.
 - Utiliser la syntaxe OCaml au lieu de Caml light utilisé par les anciens sujets de concours. Exemple : array au lieu de vect.
 
 ## Métadonnées
@@ -37,7 +40,8 @@
 
 ## Présentation
 
-- Titres des exercices en gras ; corps, numéros des questions et solutions sans gras.
+- Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
+- Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
 
 ## Figures
 

@@ -12,13 +12,13 @@
       devShells = forAllSystems (system:
         let pkgs = packagesFor system; in {
           default = pkgs.mkShellNoCC {
-            packages = [ pkgs.typst pkgs.gnumake pkgs.python3 ];
+            packages = [ pkgs.typst pkgs.gnumake pkgs.python3 pkgs.ocaml ];
           };
         });
       checks = forAllSystems (system:
         let pkgs = packagesFor system; in {
           documents = pkgs.runCommand "exercices-typst" {
-            nativeBuildInputs = [ pkgs.typst pkgs.gnumake pkgs.python3 ];
+            nativeBuildInputs = [ pkgs.typst pkgs.gnumake pkgs.python3 pkgs.ocaml ];
           } ''
             cp -R ${self} source
             chmod -R u+w source
