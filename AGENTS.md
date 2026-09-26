@@ -22,6 +22,7 @@
 
 ## Notations et programmation
 
+- Quand c'est possible, utiliser un symbole (comme =) au lieu de la fonction (comme heading) en Typst.
 - Délimiter les extraits de code Typst, inline ou en bloc, par des accents graves avec le langage adéquat, par exemple ```ocaml arbre_a_mot``` ; ne pas les entourer d'apostrophes.
 - Noter un graphe `G = (S, A)`, où `S` est l’ensemble des sommets et `A`
   l’ensemble des arcs (ou des arêtes pour un graphe non orienté). Utiliser ces notations de façon cohérente dans les énoncés, corrigés et modèles.
