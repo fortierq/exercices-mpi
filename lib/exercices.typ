@@ -26,16 +26,13 @@
   ]
 }
 
-// Un identifiant stable sert à l’extraction ; numero règle seulement le titre affiché.
-// Le contexte sert uniquement aux extraits : définitions et prérequis à rappeler.
-#let partie(id, titre, numero: none, contenu: (), contexte: (), meta: (:)) = {
-  assert(type(id) == str and id != "", message: "Identifiant de partie vide")
-  assert(type(titre) == str and titre != "", message: "Titre de partie vide")
-  let numero = if numero == none { id } else { numero }
+// Le contexte contient les rappels à ajouter dans un exercice autonome.
+#let partie(numero, titre, contenu: (), contexte: (), meta: (:)) = {
   assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
+  assert(type(titre) == str and titre != "", message: "Titre de partie vide")
   assert(type(contenu) == array and type(contexte) == array)
   assert(contexte.all(bloc => type(bloc) == content), message: "Le contexte contient uniquement du texte Typst")
-  (type: "partie", id: id, numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
+  (type: "partie", numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
 }
 
 #let est-partie(bloc) = type(bloc) == dictionary and bloc.at("type", default: none) == "partie"
@@ -116,55 +113,22 @@
   assert(type(debut) == int and debut >= 0, message: "debut doit être un entier positif ou nul")
   let verifier(blocs) = {
     assert(type(blocs) == array, message: "contenu doit être un tableau de textes, questions et parties")
-    let ids = ()
     for bloc in blocs {
       if est-partie(bloc) {
-        ids += (bloc.id,) + verifier(bloc.contenu)
+        verifier(bloc.contenu)
       } else if type(bloc) != content {
         assert(type(bloc) == dictionary, message: "Utiliser [texte libre], question(…) ou partie(…) dans contenu")
         assert(bloc.at("type", default: none) == "question", message: "Bloc inconnu dans contenu")
         assert("enonce" in bloc and "solution" in bloc, message: "Construire les questions avec question(…)")
       }
     }
-    ids
   }
-  let ids = verifier(contenu)
-  assert(ids.len() == ids.dedup().len(), message: "Identifiant de partie dupliqué")
+  verifier(contenu)
   assert(nombre-questions(contenu) > 0, message: "Un exercice doit contenir au moins une question")
   (
     meta: (niveaux: (), duree: none, ..meta, concours: concours-normalise),
     contenu: contenu,
     debut: debut,
-  )
-}
-
-#let extraire-partie(sujet, id, meta: (:), numerotation-originale: false) = {
-  let chercher(blocs, debut, contexte, metadonnees) = {
-    let numero = debut
-    for bloc in blocs {
-      if est-partie(bloc) {
-        let rappels = contexte + bloc.contexte
-        let infos = (: ..metadonnees, ..bloc.meta)
-        if bloc.id == id {
-          return (partie: bloc, debut: numero, contexte: rappels, meta: infos)
-        }
-        let trouve = chercher(bloc.contenu, numero, rappels, infos)
-        if trouve != none { return trouve }
-        numero += nombre-questions(bloc.contenu)
-      } else if type(bloc) == dictionary {
-        numero += 1
-      }
-    }
-    none
-  }
-  let trouve = chercher(sujet.contenu, sujet.debut, (), sujet.meta)
-  assert(trouve != none, message: "Partie introuvable : " + id)
-  exercice(
-    // La durée totale du concours ne décrit pas la durée de l'extrait.
-    meta: (..trouve.meta, titre: trouve.partie.titre, duree: none, ..meta,
-      concours: sujet.meta.concours),
-    contenu: trouve.contexte + trouve.partie.contenu,
-    debut: if numerotation-originale { trouve.debut } else { 1 },
   )
 }
 

@@ -192,13 +192,10 @@ Les dossiers `sujets/` et `exercices/` servent au classement ; le type de donné
 et le modèle de compilation (`modeles/fiche.typ`) sont les mêmes.
 Les définitions et consignes initiales sont de simples blocs de texte au début
 de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
-figures) tient dans un seul fichier Typst. Les parties peuvent contenir des sous-parties ; chacune a
-un identifiant unique dans le sujet, libre et indépendant de la numérotation.
-Par exemple, `partie("palindromes", "Palindromes", numero: "2.b", contenu: (…))`
-s’extrait avec `extraire-partie(ex, "palindromes")`, même après un changement
-de numéro. Sans `numero`, l’identifiant est aussi affiché dans le titre.
-Des numéros affichés identiques dans différentes parties sont possibles ;
-seuls les identifiants doivent être uniques.
+figures) tient dans un seul fichier Typst. Les parties peuvent contenir des
+sous-parties : `partie("I.B", "Palindromes", contenu: (…))` indique simplement
+le numéro et le titre affichés. La variable exportée permet la réutilisation,
+indépendamment de cette numérotation.
 La mise en page utilise directement `feuille` et `afficher-exercice` de
 `lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
@@ -229,26 +226,13 @@ Aucune recherche par numéro ni copie des questions ou solutions n’est nécess
 Le fichier `exercices/langages/palindromes-et-rationalite.typ` conserve son nom
 pour les imports existants et réutilise ainsi les sept questions de I.B.
 
-`extraire-partie(sujet, "I.B")` reste disponible pour sélectionner une partie
-qui n’a pas été exportée séparément.
+L’exercice autonome commence à 1 par défaut ; `exercice(debut: 6, …)` permet
+un autre départ. Les questions suivent la convention de la banque (`1.`, `2.`, etc.) ;
+adapter les renvois du PDF lors de la conversion.
 
-L'extrait commence à 1 par défaut. Passer `numerotation-originale: true`
-conserve les numéros continus du sujet Typst, notamment lorsqu’une partie
-renvoie à d’autres questions par leur numéro. Les questions suivent toujours
-la convention de la banque (`1.`, `2.`, etc.) : les numérotations du PDF
-avec lettres, sous-questions ou reprises à 1 doivent être adaptées lors de
-la conversion, ainsi que leurs renvois. `meta` permet de préciser le titre, la difficulté,
-les chapitres, les langages et la durée de l'extrait. Les métadonnées des
-parties parentes puis de la partie extraite sont héritées ; le titre devient
-celui de la partie et la durée totale du concours est retirée. L'attribution
-`concours` est conservée.
-
-Une partie peut déclarer `contexte: ([Rappel…],)`. Ces rappels sont ajoutés
-uniquement à l'extrait, dans l'ordre des parties parentes, puis de la partie
-choisie. Les textes placés hors de la partie ne sont pas copiés automatiquement : ajouter les
-définitions réellement nécessaires au `contexte`. Les titres et textes des
-sous-parties sélectionnées restent présents. Pour I.B, le rappel du miroir
-rend l'exercice autonome.
+Le champ `contexte` d’une partie contient les rappels utiles hors du sujet.
+L’exercice les ajoute explicitement à son `contenu`, comme dans l’exemple ci-dessus.
+Il précise ses métadonnées, dont sa durée éventuelle, et conserve l’attribution au concours.
 
 Les figures du sujet Centrale 2022 et de son corrigé sont définies dans le
 fichier du sujet et générées en Typst. Les
@@ -317,7 +301,7 @@ dans le petit fichier Typst de la feuille.
 
 `make check` compile les énoncés, les corrigés, les feuilles, les sujets et les
 modèles avec et sans solutions ; il exporte également le catalogue, ce qui
-valide les métadonnées et l’unicité des identifiants. Il vérifie l'extraction
+valide les métadonnées et l’unicité des identifiants. Il vérifie le partage
 des parties et exécute les tests du corrigé OCaml (déterminisation, minimalité,
 palindromes, simplification et Conway). `nix flake check path:.` exécute les
 mêmes vérifications dans une dérivation Nix sur la plateforme courante.

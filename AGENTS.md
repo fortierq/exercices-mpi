@@ -2,7 +2,7 @@
 
 ## Consignes générales
 
-- Rester concis, précis et simple si possible.
+- Rester concis, précis et simple si possible. Refactoriser les abstractions devenues inutiles.
 
 ## Structure, ajout et conversion
 
@@ -10,6 +10,8 @@
 - Utiliser les modèles Typst dans `modeles/` pour créer/modifier un [exercice](modeles/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin. S'inspirer aussi si besoin des exercices similaires dans `exercices/`.
 - Lire l’API actuelle dans `lib/exercices.typ` avant toute modification.
 - Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Son identifiant est le nom du fichier sans l'extension `.typ` ; il doit être unique dans toute la banque et ne figure pas dans `meta`. Une feuille `feuilles/<nom>.typ` assemble ces objets dans l’ordre voulu.
+- Sujets et exercices utilisent `exercice` et `modeles/fiche.typ`. Garder chaque sujet dans un seul fichier ; exporter les parties réutilisées dans des variables et les importer dans les exercices, sans duplication ni recherche par numéro.
+- Placer introductions et définitions dans `contenu` ; ajouter explicitement les rappels nécessaires dans l’exercice autonome.
 
 ## Contenu
 
@@ -37,7 +39,8 @@
 
 ## Présentation
 
-- Titres des exercices en gras ; corps, numéros des questions et solutions sans gras.
+- Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
+- Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
 
 ## Figures
 

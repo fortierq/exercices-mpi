@@ -242,7 +242,7 @@
       le langage spécifié par une expression régulière. Les trois parties sont
       indépendantes, de difficulté progressive.
 
-      #heading(level: 2)[Langages et mots]
+      == Langages et mots
       On appelle alphabet tout ensemble fini de lettres. On note généralement
       l'alphabet $Σ$. On note $Σ^*$ l'ensemble de tous les mots formés sur $Σ$.
       La longueur (ou la taille) d'un mot $w ∈ Σ^*$ est son nombre de lettres et
@@ -254,7 +254,7 @@
       La concaténation de deux langages $L$ et $L'$ est notée $L dot L'$, souvent
       abrégée en $L L'$ lorsqu'il n'y a pas d'ambiguïté.
 
-      #heading(level: 2)[Automates finis]
+      == Automates finis
       Un automate fini non déterministe sur $Σ$ est un quadruplet $A=(Q,I,F,T)$,
       où $Q$ est un ensemble fini d'états, $I ⊆ Q$ l'ensemble des états initiaux,
       $F ⊆ Q$ l'ensemble des états finaux et $T ⊆ Q × Σ × Q$ l'ensemble des
@@ -290,7 +290,7 @@
       ```ocaml a1.init```, aux états finaux par ```ocaml a1.final``` et aux
       transitions par ```ocaml a1.trans```.
 
-      #heading(level: 2)[Expressions régulières]
+      == Expressions régulières
       Sur un alphabet $Σ$, $∅$, $ε$ et toute lettre $a ∈ Σ$ sont des expressions
       régulières. Si $E,F$ sont des expressions régulières, alors $(E | F)$,
       $(E dot F)$ et $E^*$ en sont aussi. L'application $cal(L)$ associe à
@@ -300,7 +300,7 @@
         cal(L)(E dot F)=cal(L)(E) cal(L)(F), quad
         cal(L)(E^*)=cal(L)(E)^*. $
 
-      #heading(level: 2)[Programmation]
+      == Programmation
       Le seul langage de programmation autorisé est OCaml. Toutes les fonctions
       des modules ```ocaml Array``` et ```ocaml List```, ainsi que les fonctions
       de la bibliothèque standard (comme ```ocaml max``` et ```ocaml incr```)
