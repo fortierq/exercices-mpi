@@ -1,6 +1,6 @@
 #import "/lib/exercices.typ": question
 #import "/lib/sujets.typ": partie
-#import "commun.typ": code, automate-a1
+#import "commun.typ": code, automate-a1, automate-a3, automate-a4
 
 #let partie-i = partie("I", "Mots et automates", contenu: (
   partie("I.A", "Miroir d'un mot et automate transposé", contenu: (
@@ -11,7 +11,7 @@
       et décrire son langage miroir $tilde(L)_1$.], solution: [
       Les chemins acceptants bouclent d'abord sur $0$, lisent $a b$ pour
       atteindre $2$, puis lisent uniquement des $a$. Ainsi
-      $ L_1=(a+b)^* a b a^*, quad tilde(L)_1=a^* b a (a+b)^*. $
+      $ L_1=(a | b)^* a b a^*, quad tilde(L)_1=a^* b a (a | b)^*. $
     ]),
     question([Dessiner un automate $tilde(cal(A))_1$ reconnaissant $tilde(L)_1$.],
       solution: [On inverse toutes les transitions et on échange états initiaux et finaux.
@@ -129,7 +129,7 @@
       l'ensemble des états accessibles depuis l'état initial $I$ dans
       l'automate des parties. Il reconnaît le même langage que $A$.],
     question([Écrire un automate $cal(A)_2$ non déterministe à quatre états
-      reconnaissant $L_2=(b+a b)^* b a$, avec un unique état initial et un
+      reconnaissant $L_2=(b | a b)^* b a$, avec un unique état initial et un
       unique état final.], solution: [
       #code("Q13")
       Depuis $0$, on peut lire les blocs $b$ ou $a b$ pour revenir à $0$.
@@ -138,33 +138,23 @@
     question([Déterminiser l'automate miroir $tilde(cal(A))_2$ pour obtenir
       $cal(A)_3=(tilde(cal(A))_2)_"det"$. Renommer ses états $e_0,e_1,…$.],
       solution: [
-        La table suivante donne tous les états accessibles et toutes les transitions.
+        Les états accessibles sont
+        $ e_0={3}, quad e_1={2}, quad e_2=∅, quad e_3={0}, quad e_4={0,1}. $
         $e_0$ est initial ; $e_3,e_4$ sont finaux.
-        #align(center, table(columns: 4, inset: 5pt,
-          [État], [Partie de $Q_2$], [$a$], [$b$],
-          [$e_0$], [${3}$], [$e_1$], [$e_2$],
-          [$e_1$], [${2}$], [$e_2$], [$e_3$],
-          [$e_2$], [$∅$], [$e_2$], [$e_2$],
-          [$e_3$], [${0}$], [$e_2$], [$e_4$],
-          [$e_4$], [${0,1}$], [$e_3$], [$e_4$],
-        ))
+        #automate-a3()
       ]),
     question([Déterminiser l'automate miroir $tilde(cal(A))_3$ pour obtenir
       $cal(A)_4=(tilde(cal(A))_3)_"det"$. Renommer ses états $q_0,q_1,…$.],
       solution: [
+        Les états accessibles sont
+        $ q_0={e_3,e_4}, quad q_1={e_4}, quad q_2={e_1,e_3,e_4}, $
+        $ q_3=∅, quad q_4={e_0,e_4}. $
         L'état initial est $q_0$ ; le seul état final est $q_4$.
-        #align(center, table(columns: 4, inset: 5pt,
-          [État], [Partie de $Q_3$], [$a$], [$b$],
-          [$q_0$], [${e_3,e_4}$], [$q_1$], [$q_2$],
-          [$q_1$], [${e_4}$], [$q_3$], [$q_0$],
-          [$q_2$], [${e_1,e_3,e_4}$], [$q_4$], [$q_2$],
-          [$q_3$], [$∅$], [$q_3$], [$q_3$],
-          [$q_4$], [${e_0,e_4}$], [$q_3$], [$q_0$],
-        ))
+        #automate-a4()
       ]),
     question([Quel doit être le langage reconnu par $cal(A)_4$ ?], solution: [
       Chaque déterminisation préserve le langage, et les deux transpositions
-      prennent deux fois le miroir. Le langage est donc $L_2=(b+a b)^* b a$.
+      prennent deux fois le miroir. Le langage est donc $L_2=(b | a b)^* b a$.
     ]),
     [On souhaite implémenter cette construction. Une représentation naïve des
       parties de $Q$ utilise des listes d'états. Lors des réunions, la

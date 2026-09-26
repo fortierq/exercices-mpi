@@ -192,7 +192,9 @@ exporte `sujet`, construit avec `sujet-concours` : métadonnées communes aux
 exercices, `preambule` et `contenu`. Celui-ci mêle des textes, des `question`
 et des `partie`. Les parties peuvent contenir des sous-parties ; chacune a
 un identifiant unique dans le sujet (`"I"`, `"I.B"`, `"II.A.1"`…).
-La numérotation des questions est continue dans le sujet, sous la forme « Q 1. ».
+La mise en page utilise directement `feuille` et `afficher-exercice` de
+`lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
+La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
 
 ```sh
 make sujets
@@ -212,7 +214,7 @@ Pour réutiliser une partie dans la banque, exporter directement son extraction 
 
 Les énoncés et solutions ne sont pas recopiés. C'est ainsi que fonctionne
 `exercices/langages/palindromes-et-rationalite.typ`, avec les sept questions
-Q6 à Q12. Son nom de fichier est conservé pour les imports existants ; son
+6 à 12. Son nom de fichier est conservé pour les imports existants ; son
 titre devient « Palindromes et régularité » selon les conventions de la banque.
 
 L'extrait commence à 1 par défaut. Passer `numerotation-originale: true`

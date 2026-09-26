@@ -13,7 +13,7 @@
     partielle $∂_a(E)$ est l'ensemble d'expressions défini inductivement par
     $ ∂_a(∅)=∅, quad ∂_a(ε)=∅, quad
       ∂_a(b)=cases({ε} & "si" a=b, ∅ & "sinon"), $
-    $ ∂_a(E+F)=∂_a(E) ∪ ∂_a(F), quad ∂_a(E^*)=∂_a(E) dot {E^*}, $
+    $ ∂_a(E | F)=∂_a(E) ∪ ∂_a(F), quad ∂_a(E^*)=∂_a(E) dot {E^*}, $
     $ ∂_a(E F)=cases(
         ∂_a(E) dot {F} & "si" ε ∉ cal(L)(E),
         ∂_a(E) dot {F} ∪ ∂_a(F) & "sinon".
@@ -21,15 +21,15 @@
     La dérivée partielle prend donc une expression en argument et renvoie
     un ensemble d'expressions.
 
-    Par exemple, pour $E=a^*(a+b)$, puisque $ε ∈ cal(L)(a^*)$,
-    $ ∂_a(E)=∂_a(a^*) dot {a+b} ∪ ∂_a(a+b)
-        ={a^*(a+b),ε}, $
-    $ ∂_b(E)=∂_b(a^*) dot {a+b} ∪ ∂_b(a+b)={ε}. $
+    Par exemple, pour $E=a^*(a | b)$, puisque $ε ∈ cal(L)(a^*)$,
+    $ ∂_a(E)=∂_a(a^*) dot {a | b} ∪ ∂_a(a | b)
+        ={a^*(a | b),ε}, $
+    $ ∂_b(E)=∂_b(a^*) dot {a | b} ∪ ∂_b(a | b)={ε}. $
   ],
-  question([Pour $E=(a b+b)^* b a$, calculer $∂_a(E)$ et $∂_b(E)$.],
+  question([Pour $E=(a b | b)^* b a$, calculer $∂_a(E)$ et $∂_b(E)$.],
     solution: [
-      Posons $H=(a b+b)^*$, donc $E=H b a$.
-      On a $∂_a(a b+b)={b}$ et $∂_b(a b+b)={ε}$.
+      Posons $H=(a b | b)^*$, donc $E=H b a$.
+      On a $∂_a(a b | b)={b}$ et $∂_b(a b | b)={ε}$.
       Par conséquent $∂_a(H)={b H}$ et $∂_b(H)={H}$.
       Comme $ε ∈ cal(L)(H)$, on obtient
       $ ∂_a(E)={b H b a}={b E}, quad
@@ -46,7 +46,7 @@
     Pour tout mot $w$ et tout langage $L ⊆ Σ^*$, on rappelle
     $w^(-1)L={u ∈ Σ^* | w u ∈ L}$.
   ],
-  question([Dessiner l'automate obtenu à partir de $E=(a b+b)^* b a$.
+  question([Dessiner l'automate obtenu à partir de $E=(a b | b)^* b a$.
     Indiquer précisément son ensemble d'états $Q$.], solution: [
     On a $Q={E,b E,a,ε}$, $I={E}$ et $F={ε}$.
     En plus des dérivées de $E$, on a $∂_a(b E)=∅$, $∂_b(b E)={E}$,
@@ -74,7 +74,7 @@
     seulement s'il appartient à l'un de ses termes.
     Raisonnons maintenant par récurrence sur la longueur de $w$, pour tout $S$.
     Le cas $ε$ est immédiat car $∂_ε(S)=S$.
-    Pour $w=u x$, l'identité pour une lettre, l'hypothèse de récurrence et Q46 donnent
+    Pour $w=u x$, l'identité pour une lettre, l'hypothèse de récurrence et la question 46 donnent
     $ cal(L)(∂_(u x)(S))=cal(L)(∂_x(∂_u(S)))
       =x^(-1)(u^(-1)cal(L)(S))=(u x)^(-1)cal(L)(S). $
   ]),
@@ -89,12 +89,12 @@
   question([En déduire que l'automate d'Antimirov reconnaît le langage de $E$.],
     solution: [
       Un mot $w$ est accepté si et seulement si un état $H ∈ ∂_w(E)$ est final,
-      c'est-à-dire si $ε ∈ cal(L)(∂_w(E))$. Par Q47, cela équivaut à
+      c'est-à-dire si $ε ∈ cal(L)(∂_w(E))$. Par la question 47, cela équivaut à
       $ε ∈ w^(-1)cal(L)(E)$, donc à $w ∈ cal(L)(E)$.
       La finitude de l'automate sera établie à la question suivante.
     ]),
   [Pour $w ∈ Σ^* ∖ {ε}$ et toutes expressions $E,F$, on vérifie les relations
-    $ ∂_w(E+F)=∂_w(E) ∪ ∂_w(F) quad "(III.1)", $
+    $ ∂_w(E | F)=∂_w(E) ∪ ∂_w(F) quad "(III.1)", $
     $ ∂_w(E F) ⊆ ∂_w(E) dot {F} ∪ union_(v ∈ S^+(w)) ∂_v(F)
       quad "(III.2)", $
     $ ∂_w(E^*) ⊆ union_(v ∈ S^+(w)) ∂_v(E) dot {E^*}
@@ -108,8 +108,8 @@
     Raisonnons par induction structurelle.
     - Pour $E=∅$ ou $E=ε$, $Q(E)=∅$ et $norm(E)=0$.
     - Pour une lettre $a$, $Q(a)={ε}$ et $norm(a)=1$.
-    - D'après (III.1), $Q(E+F)=Q(E) ∪ Q(F)$, donc
-      $abs(Q(E+F)) ≤ abs(Q(E))+abs(Q(F)) ≤ norm(E)+norm(F)=norm(E+F)$.
+    - D'après (III.1), $Q(E | F)=Q(E) ∪ Q(F)$, donc
+      $abs(Q(E | F)) ≤ abs(Q(E))+abs(Q(F)) ≤ norm(E)+norm(F)=norm(E | F)$.
     - D'après (III.2), $Q(E F) ⊆ Q(E) dot {F} ∪ Q(F)$.
       L'image de $Q(E)$ par $H ↦ H F$ contient au plus $abs(Q(E))$ éléments.
       Ainsi $abs(Q(E F)) ≤ norm(E)+norm(F)=norm(E F)$.

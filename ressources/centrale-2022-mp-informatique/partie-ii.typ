@@ -10,7 +10,7 @@
     partie("II.A.1", "Parcours d'une expression", contenu: (
       question([Écrire ```ocaml lettre : exprat -> int``` qui renvoie le nombre
         de lettres présentes dans une expression régulière. Par exemple, pour
-        $E=(a^* b)+a b b a(a+ε)^*+∅$, la fonction doit renvoyer $7$.],
+        $E=(a^* b) | a b b a(a | ε)^* | ∅$, la fonction doit renvoyer $7$.],
         solution: [#code("Q30")
           La preuve suit l'induction structurelle : seuls les nœuds
           ```ocaml Lettre``` contribuent, chacun pour une unité.
@@ -24,7 +24,7 @@
     )),
     partie("II.A.2", "Règles de simplification", contenu: (
       [On travaille sur la syntaxe des expressions et on utilise les équivalences
-        $ ∅+E ≡ E+∅ ≡ E, quad E dot ε ≡ ε dot E ≡ E, $
+        $ ∅ | E ≡ E | ∅ ≡ E, quad E dot ε ≡ ε dot E ≡ E, $
         $ E dot ∅ ≡ ∅ dot E ≡ ∅, quad ∅^* ≡ ε, quad ε^* ≡ ε,
           quad (E^*)^* ≡ E^*. $
         La notation $E ≡ E'$ signifie $cal(L)(E)=cal(L)(E')$.
@@ -34,7 +34,7 @@
       question([Écrire ```ocaml se : exprat -> exprat``` qui simplifie à la
         racine une expression de type ```ocaml Etoile``` selon ces règles.],
         solution: [#code("Q32")]),
-      [Considérons $E_n=a+(b dot (b dot (… (b dot ∅)…)))$, où $n$ lettres $b$
+      [Considérons $E_n=a | (b dot (b dot (… (b dot ∅)…)))$, où $n$ lettres $b$
         concaténées se succèdent.
         #arbre-e4()
         #align(center)[Figure 2 — Arbre syntaxique de $E_4$.]
@@ -42,7 +42,7 @@
       question([Combien d'applications des règles sont nécessaires pour
         obtenir l'expression $a$ à partir de $E_n$ ?], solution: [
         Il faut $n+1$ applications : les $n$ concaténations avec $∅$ sont
-        supprimées de l'intérieur vers l'extérieur, puis $a+∅$ devient $a$.
+        supprimées de l'intérieur vers l'extérieur, puis $a | ∅$ devient $a$.
         Aucune concaténation extérieure n'est simplifiable avant que sa
         sous-expression droite ne soit devenue $∅$.
       ]),
@@ -61,8 +61,8 @@
     [On considère des matrices d'expressions régulières : #code("mat")
       La matrice nulle de taille $n$ a tous ses coefficients égaux à $∅$.
       La matrice identité a $ε$ sur sa diagonale et $∅$ ailleurs.
-      Pour $A,B$ de taille $n × m$, on définit $[A+B]_(i,j)=A_(i,j)+B_(i,j)$,
-      où le signe $+$ désigne l'union, pour $0 ≤ i<n$ et $0 ≤ j<m$.
+      Pour $A,B$ de taille $n × m$, on définit $[A | B]_(i,j)=A_(i,j) | B_(i,j)$,
+      où le signe $|$ désigne l'union, pour $0 ≤ i<n$ et $0 ≤ j<m$.
       Pour $A$ de taille $n × p$ et $B$ de taille $p × q$, le produit de taille
       $n × q$ est défini comme le produit usuel, en remplaçant la somme par
       l'union et le produit par la concaténation.
@@ -101,9 +101,9 @@
       ],
       question([Donner une expression régulière sur ${a,b,c,d}$ pour chacun
         des langages $L_(i,j)$.], solution: [
-        $ L_(0,0)=(a+b d^* c)^*, quad L_(1,1)=(d+c a^* b)^*, $
-        $ L_(0,1)=a^* b(d+c a^* b)^*, quad
-          L_(1,0)=d^* c(a+b d^* c)^*. $
+        $ L_(0,0)=(a | b d^* c)^*, quad L_(1,1)=(d | c a^* b)^*, $
+        $ L_(0,1)=a^* b(d | c a^* b)^*, quad
+          L_(1,0)=d^* c(a | b d^* c)^*. $
         Un chemin de $0$ à $0$ est une succession de boucles $a$ ou
         d'excursions $b d^* c$ ; l'argument est symétrique pour $1$.
         Pour aller de $0$ à $1$, on lit $a^* b$ jusqu'à la première arrivée
@@ -115,8 +115,8 @@
         $1$, alors $M^*=(e^*)$. Sinon, on découpe en blocs
         $ M=mat(A,B;C,D), quad M^*=mat(A',B';C',D'), $
         où $A,D$ sont carrées de tailles au moins $1$, et
-        $ A'=(A+B D^* C)^*, quad B'=A^* B(D+C A^* B)^*, $
-        $ C'=D^* C(A+B D^* C)^*, quad D'=(D+C A^* B)^*. $
+        $ A'=(A | B D^* C)^*, quad B'=A^* B(D | C A^* B)^*, $
+        $ C'=D^* C(A | B D^* C)^*, quad D'=(D | C A^* B)^*. $
         Les fonctions suivantes sont supposées codées :
         - ```ocaml decouper : mat -> int -> int -> mat * mat * mat * mat``` :
           ```ocaml decouper m n1 n2``` renvoie les blocs $A,B,C,D$ d'une matrice
@@ -129,8 +129,8 @@
         $ M=mat(a,B;C,D), $
         où $a$ est une expression régulière (un bloc de taille $1$) et $D$
         est carrée de taille $n-1$. On a alors
-        $ A'=(a+B D^* C)^*, quad B'=a^* B(D+C a^* B)^*, $
-        $ C'=D^* C(a+B D^* C)^*, quad D'=(D+C a^* B)^*. $
+        $ A'=(a | B D^* C)^*, quad B'=a^* B(D | C a^* B)^*, $
+        $ C'=D^* C(a | B D^* C)^*, quad D'=(D | C a^* B)^*. $
       ],
       question([Évaluer les complexités des sommes et produits. En déduire
         que le coût $C(n)$ du calcul de l'étoile vérifie
@@ -139,7 +139,7 @@
           Posons $m=n-1$. On calcule et conserve $D^*$ et $a^*$.
           $D^* C$ coûte $Θ(m^2)$, puis $B(D^* C)$ coûte $Θ(m)$.
           $a^* B$ coûte $Θ(m)$ et $C(a^* B)$ coûte $Θ(m^2)$ ; l'addition
-          à $D$ coûte $Θ(m^2)$. On calcule ensuite $(D+C a^* B)^*$ une seule fois.
+          à $D$ coûte $Θ(m^2)$. On calcule ensuite $(D | C a^* B)^*$ une seule fois.
           Le produit donnant $B'$ coûte $Θ(m^2)$ ; celui donnant $C'$ coûte
           $Θ(m)$. Les opérations scalaires coûtent $O(1)$ ; découpage et
           recollement coûtent $O(n^2)$.
@@ -191,10 +191,10 @@
   )),
   partie("II.C", "Algorithme de Conway", contenu: (
     [Soit $A=(Q,I,F,T)$ avec $Q=⟦0,n-1⟧$. Sa matrice de transition est
-      la matrice d'expressions régulières $M_A$ telle que
-      $ [M_A]_(i,j)=sum_(c ∈ Σ, (i,c,j) ∈ T) c, $
-      l'union vide étant $∅$. On admet que
-      $cal(L)([M_A^*]_(i,j))=L_(i,j)$, langage des chemins défini en Q9.],
+      la matrice d'expressions régulières $M_A$ dont le coefficient $[M_A]_(i,j)$
+      est l'union, notée $|$, des lettres $c ∈ Σ$ telles que $(i,c,j) ∈ T$.
+      L'union vide vaut $∅$. On admet que
+      $cal(L)([M_A^*]_(i,j))=L_(i,j)$, langage des chemins défini à la question 9.],
     question([Montrer que $L_A=cal(L)([X M_A^* Y]_(0,0))$, où $X$ est
       une matrice ligne $(x_0,…,x_(n-1))$ et $Y$ une matrice colonne de
       coefficients $y_0,…,y_(n-1)$, avec $x_i,y_j ∈ {∅,ε}$.

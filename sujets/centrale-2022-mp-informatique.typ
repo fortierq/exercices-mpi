@@ -17,7 +17,6 @@
     concours: (nom: "Centrale", annee: 2022, filiere: "MP"),
   ),
   preambule: [
-    #align(center)[Calculatrice autorisée]
 
     Ce sujet aborde différents problèmes autour des automates et des expressions
     régulières. On explore dans une première partie des propriétés sur le miroir
@@ -51,12 +50,12 @@
     où $Q$ est un ensemble fini d'états, $I ⊆ Q$ l'ensemble des états initiaux,
     $F ⊆ Q$ l'ensemble des états finaux et $T ⊆ Q × Σ × Q$ l'ensemble des
     transitions. Si $(q,a,q') ∈ T$, on note cette transition $q limits(→)^a q'$.
-    Dans la figure 1, une flèche entrante désigne un état initial et une flèche
-    sortante un état final.
+    Dans la figure 1, une flèche entrante désigne un état initial et un double
+    cercle un état final.
 
     Un mot $w=a_0 … a_(n-1)$ est reconnu par $A$ s'il existe une succession
     de transitions
-    $ q_0 limits(→)^a_0 q_1 limits(→)^a_1 … q_(n-1) limits(→)^a_(n-1) q_n,
+    $ q_0 limits(→)^(a_0) q_1 limits(→)^(a_1) … q_(n-1) limits(→)^(a_(n-1)) q_n,
       quad q_0 ∈ I, quad q_n ∈ F. $
     On dit que $w$ étiquette un chemin de $q_0$ à $q_n$. Le langage de
     l'automate, noté $L_A$, est l'ensemble des mots reconnus par $A$.
@@ -84,11 +83,11 @@
 
     #heading(level: 2)[Expressions régulières]
     Sur un alphabet $Σ$, $∅$, $ε$ et toute lettre $a ∈ Σ$ sont des expressions
-    régulières. Si $E,F$ sont des expressions régulières, alors $(E+F)$,
+    régulières. Si $E,F$ sont des expressions régulières, alors $(E | F)$,
     $(E dot F)$ et $E^*$ en sont aussi. L'application $cal(L)$ associe à
     une expression le langage qu'elle représente :
     $ cal(L)(∅)=∅, quad cal(L)(ε)={ε}, quad cal(L)(a)={a}, $
-    $ cal(L)(E+F)=cal(L)(E) ∪ cal(L)(F), quad
+    $ cal(L)(E | F)=cal(L)(E) ∪ cal(L)(F), quad
       cal(L)(E dot F)=cal(L)(E) cal(L)(F), quad
       cal(L)(E^*)=cal(L)(E)^*. $
 

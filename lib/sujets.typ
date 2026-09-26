@@ -1,4 +1,4 @@
-#import "exercices.typ": exercice, afficher-exercice, feuille, texte-concours
+#import "exercices.typ": exercice, feuille, titre-exercice
 
 // Les identifiants de parties sont stables ("I", "I.B", "II.A.1"…).
 // Le contexte sert uniquement aux extraits : définitions et prérequis à rappeler.
@@ -16,7 +16,7 @@
   let resultat = ()
   for bloc in contenu {
     if est-partie(bloc) {
-      resultat.push(heading(level: niveau)[#bloc.id – #bloc.titre])
+      resultat.push(titre-exercice(bloc.titre, bloc.id, niveau: niveau))
       resultat += aplatir(bloc.contenu, niveau: niveau + 1)
     } else {
       resultat.push(bloc)
@@ -73,22 +73,16 @@
   )
 }
 
+// Même pipeline que modeles/fiche.typ : feuille puis afficher-exercice.
 #let epreuve(sujet, corrige: false, body) = {
-  show: feuille.with(titre: sujet.meta.titre, corrige: corrige)
-  show strong: it => it.body
-  show heading: set text(weight: "bold")
-  show heading.where(level: 2): set text(size: 12pt)
-  show heading.where(level: 3): set text(size: 11pt)
-  [#metadata(sujet.meta) <sujet-meta>]
-  align(center)[
-    #if sujet.meta.concours != none { texte-concours(sujet.meta.concours) }
-    #if sujet.meta.duree != none [#h(1em) Durée : #sujet.meta.duree min]
-  ]
-  body
-  sujet.preambule
-  afficher-exercice(
-    exercice(meta: sujet.meta, contenu: aplatir(sujet.contenu)),
-    corrige: corrige, details: false, afficher-titre: false,
-    numerotation: "Q 1.",
+  let ex = exercice(meta: sujet.meta,
+    contenu: (sujet.preambule,) + aplatir(sujet.contenu))
+  show: feuille.with(
+    titre: ex.meta.titre,
+    niveau: ex.meta.niveaux.join(" / "),
+    exercices: (ex,),
+    corrige: corrige,
   )
+  [#metadata(sujet.meta) <sujet-meta>]
+  body
 }

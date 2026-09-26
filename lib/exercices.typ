@@ -86,27 +86,31 @@
   )
 }
 
+// Titres communs aux exercices et aux parties des sujets.
+#let titre-exercice(titre, prefixe, concours: none, niveau: 1) = {
+  block(above: 12pt, below: 12pt, breakable: false)[
+    #heading(level: niveau)[
+      #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
+        [#prefixe],
+        [#titre],
+        [#if concours != none {
+          text(size: 8pt, fill: luma(35%).transparentize(30%))[
+            #texte-concours(concours)
+          ]
+        }],
+      )
+    ]
+  ]
+}
+
 // Présentation inspirée de texmf/tex/latex/{exam.cls,exercise.cls,code.sty}.
-#let afficher-exercice(ex, numero: none, corrige: false, details: true, afficher-titre: true, numerotation: "1.") = {
+#let afficher-exercice(ex, numero: none, corrige: false, details: true, afficher-titre: true) = {
   show strong: it => it.body
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
   if afficher-titre {
     let prefixe = if numero == none { "I" } else { numbering("I", numero) }
-    block(above: 12pt, below: 12pt, breakable: false)[
-      #heading(level: 1)[
-        #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
-          [#prefixe],
-          [#ex.meta.titre],
-          [#if ex.meta.concours != none {
-            let c = ex.meta.concours
-            text(size: 8pt, fill: luma(35%).transparentize(30%))[
-              #texte-concours(c)
-            ]
-          }],
-        )
-      ]
-    ]
+    titre-exercice(ex.meta.titre, prefixe, concours: ex.meta.concours)
   }
   if details {
     block(above: 0pt, below: 9pt, text(size: 9pt, fill: luma(35%))[
@@ -127,7 +131,7 @@
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
     block(width: 100%, above: 8pt, below: 0pt,
-      enum(start: i, numbering: numerotation,
+      enum(start: i, numbering: "1.",
         indent: 0pt, body-indent: 0.5em, q.enonce),
     )
     if corrige {
@@ -176,6 +180,8 @@
   )
   set heading(numbering: none)
   show heading.where(level: 1): set text(size: 15pt)
+  show heading.where(level: 2): set text(size: 12pt)
+  show heading.where(level: 3): set text(size: 11pt)
   // Comme l'environnement code : fond blanc et deux filets horizontaux.
   show raw.where(block: true): it => block(
     width: 100%, inset: (x: 8pt, y: 7pt),
