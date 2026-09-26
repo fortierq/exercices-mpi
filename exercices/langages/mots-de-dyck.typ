@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": exercice, question
-#import "/ressources/colle1-langages-automates/figures.typ": arbre-dyck
+#import "@preview/cetz:0.4.2" as cetz
 
 #let ex = exercice(
   meta: (
@@ -94,7 +94,18 @@
     question([
       Dessiner l'arbre associé au mot de Dyck $m=a a b a b b$. Les nœuds ne portent pas d'étiquettes.
     ], solution: [
-      #align(center, arbre-dyck())
+      #align(center, cetz.canvas({
+        import cetz.draw: line, circle
+        // Arbre N(N(F, N(F, F)), F), associé au mot aababb.
+        let sommets = ((0, 0), (-1.4, -1.2), (1.4, -1.2),
+          (-2.2, -2.4), (-0.6, -2.4), (-1.2, -3.6), (0, -3.6))
+        for (parent, enfant) in ((0, 1), (0, 2), (1, 3), (1, 4), (4, 5), (4, 6)) {
+          line(sommets.at(parent), sommets.at(enfant))
+        }
+        for sommet in sommets {
+          circle(sommet, radius: 0.08, fill: white)
+        }
+      }))
     ]),
     [On définit le type suivant :
       ```ocaml
@@ -120,8 +131,8 @@
         | N(u, v) -> A::(arbre_a_mot u)@(B::(arbre_a_mot v))
       ```
     ]),
-    question([Montrer que le langage $L$ des mots de Dyck n'est pas rationnel.], solution: [
-      Supposons $L$ rationnel et soit $n ≥ 1$ donné par le lemme de l'étoile.
+    question([Montrer que le langage $L$ des mots de Dyck n'est pas régulier.], solution: [
+      Supposons $L$ régulier et soit $n ≥ 1$ donné par le lemme de l'étoile.
       Le mot $m=a^n b^n$ appartient à $L$ et vérifie $abs(m) ≥ n$.
       Il existe donc $x,y,z$ tels que $abs(x y) ≤ n$, $y ≠ ε$, $m=x y z$
       et $x y^* z ⊆ L$. Comme $abs(x y) ≤ n$, $y$ ne contient que des $a$,

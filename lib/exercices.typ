@@ -1,8 +1,55 @@
-#import "programme.typ": chapitres-programme, algorithmes-programme, structures-programme
-#import "concours.typ": concours-possibles, filieres-possibles
+#import "meta.typ": chapitres-programme, algorithmes-programme, structures-programme, concours-possibles, filieres-possibles
 
 // Aucun paquet externe : les exercices sont des données Typst ordinaires.
 #let question(enonce, solution: none) = (type: "question", enonce: enonce, solution: solution)
+#let texte-concours(concours) = (
+  concours.at("nom", default: none),
+  concours.at("annee", default: none),
+  concours.at("filiere", default: none),
+  if "oral" in concours { if concours.oral { "oral" } else { "écrit" } } else { none },
+).filter(valeur => valeur != none).map(valeur => str(valeur)).join(" · ")
+
+// Titres communs aux exercices et aux parties des sujets.
+#let titre-exercice(titre, prefixe, concours: none, niveau: 1) = {
+  block(above: 12pt, below: 12pt, breakable: false)[
+    #heading(level: niveau)[
+      #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
+        [#prefixe -- #titre],
+        [#if concours != none {
+          text(size: 8pt, fill: luma(35%).transparentize(30%))[
+            #texte-concours(concours)
+          ]
+        }],
+      )
+    ]
+  ]
+}
+
+// Le contexte contient les rappels à ajouter dans un exercice autonome.
+#let partie(numero, titre, contenu: (), contexte: (), meta: (:)) = {
+  assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
+  assert(type(titre) == str and titre != "", message: "Titre de partie vide")
+  assert(type(contenu) == array and type(contexte) == array)
+  assert(contexte.all(bloc => type(bloc) == content), message: "Le contexte contient uniquement du texte Typst")
+  (type: "partie", numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
+}
+
+#let est-partie(bloc) = type(bloc) == dictionary and bloc.at("type", default: none) == "partie"
+
+#let aplatir(contenu, niveau: 1) = {
+  let resultat = ()
+  for bloc in contenu {
+    if est-partie(bloc) {
+      resultat.push(titre-exercice(bloc.titre, bloc.numero, niveau: niveau))
+      resultat += aplatir(bloc.contenu, niveau: niveau + 1)
+    } else {
+      resultat.push(bloc)
+    }
+  }
+  resultat
+}
+
+#let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
 #let exercice(meta: (:), contenu: (), debut: 1) = {
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
@@ -43,32 +90,40 @@
   let concours = meta.at("concours", default: none)
   let concours-normalise = if concours != none {
     assert(type(concours) == dictionary, message: "concours doit être un dictionnaire ou none")
-    for champ in ("nom", "annee") {
-      assert(champ in concours, message: "Champ de concours manquant : " + champ)
+    if "nom" in concours {
+      assert(type(concours.nom) == str and concours.nom in concours-possibles,
+        message: "nom doit être un concours connu")
     }
-    assert(type(concours.nom) == str and concours.nom in concours-possibles,
-      message: "nom doit être un concours connu")
-    assert(type(concours.annee) == int and concours.annee > 0,
-      message: "L'année du concours doit être un entier strictement positif")
-    let filiere = concours.at("filiere", default: "MPI")
-    assert(type(filiere) == str and filiere in filieres-possibles,
-      message: "filiere doit être une filière connue")
-    (..concours, filiere: filiere)
+    if "annee" in concours {
+      assert(type(concours.annee) == int and concours.annee > 0,
+        message: "L'année du concours doit être un entier strictement positif")
+    }
+    if "filiere" in concours {
+      assert(type(concours.filiere) == str and concours.filiere in filieres-possibles,
+        message: "filiere doit être une filière connue")
+    }
+    if "oral" in concours {
+      assert(type(concours.oral) == bool, message: "oral doit être un booléen")
+    }
+    concours
   } else {
     none
   }
   assert(type(debut) == int and debut >= 0, message: "debut doit être un entier positif ou nul")
-  assert(type(contenu) == array, message: "contenu doit être un tableau de textes et de questions")
-  let nombre-questions = 0
-  for bloc in contenu {
-    if type(bloc) != content {
-      assert(type(bloc) == dictionary, message: "Utiliser [texte libre] ou question(…) dans contenu")
-      assert(bloc.at("type", default: none) == "question", message: "Bloc inconnu dans contenu")
-      assert("enonce" in bloc and "solution" in bloc, message: "Construire les questions avec question(…)")
-      nombre-questions += 1
+  let verifier(blocs) = {
+    assert(type(blocs) == array, message: "contenu doit être un tableau de textes, questions et parties")
+    for bloc in blocs {
+      if est-partie(bloc) {
+        verifier(bloc.contenu)
+      } else if type(bloc) != content {
+        assert(type(bloc) == dictionary, message: "Utiliser [texte libre], question(…) ou partie(…) dans contenu")
+        assert(bloc.at("type", default: none) == "question", message: "Bloc inconnu dans contenu")
+        assert("enonce" in bloc and "solution" in bloc, message: "Construire les questions avec question(…)")
+      }
     }
   }
-  assert(nombre-questions > 0, message: "Un exercice doit contenir au moins une question")
+  verifier(contenu)
+  assert(nombre-questions(contenu) > 0, message: "Un exercice doit contenir au moins une question")
   (
     meta: (niveaux: (), duree: none, ..meta, concours: concours-normalise),
     contenu: contenu,
@@ -82,22 +137,22 @@
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
   if afficher-titre {
-    let prefixe = if numero == none { "Exercice" } else { "Exercice " + str(numero) }
-    heading(level: 1)[#prefixe. #ex.meta.titre]
+    let prefixe = if numero == none { "I" } else { numbering("I", numero) }
+    titre-exercice(ex.meta.titre, prefixe, concours: ex.meta.concours)
   }
-  if details {
+  if details and corrige {
     block(above: 0pt, below: 9pt, text(size: 9pt, fill: luma(35%))[
       #if ex.meta.concours != none {
         let c = ex.meta.concours
-        [#c.nom · #c.annee · #c.filiere #h(1em)]
+        [#texte-concours(c) #h(1em)]
       }
       Chapitres : #ex.meta.chapitres.join(", ") |
       Difficulté : #ex.meta.difficulte/5 |
-      #if ex.meta.duree != none [ Durée indicative : #ex.meta.duree min]
+      #if ex.meta.duree != none [ Durée : #ex.meta.duree min]
     ])
   }
   let i = ex.debut
-  for q in ex.contenu {
+  for q in aplatir(ex.contenu) {
     if type(q) == content {
       block(width: 100%, above: 9pt, below: 9pt, q)
       continue
@@ -152,7 +207,9 @@
     footer: context align(center, text(size: 9pt, counter(page).display("1 / 1", both: true))),
   )
   set heading(numbering: none)
-  show heading.where(level: 1): set text(size: 12pt)
+  show heading.where(level: 1): set text(size: 15pt)
+  show heading.where(level: 2): set text(size: 12pt)
+  show heading.where(level: 3): set text(size: 11pt)
   // Comme l'environnement code : fond blanc et deux filets horizontaux.
   show raw.where(block: true): it => block(
     width: 100%, inset: (x: 8pt, y: 7pt),

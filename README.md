@@ -2,8 +2,9 @@
 
 Une banque d’exercices indépendante des feuilles : chaque exercice décrit ses
 métadonnées et une suite de textes libres et de questions avec leurs solutions. Les feuilles
-importent ces objets dans l’ordre souhaité. Aucun paquet Typst externe, aucune
-base de données et aucune dépendance Python à installer.
+importent ces objets dans l’ordre souhaité. Les sujets de concours réunissent
+des parties dont on peut extraire les exercices. Les figures utilisent CeTZ et
+finite, avec des versions fixées. Aucune base de données ni dépendance Python à installer.
 
 ## Démarrer
 
@@ -24,10 +25,10 @@ nix develop path:. -c make check
 `path:.` inclut les nouveaux fichiers même s’ils ne sont pas encore suivis par
 Git. Une fois les fichiers ajoutés à Git, `nix develop` fonctionne aussi.
 `flake.lock` verrouille les versions, dont **Typst 0.15.1**. Le shell fournit
-Typst, GNU Make et Python 3, sur macOS et Linux (Intel et ARM).
+Typst, GNU Make, Python 3 et OCaml, sur macOS et Linux (Intel et ARM).
 Pour mettre à jour volontairement : `nix flake update --flake path:.`, puis `make check`.
 
-Sans Nix, installer ces trois outils (Typst 0.15.1 ou ultérieur), puis utiliser
+Sans Nix, installer ces quatre outils (Typst 0.15.1 ou ultérieur), puis utiliser
 les mêmes commandes Make. Avec direnv et nix-direnv, le fichier `.envrc` est
 également fourni ; son activation par `direnv allow` est facultative.
 
@@ -38,6 +39,9 @@ lib/exercices.typ                           API et mise en page partagées
 modeles/exercice.typ               Exercice minimal à copier
 modeles/fiche.typ                           Point d’entrée pour un exercice isolé
 modeles/feuille.typ                         Feuille minimale à copier
+modeles/sujet-concours.typ                  Sujet minimal à copier
+sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
+ressources/centrale-2022-mp-informatique/    Code OCaml affiché et testé
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
 docs/ensembles-inevitables-migration.md      Provenance et corrections de la source
 feuilles/langages.typ                       Exemple de feuille réutilisant l’exercice
@@ -179,6 +183,64 @@ affiché uniquement sur la première page. Il n’y a pas de sous-titre ; le cor
 ajoute « : corrigé » au titre. Les titres des exercices sont en gras ; le corps et les numéros des questions
 restent sans gras. Chaque solution commence par « Solution. » souligné. Les fichiers LaTeX ne sont pas nécessaires à la compilation.
 
+## Sujets de concours et extraits
+
+Copier `modeles/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
+exporte `ex`, construit avec `exercice`, comme tout exercice de la banque.
+Son `contenu` mêle des textes, des `question` et des `partie`.
+Les dossiers `sujets/` et `exercices/` servent au classement ; le type de données
+et le modèle de compilation (`modeles/fiche.typ`) sont les mêmes.
+Les définitions et consignes initiales sont de simples blocs de texte au début
+de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
+figures) tient dans un seul fichier Typst. Les parties peuvent contenir des
+sous-parties : `partie("I.B", "Palindromes", contenu: (…))` indique simplement
+le numéro et le titre affichés. La variable exportée permet la réutilisation,
+indépendamment de cette numérotation.
+La mise en page utilise directement `feuille` et `afficher-exercice` de
+`lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
+La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
+
+```sh
+make sujets
+make build/sujets/centrale-2022-mp-informatique/corrige.pdf
+typst compile --root . --ignore-system-fonts \
+  --input exercice=/sujets/mon-sujet.typ modeles/fiche.typ build/mon-sujet.pdf
+```
+
+Pour partager une partie, la définir dans une variable exportée du sujet,
+puis placer cette variable dans son `contenu`. C’est le cas de `palindromes`
+dans Centrale : le sujet et l’exercice utilisent exactement le même objet.
+L’exercice autonome ajoute les rappels nécessaires et ses métadonnées :
+
+```typst
+#import "/lib/exercices.typ": exercice
+#import "/sujets/centrale-2022-mp-informatique.typ": palindromes
+
+#let ex = exercice(
+  meta: (..palindromes.meta, titre: palindromes.titre, niveaux: ("MPI", "MP")),
+  contenu: palindromes.contexte + palindromes.contenu,
+)
+```
+
+Aucune recherche par numéro ni copie des questions ou solutions n’est nécessaire.
+Le fichier `exercices/langages/palindromes-et-rationalite.typ` conserve son nom
+pour les imports existants et réutilise ainsi les sept questions de I.B.
+
+L’exercice autonome commence à 1 par défaut ; `exercice(debut: 6, …)` permet
+un autre départ. Les questions suivent la convention de la banque (`1.`, `2.`, etc.) ;
+adapter les renvois du PDF lors de la conversion.
+
+Le champ `contexte` d’une partie contient les rappels utiles hors du sujet.
+L’exercice les ajoute explicitement à son `contenu`, comme dans l’exemple ci-dessus.
+Il précise ses métadonnées, dont sa durée éventuelle, et conserve l’attribution au concours.
+
+Les figures du sujet Centrale 2022 et de son corrigé sont définies dans le
+fichier du sujet et générées en Typst. Les
+fragments OCaml affichés proviennent de `ressources/centrale-2022-mp-informatique/corrige.ml`,
+également exécuté par les tests : une correction du code se répercute dans le
+document. Les notions de Brzozowski, Conway et Antimirov sont introduites dans
+le sujet ; leurs solutions utilisent les outils du programme.
+
 ## Compiler et travailler en continu
 
 ```sh
@@ -237,11 +299,13 @@ dans le petit fichier Typst de la feuille.
 
 ## Vérifier
 
-`make check` compile les énoncés, les corrigés, les feuilles et les deux modèles
-avec et sans solutions ; il exporte également le catalogue, ce qui valide les
-métadonnées et l’unicité des identifiants. `nix flake check path:.` exécute les
+`make check` compile les énoncés, les corrigés, les feuilles, les sujets et les
+modèles avec et sans solutions ; il exporte également le catalogue, ce qui
+valide les métadonnées et l’unicité des identifiants. Il vérifie le partage
+des parties et exécute les tests du corrigé OCaml (déterminisation, minimalité,
+palindromes, simplification et Conway). `nix flake check path:.` exécute les
 mêmes vérifications dans une dérivation Nix sur la plateforme courante.
-Ces vérifications ne remplacent pas une relecture mathématique et visuelle.
+Ces vérifications ne remplacent pas une relecture mathématique.
 
 La conversion initiale, ses choix et les erreurs corrigées sont documentés dans
 [les notes de migration](docs/ensembles-inevitables-migration.md).

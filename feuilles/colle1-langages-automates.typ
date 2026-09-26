@@ -10,7 +10,7 @@
   titre: "Colle 1 : langages et automates",
   niveau: "MPI",
   auteur: "Q. Fortier",
-  exercices: (arden, ccp, palindromes, inevitables, racine, dyck),
+  exercices: (arden, ccp, palindromes, inevitables),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
   details: sys.inputs.at("details", default: "false") == "true",
 )

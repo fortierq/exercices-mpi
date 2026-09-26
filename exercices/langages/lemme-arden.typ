@@ -1,5 +1,6 @@
 #import "/lib/exercices.typ": exercice, question
-#import "/ressources/colle1-langages-automates/figures.typ": arden-1, arden-2
+#import "@preview/finite:0.5.1" as finite
+#import "@preview/cetz:0.4.2" as cetz
 
 #let ex = exercice(
   meta: (
@@ -10,12 +11,12 @@
     langages: (),
     difficulte: 4,
     niveaux: ("MPI",),
-    concours: none,
+    concours: none
   ),
   contenu: (
-    [On utilise $+$ à la place de $∪$ et $|$.
+    [Dans cet exercice, on utilise $+$ à la place de $∪$ et $|$.
 
-      Partie 1 — Lemme d'Arden
+      == I -- Lemme d'Arden
 
       Dans cette partie, $Σ$ est un alphabet et $K,L ∈ cal(P)(Σ^*)$ sont deux
       langages sur cet alphabet. On y étudie l'équation $(E) : X=K X+L$
@@ -33,8 +34,6 @@
     question([
       On suppose ici que $ε ∉ K$. Montrer sous cette condition que toute solution
       $X$ de $(E)$ vérifie $X ⊆ K^* L$.
-      #emph[Indication : procéder par l'absurde et considérer un mot de longueur
-        minimale de $X ∖ K^* L$.]
     ], solution: [
       Supposons $X ∖ K^* L$ non vide et choisissons un mot $m$ de cet ensemble
       de longueur minimale. Comme $m ∈ X=K X+L$ et $m ∉ L$, il existe $k ∈ K$
@@ -54,7 +53,7 @@
       Non : pour $Σ={a}$, $K={ε}$ et $L={a}$, les langages ${a}$ et $a^*$
       sont deux solutions distinctes de $X=K X+L$.
     ]),
-    [Partie 2 — Systèmes d'équations aux langages
+    [== II -- Systèmes d'équations aux langages
 
       Dans cette partie, $Σ={a,b}$. On note $L_1$ le langage des mots ayant un
       nombre pair de $b$ et $L_2$ celui des mots ayant un nombre impair de $b$.
@@ -92,15 +91,10 @@
       $ L_1=a^* b(a+b a^* b)^* b a^*+a^*. $
       Les unicités garanties par le lemme d'Arden assurent que les deux expressions
       de l'énoncé dénotent bien le même langage $L_2$.
-
-      #emph[Remarque : dans les questions 7 et 8, on a confondu par abus une
-        expression rationnelle et le langage qu'elle dénote. On peut ainsi
-        montrer l'équivalence d'expressions en établissant qu'elles sont solutions
-        d'un même système, puis en utilisant l'unicité.]
     ]),
-    [Partie 3 — Langage reconnu par un automate
+    [== III -- Langage reconnu par un automate
 
-      Le but de cette partie est de décrire une méthode permettant de déterminer
+      Le but de cette == décrire une méthode permettant de déterminer
       le langage reconnu par un automate. Un automate est la donnée de
       $A=(Σ,Q,I,F,δ)$, où $Σ$ est un alphabet, $Q$ un ensemble fini d'états,
       $I ⊆ Q$ et $F ⊆ Q$ les ensembles des états initiaux et finaux, et $δ$
@@ -111,7 +105,17 @@
 
       Dans la question 9, on considère l'automate
       $A=({a,b},{q_0,q_1,q_2},{q_0},{q_0,q_2},δ)$ suivant :
-      #align(center, arden-1())
+      #align(center, cetz.canvas({
+        import finite.draw: state, transition
+        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        state((0, 0), "q0", label: $q_0$, initial: (label: none), final: true)
+        state((3, 0), "q1", label: $q_1$)
+        state((6, 0), "q2", label: $q_2$, final: true)
+        transition("q0", "q1", label: $a$, curve: 0)
+        transition("q1", "q1", label: $b$)
+        transition("q1", "q2", label: $a$, curve: 0)
+        transition("q2", "q2", label: $a,b$)
+      }))
       Pour $i ∈ {0,1,2}$, on note
       $L_i={m ∈ Σ^* | δ^*(q_i,m) ∩ F ≠ ∅}$ le langage des mots qui font aboutir
       à un état final à partir de $q_i$. Déterminer $L(A)$ revient donc à déterminer $L_0$.
@@ -134,7 +138,18 @@
     ]),
     question([
       En utilisant une méthode similaire, déterminer le langage reconnu par l'automate suivant :
-      #align(center, arden-2())
+      #align(center, cetz.canvas({
+        import finite.draw: state, transition
+        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        state((0, 0), "q0", label: $q_0$, initial: (label: none))
+        state((3, 0), "q1", label: $q_1$, final: true)
+        state((0, -2.5), "q2", label: $q_2$, initial: (label: none))
+        transition("q0", "q0", label: $a$)
+        transition("q0", "q1", label: $a$, curve: 0.6)
+        transition("q1", "q1", label: $a$)
+        transition("q1", "q0", label: $b$, curve: 0.6)
+        transition("q2", "q1", label: $b$, curve: -0.4)
+      }))
     ], solution: [
       Les langages associés aux trois états vérifient
       $ cases(L_0=a L_0+a L_1, L_1=a L_1+b L_0+ε, L_2=b L_1). $
@@ -147,7 +162,7 @@
       #emph[Remarque : cette méthode de détermination du langage reconnu par un
         automate n'est pas exigible au programme, mais peut être utile.]
     ]),
-    [Partie 4 — Les langages reconnus sont réguliers
+    [== IV -- Les langages reconnus sont réguliers
 
       L'objectif est de prouver l'une des implications du théorème de Kleene :
       tout langage reconnaissable par un automate est régulier.],
@@ -184,7 +199,7 @@
       la formule de $X_n$ donne celle de la dernière par les stabilités usuelles.
     ]),
     question([
-      Soit $L$ un langage reconnaissable par un automate. En s'inspirant de la partie 3,
+      Soit $L$ un langage reconnaissable par un automate. En s'inspirant de la ==
       montrer que $L$ est l'une des composantes d'une solution d'un système
       d'équations aux langages qu'on déterminera et en déduire que $L$ est régulier.
     ], solution: [
