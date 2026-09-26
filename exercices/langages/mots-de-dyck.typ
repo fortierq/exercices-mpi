@@ -120,8 +120,8 @@
         | N(u, v) -> A::(arbre_a_mot u)@(B::(arbre_a_mot v))
       ```
     ]),
-    question([Montrer que le langage $L$ des mots de Dyck n'est pas rationnel.], solution: [
-      Supposons $L$ rationnel et soit $n ≥ 1$ donné par le lemme de l'étoile.
+    question([Montrer que le langage $L$ des mots de Dyck n'est pas régulier.], solution: [
+      Supposons $L$ régulier et soit $n ≥ 1$ donné par le lemme de l'étoile.
       Le mot $m=a^n b^n$ appartient à $L$ et vérifie $abs(m) ≥ n$.
       Il existe donc $x,y,z$ tels que $abs(x y) ≤ n$, $y ≠ ε$, $m=x y z$
       et $x y^* z ⊆ L$. Comme $abs(x y) ≤ n$, $y$ ne contient que des $a$,

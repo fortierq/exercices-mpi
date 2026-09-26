@@ -9,7 +9,7 @@
     langages: ("OCaml",),
     difficulte: 3,
     niveaux: ("MPI", "MP"),
-    concours: (nom: "Centrale", annee: 2022),
+    concours: (nom: "Centrale", annee: 2022, filiere: "MP"),
   ),
   contenu: (
     [Soit $w ∈ Σ^*$. On note $tilde(w)$ le mot obtenu à partir de $w$ en

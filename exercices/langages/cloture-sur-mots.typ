@@ -2,14 +2,14 @@
 
 #let ex = exercice(
   meta: (
-    titre: "Clôture par sur-mot (oral ENS info)",
+    titre: "Clôture par sur-mot",
     chapitres: ("langages-reguliers", "automates-finis",),
     algorithmes: (),
     structures: (),
     langages: (),
     difficulte: 4,
     niveaux: ("MPI",),
-    concours: none,
+    concours: (nom: "ENS", filiere: "MP", oral: true),
   ),
   contenu: (
 

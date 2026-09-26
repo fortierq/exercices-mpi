@@ -8,19 +8,23 @@
     algorithmes: ("determinisation",),
     structures: (),
     langages: (),
-    difficulte: 3,
+    difficulte: 2,
     niveaux: ("MPI",),
-    concours: none,
+    concours: (nom: "CCP", annee: 2022, filiere: "MPI", oral: true),
   ),
   contenu: (
     question([Rappeler la définition d'un langage régulier.]),
     question([
       Les langages suivants sont-ils réguliers ? Justifier.
-      #enum(numbering: "(a)",
-        [$L_1 = {a^n b a^m | n,m ∈ NN}$],
-        [$L_2 = {a^n b a^m | n,m ∈ NN, n ≤ m}$],
-        [$L_3 = {a^n b a^m | n,m ∈ NN, n > m}$],
-        [$L_4 = {a^n b a^m | n,m ∈ NN, n+m ≡ 0 (mod 2)}$],
+      #grid(columns: 2, column-gutter: 1em, align: top,
+        [#enum(numbering: "(a)",
+          [$L_1 = {a^n b a^m | n,m ∈ NN}$],
+          [$L_2 = {a^n b a^m | n,m ∈ NN, n ≤ m}$],
+        )],
+        [#enum(start: 3, numbering: "(a)",
+          [$L_3 = {a^n b a^m | n,m ∈ NN, n > m}$],
+          [$L_4 = {a^n b a^m | n,m ∈ NN, n+m ≡ 0(mod 2)}$],
+        )],
       )
     ]),
     question([

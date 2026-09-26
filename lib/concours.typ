@@ -2,6 +2,7 @@
 #let concours-possibles = (
   "Centrale",
   "CCP",
+  "ENS",
   "ENS Ulm",
   "EPITA",
 )

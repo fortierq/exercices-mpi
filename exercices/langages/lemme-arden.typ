@@ -10,7 +10,7 @@
     langages: (),
     difficulte: 4,
     niveaux: ("MPI",),
-    concours: none,
+    concours: none
   ),
   contenu: (
     [On utilise $+$ à la place de $∪$ et $|$.
@@ -33,8 +33,6 @@
     question([
       On suppose ici que $ε ∉ K$. Montrer sous cette condition que toute solution
       $X$ de $(E)$ vérifie $X ⊆ K^* L$.
-      #emph[Indication : procéder par l'absurde et considérer un mot de longueur
-        minimale de $X ∖ K^* L$.]
     ], solution: [
       Supposons $X ∖ K^* L$ non vide et choisissons un mot $m$ de cet ensemble
       de longueur minimale. Comme $m ∈ X=K X+L$ et $m ∉ L$, il existe $k ∈ K$
@@ -92,11 +90,6 @@
       $ L_1=a^* b(a+b a^* b)^* b a^*+a^*. $
       Les unicités garanties par le lemme d'Arden assurent que les deux expressions
       de l'énoncé dénotent bien le même langage $L_2$.
-
-      #emph[Remarque : dans les questions 7 et 8, on a confondu par abus une
-        expression rationnelle et le langage qu'elle dénote. On peut ainsi
-        montrer l'équivalence d'expressions en établissant qu'elles sont solutions
-        d'un même système, puis en utilisant l'unicité.]
     ]),
     [Partie 3 — Langage reconnu par un automate
 

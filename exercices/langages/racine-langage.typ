@@ -12,11 +12,11 @@
     concours: none,
   ),
   contenu: (
-    [Soit $L$ un langage rationnel sur un alphabet $Σ$.
+    [Soit $L$ un langage régulier sur un alphabet $Σ$.
       On définit $sqrt(L)={u ∈ Σ^* | u^2 ∈ L}$ et $L_2={u^2 | u ∈ L}$.],
     question([Est-il toujours vrai que $L^2=L_2$ ?]),
-    question([Montrer que $sqrt(L)$ est rationnel.]),
-    question([Montrer que $L_2$ n'est pas forcément rationnel.]),
+    question([Montrer que $sqrt(L)$ est régulier.]),
+    question([Montrer que $L_2$ n'est pas forcément régulier.]),
     question([Est-il toujours vrai que $sqrt(L_2)=L$ ?]),
     question([Est-il toujours vrai que $sqrt(L)^2=L$ ?]),
   ),

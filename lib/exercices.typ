@@ -3,6 +3,12 @@
 
 // Aucun paquet externe : les exercices sont des données Typst ordinaires.
 #let question(enonce, solution: none) = (type: "question", enonce: enonce, solution: solution)
+#let texte-concours(concours) = (
+  concours.at("nom", default: none),
+  concours.at("annee", default: none),
+  concours.at("filiere", default: none),
+  if "oral" in concours { if concours.oral { "oral" } else { "écrit" } } else { none },
+).filter(valeur => valeur != none).map(valeur => str(valeur)).join(" · ")
 
 #let exercice(meta: (:), contenu: (), debut: 1) = {
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
@@ -43,17 +49,22 @@
   let concours = meta.at("concours", default: none)
   let concours-normalise = if concours != none {
     assert(type(concours) == dictionary, message: "concours doit être un dictionnaire ou none")
-    for champ in ("nom", "annee") {
-      assert(champ in concours, message: "Champ de concours manquant : " + champ)
+    if "nom" in concours {
+      assert(type(concours.nom) == str and concours.nom in concours-possibles,
+        message: "nom doit être un concours connu")
     }
-    assert(type(concours.nom) == str and concours.nom in concours-possibles,
-      message: "nom doit être un concours connu")
-    assert(type(concours.annee) == int and concours.annee > 0,
-      message: "L'année du concours doit être un entier strictement positif")
-    let filiere = concours.at("filiere", default: "MPI")
-    assert(type(filiere) == str and filiere in filieres-possibles,
-      message: "filiere doit être une filière connue")
-    (..concours, filiere: filiere)
+    if "annee" in concours {
+      assert(type(concours.annee) == int and concours.annee > 0,
+        message: "L'année du concours doit être un entier strictement positif")
+    }
+    if "filiere" in concours {
+      assert(type(concours.filiere) == str and concours.filiere in filieres-possibles,
+        message: "filiere doit être une filière connue")
+    }
+    if "oral" in concours {
+      assert(type(concours.oral) == bool, message: "oral doit être un booléen")
+    }
+    concours
   } else {
     none
   }
@@ -82,14 +93,27 @@
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
   if afficher-titre {
-    let prefixe = if numero == none { "Exercice" } else { "Exercice " + str(numero) }
-    heading(level: 1)[#prefixe. #ex.meta.titre]
+    let prefixe = if numero == none { "I" } else { numbering("I", numero) }
+    block(above: 12pt, below: 12pt, breakable: false)[
+      #heading(level: 1)[
+        #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
+          [#prefixe],
+          [#ex.meta.titre],
+          [#if ex.meta.concours != none {
+            let c = ex.meta.concours
+            text(size: 8pt, fill: luma(35%).transparentize(30%))[
+              #texte-concours(c)
+            ]
+          }],
+        )
+      ]
+    ]
   }
   if details {
     block(above: 0pt, below: 9pt, text(size: 9pt, fill: luma(35%))[
       #if ex.meta.concours != none {
         let c = ex.meta.concours
-        [#c.nom · #c.annee · #c.filiere #h(1em)]
+        [#texte-concours(c) #h(1em)]
       }
       Chapitres : #ex.meta.chapitres.join(", ") |
       Difficulté : #ex.meta.difficulte/5 |
@@ -152,7 +176,7 @@
     footer: context align(center, text(size: 9pt, counter(page).display("1 / 1", both: true))),
   )
   set heading(numbering: none)
-  show heading.where(level: 1): set text(size: 12pt)
+  show heading.where(level: 1): set text(size: 15pt)
   // Comme l'environnement code : fond blanc et deux filets horizontaux.
   show raw.where(block: true): it => block(
     width: 100%, inset: (x: 8pt, y: 7pt),

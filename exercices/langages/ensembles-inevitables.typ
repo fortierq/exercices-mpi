@@ -147,7 +147,7 @@
       les tests d'évitement des sommets, qui coûtent $O(r^k k L)$ avec la méthode naïve.
     ]),
     question([
-      Une expression rationnelle $e$ est dite *inévitable* si son langage $L(e)$
+      Une expression régulière $e$ est dite *inévitable* si son langage $L(e)$
       est un ensemble inévitable. Donner un exemple dont le langage ne contient
       pas le mot vide.
     ], solution: [
@@ -156,7 +156,7 @@
       appartenir $epsilon$ au langage et rendrait l'inévitabilité immédiate.
     ]),
     question([
-      Une expression rationnelle $e$ est *bornée* s'il existe $n in NN$ tel
+      Une expression régulière $e$ est *bornée* s'il existe $n in NN$ tel
       que tout mot de $L(e)$ soit de longueur au plus $n$.
       Si $e$ est bornée, comment déterminer si elle est inévitable ?
     ], solution: [
@@ -171,7 +171,7 @@
       Si aucun état final n'est accessible, le langage est vide.
     ]),
     question([
-      Expliquer comment déterminer si une expression rationnelle quelconque $e$
+      Expliquer comment déterminer si une expression régulière quelconque $e$
       est inévitable.
     ], solution: [
       Les mots qui contiennent un facteur de $L(e)$ forment le langage régulier
@@ -227,7 +227,7 @@
       facteurs choisis. Il ne reste qu'un nombre fini de mots plus courts.
     ]),
     question([
-      Étant donnée une expression rationnelle inévitable $e$, expliquer comment
+      Étant donnée une expression régulière inévitable $e$, expliquer comment
       calculer un sous-ensemble fini inévitable de $L(e)$.
     ], solution: [
       On commence par tester si $epsilon in L(e)$ ; dans ce cas, ${epsilon}$
