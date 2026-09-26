@@ -20,9 +20,9 @@
 - Corriger uniquement les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l’utilisateur pour toute modification de présentation ou de contenu.
 - Pour déterminiser, dessiner l'automate plutôt que donner la table de transition. 
 
-## Notations et programmation
+## Syntaxe
 
-- Quand c'est possible, utiliser un symbole (comme =) au lieu de la fonction (comme heading) en Typst.
+- Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
 - Délimiter les extraits de code Typst, inline ou en bloc, par des accents graves avec le langage adéquat, par exemple ```ocaml arbre_a_mot``` ; ne pas les entourer d'apostrophes.
 - Noter un graphe `G = (S, A)`, où `S` est l’ensemble des sommets et `A`
   l’ensemble des arcs (ou des arêtes pour un graphe non orienté). Utiliser ces notations de façon cohérente dans les énoncés, corrigés et modèles.
@@ -44,16 +44,16 @@
 ## Présentation
 
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
-- Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
 
 ## Figures
 
 - Générer les figures (automates, arbres, graphes, schémas…) depuis des sources Typst avec [CeTZ](https://typst.app/universe/package/cetz/), [finite](https://typst.app/universe/package/finite/) pour les automates, ou un autre paquet adapté.
-- Conserver le code des figures dans le dépôt et les générer lors de la compilation ; ne pas recopier une image matricielle ni écrire un SVG à la main lorsqu'une figure peut être reconstruite avec ces outils.
+- Conserver le code des figures dans le même fichier si possible.
 - Fixer les versions des paquets dans les imports. Préserver les informations de la figure source : étiquettes, transitions, états initiaux et finaux, structure des arbres.
 
 ## Compilation et vérification
 
+- Ranger les tests propres à un sujet ou exercice dans `ressources/<identifiant>/`, auprès du code testé (`test.ml`, `test.typ`…), et les lancer avec `make check`.
 - Lancer `nix develop path:. -c make check` ; compiler énoncés, corrigés et modèles.
   Le catalogue valide les métadonnées et l’unicité des identifiants déduits des noms de fichiers.
 - Ne pas inspecter les PDF générés.

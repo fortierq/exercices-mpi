@@ -76,9 +76,9 @@ check: all test
 	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/modeles/sujet-concours.typ --input corrige=true modeles/fiche.typ build/modeles/sujet-corrige.pdf
 
 test:
-	@mkdir -p build/tests
-	$(TYPST) compile $(TYPST_FLAGS) tests/sujets.typ build/tests/sujets.pdf
-	$(OCAML) -I ressources/centrale-2022-mp-informatique tests/centrale-2022.ml
+	@mkdir -p build/ressources/centrale-2022-mp-informatique
+	$(TYPST) compile $(TYPST_FLAGS) ressources/centrale-2022-mp-informatique/test.typ build/ressources/centrale-2022-mp-informatique/test.pdf
+	$(OCAML) -I ressources/centrale-2022-mp-informatique ressources/centrale-2022-mp-informatique/test.ml
 
 w:
 	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }

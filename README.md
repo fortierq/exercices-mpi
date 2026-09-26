@@ -41,7 +41,7 @@ modeles/fiche.typ                           Point d’entrée pour un exercice i
 modeles/feuille.typ                         Feuille minimale à copier
 modeles/sujet-concours.typ                  Sujet minimal à copier
 sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
-ressources/centrale-2022-mp-informatique/    Code OCaml affiché et testé
+ressources/centrale-2022-mp-informatique/    Code OCaml et tests du sujet
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
 docs/ensembles-inevitables-migration.md      Provenance et corrections de la source
 feuilles/langages.typ                       Exemple de feuille réutilisant l’exercice
@@ -237,7 +237,8 @@ Il précise ses métadonnées, dont sa durée éventuelle, et conserve l’attri
 Les figures du sujet Centrale 2022 et de son corrigé sont définies dans le
 fichier du sujet et générées en Typst. Les
 fragments OCaml affichés proviennent de `ressources/centrale-2022-mp-informatique/corrige.ml`,
-également exécuté par les tests : une correction du code se répercute dans le
+testé par `test.ml` dans le même dossier ; `test.typ` vérifie le sujet et la partie partagée.
+Ces tests sont lancés par `make check`. Une correction du code se répercute dans le
 document. Les notions de Brzozowski, Conway et Antimirov sont introduites dans
 le sujet ; leurs solutions utilisent les outils du programme.
 

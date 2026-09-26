@@ -7,7 +7,7 @@
 #import "/exercices/langages/mots-de-dyck.typ": ex as dyck
 
 #show: feuille.with(
-  titre: "Colle 1 : langages et automates",
+  titre: "Colle : langages et automates",
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (arden, ccp, palindromes, inevitables),
