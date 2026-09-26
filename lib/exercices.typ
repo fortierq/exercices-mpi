@@ -91,7 +91,7 @@
   block(above: 12pt, below: 12pt, breakable: false)[
     #heading(level: niveau)[
       #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
-        [#prefixe],
+        [#prefixe -],
         [#titre],
         [#if concours != none {
           text(size: 8pt, fill: luma(35%).transparentize(30%))[
