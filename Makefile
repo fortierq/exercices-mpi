@@ -36,11 +36,11 @@ sujets: $(PDF_SUJETS)
 
 build/sujets/%/enonce.pdf: sujets/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "sujet=/sujets/$*.typ" modeles/epreuve.typ "$@"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/sujets/$*.typ" modeles/fiche.typ "$@"
 
 build/sujets/%/corrige.pdf: sujets/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "sujet=/sujets/$*.typ" --input corrige=true modeles/epreuve.typ "$@"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/sujets/$*.typ" --input corrige=true modeles/fiche.typ "$@"
 
 build/exercices/%/enonce.pdf: exercices/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
@@ -69,8 +69,8 @@ check: all test
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/fiche.typ build/modeles/exercice-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) modeles/feuille.typ build/modeles/feuille.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/feuille.typ build/modeles/feuille-corrige.pdf
-	$(TYPST) compile $(TYPST_FLAGS) modeles/epreuve.typ build/modeles/sujet.pdf
-	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true modeles/epreuve.typ build/modeles/sujet-corrige.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/modeles/sujet-concours.typ modeles/fiche.typ build/modeles/sujet.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/modeles/sujet-concours.typ --input corrige=true modeles/fiche.typ build/modeles/sujet-corrige.pdf
 
 test:
 	@mkdir -p build/tests

@@ -1,6 +1,5 @@
-#import "/lib/exercices.typ": question
-#import "/lib/sujets.typ": partie, sujet-concours, extraire-partie, aplatir, nombre-questions
-#import "/sujets/centrale-2022-mp-informatique.typ": sujet
+#import "/lib/exercices.typ": question, exercice, partie, extraire-partie, aplatir, nombre-questions
+#import "/sujets/centrale-2022-mp-informatique.typ": ex as sujet
 #import "/exercices/langages/palindromes-et-rationalite.typ": ex
 
 #assert(nombre-questions(sujet.contenu) == 50)
@@ -24,7 +23,7 @@
 // Les textes intercalés ne comptent pas comme questions ; les rappels des
 // parties parentes s'ajoutent dans l'ordre, sans embarquer le sujet entier.
 #let q = question([Question commune.], solution: [Solution commune.])
-#let exemple = sujet-concours(meta: sujet.meta, contenu: (
+#let exemple = exercice(meta: sujet.meta, contenu: (
   [Introduction globale.], q,
   partie("A", "Parent", contexte: ([Rappel parent.],), contenu: (
     [Texte non numéroté.], q,
@@ -40,3 +39,10 @@
 #assert(extrait.meta.difficulte == 2)
 
 Vérification des sujets et de l'extraction réussie.
+
+// Un extrait conserve ses sous-parties et reste lui-même extractible.
+#let parent = extraire-partie(exemple, "A", numerotation-originale: true)
+#assert(nombre-questions(parent.contenu) == 2)
+#assert(extraire-partie(parent, "A.1", numerotation-originale: true).debut == 3)
+#let decale = exercice(meta: exemple.meta, contenu: exemple.contenu, debut: 10)
+#assert(extraire-partie(decale, "A.1", numerotation-originale: true).debut == 12)

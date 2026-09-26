@@ -1,7 +1,6 @@
-#import "/lib/exercices.typ": question
-#import "/lib/sujets.typ": sujet-concours, partie
+#import "/lib/exercices.typ": exercice, question, partie
 
-#let sujet = sujet-concours(
+#let ex = exercice(
   meta: (
     titre: "Titre du sujet de concours",
     chapitres: ("langages-reguliers", "automates-finis"),

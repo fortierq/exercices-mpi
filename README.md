@@ -39,9 +39,7 @@ lib/exercices.typ                           API et mise en page partagées
 modeles/exercice.typ               Exercice minimal à copier
 modeles/fiche.typ                           Point d’entrée pour un exercice isolé
 modeles/feuille.typ                         Feuille minimale à copier
-lib/sujets.typ                             Parties, extraction et mise en page des sujets
 modeles/sujet-concours.typ                  Sujet minimal à copier
-modeles/epreuve.typ                         Point d’entrée pour un sujet ou son corrigé
 sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
 ressources/centrale-2022-mp-informatique/    Code OCaml affiché et testé
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
@@ -188,8 +186,10 @@ restent sans gras. Chaque solution commence par « Solution. » souligné. Les f
 ## Sujets de concours et extraits
 
 Copier `modeles/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
-exporte `sujet`, construit avec `sujet-concours` : métadonnées communes aux
-exercices et `contenu`. Celui-ci mêle des textes, des `question` et des `partie`.
+exporte `ex`, construit avec `exercice`, comme tout exercice de la banque.
+Son `contenu` mêle des textes, des `question` et des `partie`.
+Les dossiers `sujets/` et `exercices/` servent au classement ; le type de données
+et le modèle de compilation (`modeles/fiche.typ`) sont les mêmes.
 Les définitions et consignes initiales sont de simples blocs de texte au début
 de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
 figures) tient dans un seul fichier Typst. Les parties peuvent contenir des sous-parties ; chacune a
@@ -202,14 +202,14 @@ La numérotation des questions est continue dans le sujet, sous la forme « 1. �
 make sujets
 make build/sujets/centrale-2022-mp-informatique/corrige.pdf
 typst compile --root . --ignore-system-fonts \
-  --input sujet=/sujets/mon-sujet.typ modeles/epreuve.typ build/mon-sujet.pdf
+  --input exercice=/sujets/mon-sujet.typ modeles/fiche.typ build/mon-sujet.pdf
 ```
 
 Pour réutiliser une partie dans la banque, exporter directement son extraction :
 
 ```typst
-#import "/lib/sujets.typ": extraire-partie
-#import "/sujets/centrale-2022-mp-informatique.typ": sujet
+#import "/lib/exercices.typ": extraire-partie
+#import "/sujets/centrale-2022-mp-informatique.typ": ex as sujet
 
 #let ex = extraire-partie(sujet, "I.B", meta: (niveaux: ("MPI", "MP"),))
 ```

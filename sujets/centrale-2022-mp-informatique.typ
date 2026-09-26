@@ -1,5 +1,4 @@
-#import "/lib/exercices.typ": question
-#import "/lib/sujets.typ": sujet-concours, partie
+#import "/lib/exercices.typ": exercice, question, partie
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
 
@@ -121,7 +120,7 @@
 
 // Source : épreuve Centrale-Supélec 2022, MP, option informatique, 9 pages.
 // Le PDF fourni porte la mention CC BY-NC-SA.
-#let sujet = sujet-concours(
+#let ex = exercice(
   meta: (
     titre: "Option informatique",
     chapitres: ("langages-reguliers", "automates-finis", "recursivite-et-induction", "algorithmique"),
