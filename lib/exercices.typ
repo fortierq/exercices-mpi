@@ -26,14 +26,16 @@
   ]
 }
 
-// Les identifiants de parties sont stables ("I", "I.B", "II.A.1"…).
+// Un identifiant stable sert à l’extraction ; numero règle seulement le titre affiché.
 // Le contexte sert uniquement aux extraits : définitions et prérequis à rappeler.
-#let partie(id, titre, contenu: (), contexte: (), meta: (:)) = {
+#let partie(id, titre, numero: none, contenu: (), contexte: (), meta: (:)) = {
   assert(type(id) == str and id != "", message: "Identifiant de partie vide")
   assert(type(titre) == str and titre != "", message: "Titre de partie vide")
+  let numero = if numero == none { id } else { numero }
+  assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
   assert(type(contenu) == array and type(contexte) == array)
   assert(contexte.all(bloc => type(bloc) == content), message: "Le contexte contient uniquement du texte Typst")
-  (type: "partie", id: id, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
+  (type: "partie", id: id, numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
 }
 
 #let est-partie(bloc) = type(bloc) == dictionary and bloc.at("type", default: none) == "partie"
@@ -42,7 +44,7 @@
   let resultat = ()
   for bloc in contenu {
     if est-partie(bloc) {
-      resultat.push(titre-exercice(bloc.titre, bloc.id, niveau: niveau))
+      resultat.push(titre-exercice(bloc.titre, bloc.numero, niveau: niveau))
       resultat += aplatir(bloc.contenu, niveau: niveau + 1)
     } else {
       resultat.push(bloc)

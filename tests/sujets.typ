@@ -46,3 +46,22 @@ Vérification des sujets et de l'extraction réussie.
 #assert(extraire-partie(parent, "A.1", numerotation-originale: true).debut == 3)
 #let decale = exercice(meta: exemple.meta, contenu: exemple.contenu, debut: 10)
 #assert(extraire-partie(decale, "A.1", numerotation-originale: true).debut == 12)
+
+// Les identifiants ne dépendent ni des numéros affichés ni du découpage.
+#let autre = exercice(meta: sujet.meta, contenu: (
+  partie("premier", "Premier exercice", numero: "Exercice 1", contenu: (
+    partie("mots", "Mots", numero: "a", contenu: (q,)),
+  )),
+  partie("second", "Second exercice", numero: "2", contenu: (
+    partie("palindromes", "Palindromes", numero: "a", contenu: (q, q)),
+  )),
+))
+#assert(extraire-partie(autre, "palindromes").contenu == (q, q))
+#assert(extraire-partie(autre, "palindromes").debut == 1)
+#assert(extraire-partie(autre, "palindromes", numerotation-originale: true).debut == 2)
+#assert(extraire-partie(autre, "second").contenu.first().numero == "a")
+#let renumerote = exercice(meta: autre.meta, contenu: (
+  partie("palindromes", "Palindromes", numero: "2.b", contenu: (q, q)),
+))
+#assert(extraire-partie(renumerote, "palindromes").contenu
+  == extraire-partie(autre, "palindromes").contenu)

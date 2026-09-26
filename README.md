@@ -193,7 +193,12 @@ et le modèle de compilation (`modeles/fiche.typ`) sont les mêmes.
 Les définitions et consignes initiales sont de simples blocs de texte au début
 de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
 figures) tient dans un seul fichier Typst. Les parties peuvent contenir des sous-parties ; chacune a
-un identifiant unique dans le sujet (`"I"`, `"I.B"`, `"II.A.1"`…).
+un identifiant unique dans le sujet, libre et indépendant de la numérotation.
+Par exemple, `partie("palindromes", "Palindromes", numero: "2.b", contenu: (…))`
+s’extrait avec `extraire-partie(ex, "palindromes")`, même après un changement
+de numéro. Sans `numero`, l’identifiant est aussi affiché dans le titre.
+Des numéros affichés identiques dans différentes parties sont possibles ;
+seuls les identifiants doivent être uniques.
 La mise en page utilise directement `feuille` et `afficher-exercice` de
 `lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
@@ -220,8 +225,11 @@ Les énoncés et solutions ne sont pas recopiés. C'est ainsi que fonctionne
 titre devient « Palindromes et régularité » selon les conventions de la banque.
 
 L'extrait commence à 1 par défaut. Passer `numerotation-originale: true`
-conserve les numéros du sujet, notamment lorsqu'une partie renvoie à d'autres
-questions par leur numéro. `meta` permet de préciser le titre, la difficulté,
+conserve les numéros continus du sujet Typst, notamment lorsqu’une partie
+renvoie à d’autres questions par leur numéro. Les questions suivent toujours
+la convention de la banque (`1.`, `2.`, etc.) : les numérotations du PDF
+avec lettres, sous-questions ou reprises à 1 doivent être adaptées lors de
+la conversion, ainsi que leurs renvois. `meta` permet de préciser le titre, la difficulté,
 les chapitres, les langages et la durée de l'extrait. Les métadonnées des
 parties parentes puis de la partie extraite sont héritées ; le titre devient
 celui de la partie et la durée totale du concours est retirée. L'attribution
