@@ -1,5 +1,4 @@
-#import "programme.typ": chapitres-programme, algorithmes-programme, structures-programme
-#import "concours.typ": concours-possibles, filieres-possibles
+#import "meta.typ": chapitres-programme, algorithmes-programme, structures-programme, concours-possibles, filieres-possibles
 
 // Aucun paquet externe : les exercices sont des données Typst ordinaires.
 #let question(enonce, solution: none) = (type: "question", enonce: enonce, solution: solution)
