@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": exercice, question
-#import "/ressources/colle1-langages-automates/figures.typ": arbre-dyck
+#import "@preview/cetz:0.4.2" as cetz
 
 #let ex = exercice(
   meta: (
@@ -94,7 +94,18 @@
     question([
       Dessiner l'arbre associé au mot de Dyck $m=a a b a b b$. Les nœuds ne portent pas d'étiquettes.
     ], solution: [
-      #align(center, arbre-dyck())
+      #align(center, cetz.canvas({
+        import cetz.draw: line, circle
+        // Arbre N(N(F, N(F, F)), F), associé au mot aababb.
+        let sommets = ((0, 0), (-1.4, -1.2), (1.4, -1.2),
+          (-2.2, -2.4), (-0.6, -2.4), (-1.2, -3.6), (0, -3.6))
+        for (parent, enfant) in ((0, 1), (0, 2), (1, 3), (1, 4), (4, 5), (4, 6)) {
+          line(sommets.at(parent), sommets.at(enfant))
+        }
+        for sommet in sommets {
+          circle(sommet, radius: 0.08, fill: white)
+        }
+      }))
     ]),
     [On définit le type suivant :
       ```ocaml

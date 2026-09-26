@@ -1,5 +1,6 @@
 #import "/lib/exercices.typ": exercice, question
-#import "/ressources/colle1-langages-automates/figures.typ": arden-1, arden-2
+#import "@preview/finite:0.5.1" as finite
+#import "@preview/cetz:0.4.2" as cetz
 
 #let ex = exercice(
   meta: (
@@ -104,7 +105,17 @@
 
       Dans la question 9, on considère l'automate
       $A=({a,b},{q_0,q_1,q_2},{q_0},{q_0,q_2},δ)$ suivant :
-      #align(center, arden-1())
+      #align(center, cetz.canvas({
+        import finite.draw: state, transition
+        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        state((0, 0), "q0", label: $q_0$, initial: (label: none), final: true)
+        state((3, 0), "q1", label: $q_1$)
+        state((6, 0), "q2", label: $q_2$, final: true)
+        transition("q0", "q1", label: $a$, curve: 0)
+        transition("q1", "q1", label: $b$)
+        transition("q1", "q2", label: $a$, curve: 0)
+        transition("q2", "q2", label: $a,b$)
+      }))
       Pour $i ∈ {0,1,2}$, on note
       $L_i={m ∈ Σ^* | δ^*(q_i,m) ∩ F ≠ ∅}$ le langage des mots qui font aboutir
       à un état final à partir de $q_i$. Déterminer $L(A)$ revient donc à déterminer $L_0$.
@@ -127,7 +138,18 @@
     ]),
     question([
       En utilisant une méthode similaire, déterminer le langage reconnu par l'automate suivant :
-      #align(center, arden-2())
+      #align(center, cetz.canvas({
+        import finite.draw: state, transition
+        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        state((0, 0), "q0", label: $q_0$, initial: (label: none))
+        state((3, 0), "q1", label: $q_1$, final: true)
+        state((0, -2.5), "q2", label: $q_2$, initial: (label: none))
+        transition("q0", "q0", label: $a$)
+        transition("q0", "q1", label: $a$, curve: 0.6)
+        transition("q1", "q1", label: $a$)
+        transition("q1", "q0", label: $b$, curve: 0.6)
+        transition("q2", "q1", label: $b$, curve: -0.4)
+      }))
     ], solution: [
       Les langages associés aux trois états vérifient
       $ cases(L_0=a L_0+a L_1, L_1=a L_1+b L_0+ε, L_2=b L_1). $

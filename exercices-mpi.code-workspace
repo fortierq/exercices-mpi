@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../exos-src"
+		},
+		{
+			"path": "../cours-src"
+		},
+		{
+			"path": "../texmf"
+		}
+	],
+	"settings": {}
+}
