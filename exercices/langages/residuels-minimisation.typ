@@ -168,7 +168,19 @@
       déterministe, complet et possède le plus petit nombre d'états possible
       parmi les automates déterministes et complets reconnaissant $L$.
     ],
-    question([Montrer que l'automate des résiduels est un automate minimal.]),
+    question([Montrer que l'automate des résiduels est un automate minimal.], solution: [
+      D'après la question 5, $M(L)$ est déterministe, complet et reconnaît $L$.
+      Il possède exactement $abs(cal(R)_L)$ états.
+
+      Soit $A$ un autre automate déterministe complet reconnaissant $L$.
+      On peut supprimer ses états inaccessibles : les transitions issues d'un
+      état accessible aboutissent à des états accessibles, donc l'automate
+      obtenu reste complet et reconnaît $L$.
+      La surjection construite à la question 4, de ses états accessibles
+      vers $cal(R)_L$, montre qu'il possède au moins $abs(cal(R)_L)$ états.
+      A fortiori, $A$ possède au moins autant d'états que $M(L)$.
+      Ainsi $M(L)$ atteint le plus petit nombre d'états possible : il est minimal.
+    ]),
     [
       On peut montrer que cet automate minimal est en fait unique (à renommage
       des états près), ce qui fournit une façon de déterminer si deux automates

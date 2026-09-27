@@ -61,6 +61,46 @@
       Écrire le pseudocode d'un algorithme ayant pour entrée un automate
       déterministe et renvoyant une expression régulière dénotant le langage
       reconnu par cet automate. Préciser la complexité.
+    ], solution: [
+      On manipule des expressions avec les constructeurs $"Vide"$, $"Epsilon"$,
+      $"Lettre"(a)$, $"Union"(e,f)$, $"Concat"(e,f)$ et $"Etoile"(e)$.
+      Pour chaque $k$, la case $R[i,j]$ dénote $L(i,j,k)$.
+
+      ```text
+      R ← matrice n × n remplie avec Vide
+      pour i de 0 à n − 1 :
+          R[i,i] ← Epsilon
+      pour chaque transition i —a→ j :
+          R[i,j] ← Union(R[i,j], Lettre(a))
+      pour k de 0 à n − 1 :
+          T ← nouvelle matrice n × n
+          pour i de 0 à n − 1 :
+              pour j de 0 à n − 1 :
+                  T[i,j] ← Union(R[i,j],
+                      Concat(R[i,k], Concat(Etoile(R[k,k]), R[k,j])))
+          R ← T
+      e ← Vide
+      pour chaque état final f :
+          e ← Union(e, R[0,f])
+      renvoyer e
+      ```
+
+      L'initialisation dénote les chemins sans état intermédiaire, y compris
+      le chemin vide sur la diagonale. La récurrence démontrée assure l'invariant
+      après chaque tour. La matrice $T$ évite de mélanger deux valeurs de $k$.
+      L'union finale dénote donc le langage reconnu, y compris lorsque $F = ∅$.
+
+      Soit $m$ le nombre de transitions. Il y a $n^3$ mises à jour.
+      Si chaque constructeur crée un nœud immuable contenant des références
+      vers ses sous-expressions, son coût est constant : le temps et la mémoire
+      totale sont $O(n^3 + m)$ ; les deux matrices seules occupent $O(n^2)$ cases.
+      Les sous-expressions communes sont partagées, sans être recopiées.
+
+      Si l'on veut écrire l'expression entière sous forme de texte, il faut
+      déplier ces références. Une mise à jour peut recopier quatre expressions
+      du tour précédent : la taille peut donc croître exponentiellement en $n$.
+      Le coût de cette écriture dépend de la taille produite ; il ne se limite
+      pas à $O(n^3)$.
     ]),
   ),
 )
