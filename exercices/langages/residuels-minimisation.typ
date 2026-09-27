@@ -186,7 +186,7 @@
       des états près), ce qui fournit une façon de déterminer si deux automates
       reconnaissent le même langage : il suffit de les minimiser et de comparer
       les deux automates obtenus (une autre méthode consistant à tester si
-      $L_1 Δ L_2 = ∅$ : cf. TP 2).
+      $L_1 Δ L_2 = ∅$).
 
       Il est possible de déterminer l'automate minimal équivalent à un automate
       donné grâce à l'algorithme de Moore.
