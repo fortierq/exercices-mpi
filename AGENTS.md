@@ -68,6 +68,7 @@
   Le catalogue valide les métadonnées et l’unicité des identifiants déduits des noms de fichiers.
 - Ne pas inspecter les PDF générés.
 - Communiquer les fichiers concernés, les corrections et les vérifications réelles.
+- Fournir systématiquement des liens cliquables vers les PDF générés (énoncé et corrigé) dans la réponse finale, pour permettre leur vérification par l’utilisateur.
 
 ## Commits
 
