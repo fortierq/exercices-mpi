@@ -131,15 +131,6 @@
   )
 }
 
-// Ampoule vectorielle, indépendante des polices et des paquets externes.
-#let icone-solution = box(width: 10pt, height: 12pt)[
-  #place(top + left, dx: 1pt, circle(radius: 4pt, stroke: 0.7pt + luma(45%)))
-  #place(top + left, dx: 3pt, dy: 7pt,
-    rect(width: 4pt, height: 3pt, fill: white,
-      stroke: (left: 0.7pt + luma(45%), right: 0.7pt + luma(45%), bottom: 0.7pt + luma(45%))))
-  #place(top + left, dx: 4pt, dy: 12pt, line(length: 2pt, stroke: 0.7pt + luma(45%)))
-]
-
 // Présentation inspirée de texmf/tex/latex/{exam.cls,exercise.cls,code.sty}.
 #let afficher-exercice(ex, numero: none, corrige: false, details: true, afficher-titre: true) = {
   show strong: it => it.body
@@ -175,10 +166,13 @@
       block(
         width: 100%, stroke: (left: 0.4pt + luma(60%)),
         inset: (left: 10pt, y: 3pt), above: 5pt, below: 9pt,
-      )[
-        #place(top + left, dx: -24pt, dy: 1pt, icone-solution)
-        #if q.solution == none { emph[Corrigé à compléter.] } else { q.solution }
-      ]
+        grid(
+          columns: (0pt, 1fr), column-gutter: 0pt,
+          align: (left + horizon, left + top),
+          move(dx: -24pt, box(width: 10pt, text(size: 11pt, fill: luma(45%))[$✓$])),
+          if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
+        ),
+      )
     }
     i += 1
   }
