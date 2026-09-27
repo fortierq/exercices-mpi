@@ -33,7 +33,8 @@
         state((9, 0), "4", label: $4$, final: true)
         transition("0", "1", label: $a$, curve: 0)
         transition("0", "3", label: $b$, curve: 0)
-        transition("0", "4", label: $b$, curve: -1.8)
+        // Passer sous l’état central et sa boucle pour dégager l’étiquette.
+        transition("0", "4", label: $b$, curve: -5)
         transition("1", "2", label: $b$, curve: 0.4)
         transition("2", "1", label: $a$, curve: 0.4)
         transition("2", "3", label: $b$, curve: 0)
@@ -48,16 +49,34 @@
       (même si les alphabets ne sont pas disjoints, contrairement à l'union
       et à la concaténation vues en cours).
     ], solution: [
-      Sur l'alphabet commun $Σ$ (au besoin l'union des deux alphabets), écrivons
-      $L_i ∖ {ε} = (P_i Σ^* ∩ Σ^* S_i) ∖ Σ^* N_i Σ^*$ pour $i ∈ {1,2}$.
-      Un mot non vide appartient aux deux langages exactement lorsque sa
-      première lettre est dans $P_1 ∩ P_2$, sa dernière dans $S_1 ∩ S_2$
-      et aucun de ses facteurs de longueur deux n'est dans $N_1 ∪ N_2$.
-      Ainsi
-      $ (L_1 ∩ L_2) ∖ {ε}
-          = ((P_1 ∩ P_2) Σ^* ∩ Σ^* (S_1 ∩ S_2)) ∖ Σ^* (N_1 ∪ N_2) Σ^*. $
-      C'est une description locale. On ajoute $ε$ si et seulement s'il
-      appartient à la fois à $L_1$ et à $L_2$.
+      Posons $L = L_1 ∩ L_2$ et travaillons sur l'alphabet $Σ$ obtenu,
+      si nécessaire, en réunissant les deux alphabets.
+      Puisque tout mot de $L$ appartient à $L_1$ et à $L_2$, on a
+      $ P(L) ⊆ P(L_1) ∩ P(L_2), quad S(L) ⊆ S(L_1) ∩ S(L_2), $
+      $ F(L) ⊆ F(L_1) ∩ F(L_2). $
+      En effet, une première lettre, une dernière lettre ou un facteur de
+      longueur deux d'un mot de $L$ apparaît aussi dans un mot de chacun
+      des langages $L_1$ et $L_2$.
+
+      Soit $u = u_1 … u_n$ un mot non vide, avec $n ≥ 1$.
+      Si $u ∈ L$, alors, par définition de ces ensembles,
+      $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et
+      $u_k u_(k+1) ∈ F(L)$ pour tout $k ∈ {1, …, n-1}$.
+
+      Réciproquement, supposons que $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et
+      que tous les facteurs $u_k u_(k+1)$ de longueur deux de $u$
+      appartiennent à $F(L)$.
+      Les inclusions précédentes donnent, pour chaque $i ∈ {1,2}$,
+      $ u_1 ∈ P(L_i), quad u_n ∈ S(L_i), quad
+        ∀ k ∈ {1, …, n-1}, u_k u_(k+1) ∈ F(L_i). $
+      Comme $L_i$ est local, ces conditions entraînent $u ∈ L_i$.
+      Ainsi $u ∈ L_1$ et $u ∈ L_2$, donc $u ∈ L$.
+
+      On a donc établi la caractérisation locale de $L$ pour tout mot
+      non vide. Lorsque $n = 1$, la condition sur les facteurs de longueur
+      deux est vide. Enfin, $ε ∈ L$ si et seulement si $ε ∈ L_1$ et
+      $ε ∈ L_2$ ; le statut du mot vide n'intervient pas dans cette
+      caractérisation. Le langage $L_1 ∩ L_2$ est donc local.
     ]),
     question([
       Montrer qu'il existe un nombre fini de langages locaux sur un alphabet fixé.
