@@ -15,6 +15,16 @@
 
 ## Contenu
 
+### Conversion de sources LaTeX
+
+- Les consignes de conversion sont maintenues dans ce dépôt ; aucun skill externe n'est nécessaire.
+- Résoudre les `\input` et `\include`, y compris les anciens chemins `/workspaces/…`, à partir des dépôts voisins. Lire aussi les corrigés séparés ou sous `\if\cor1`, et ignorer les exercices commentés. Ne pas modifier les originaux LaTeX.
+- Conserver l'ordre, les questions, les sous-questions, les textes intermédiaires, les notations et les arguments de la source, sous réserve des corrections importantes et des conventions ci-dessous. Associer les solutions aux questions par leur contenu plutôt que par leur seul numéro.
+- Ne pas ajouter silencieusement de questions ou de solutions absentes de la source. Laisser `solution: none` si le corrigé manque. Signaler les difficultés estimées et les adaptations de contenu ou de présentation dans la réponse et la pull request.
+- Vérifier en particulier le mot vide, l'ensemble vide, les domaines, les hypothèses de finitude et les indices des récurrences. Après conversion, contrôler le nombre et l'ordre des questions ainsi que la séparation entre énoncés et solutions.
+
+### Périmètre et corrections
+
 - Les sujets et corrections doivent utiliser les outils du programme : [résume du programme](docs/programme.md). Les sujets peuvent introduire de nouvelles notions.
 - Utiliser les chapitres de /Users/qfortier/repo/cours-src (fichiers de la forme poly_*.tex) pour une référence de cours.
 - Corriger uniquement les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l’utilisateur pour toute modification de présentation ou de contenu.
@@ -45,6 +55,8 @@
 
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
 
+- Présenter les corrections sans icône ni libellé « Solution ».
+
 ## Figures
 
 - Générer les figures (automates, arbres, graphes, schémas…) depuis des sources Typst avec [CeTZ](https://typst.app/universe/package/cetz/), [finite](https://typst.app/universe/package/finite/) pour les automates, ou un autre paquet adapté.
@@ -58,6 +70,7 @@
   Le catalogue valide les métadonnées et l’unicité des identifiants déduits des noms de fichiers.
 - Ne pas inspecter les PDF générés.
 - Communiquer les fichiers concernés, les corrections et les vérifications réelles.
+- Fournir systématiquement des liens cliquables vers les PDF générés (énoncé et corrigé) dans la réponse finale, pour permettre leur vérification par l’utilisateur.
 
 ## Commits
 
