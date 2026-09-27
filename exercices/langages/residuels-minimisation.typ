@@ -150,7 +150,7 @@
     ], solution: [
       Les états sont étiquetés par les représentants $ε$, $a$, $a b$
       de leurs résiduels, respectivement $L_1$, $L_1 ∪ b(a|b)^*$ et $(a|b)^*$.
-      #align(center, cetz.canvas({
+      #align(center, cetz.canvas(length: 0.9cm, {
         import finite.draw: state, transition
         cetz.draw.set-style(transition: (label: (angle: 0deg)))
         state((0, 0), "vide", label: $ε$, initial: (label: none))

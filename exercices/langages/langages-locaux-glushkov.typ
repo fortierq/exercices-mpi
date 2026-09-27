@@ -16,32 +16,30 @@
   contenu: (
     question([Construire l'automate de Glushkov reconnaissant $(a b | b)^* b$.], solution: [
       On linéarise l'expression en $(a_1 b_2 | b_3)^* b_4$.
-      Les premières lettres possibles sont $P = {a_1,b_3,b_4}$, la seule
-      dernière lettre est $b_4$, et les facteurs de longueur deux sont
-      $ {a_1 b_2, b_2 a_1, b_2 b_3, b_2 b_4, b_3 a_1, b_3 b_3, b_3 b_4}. $
-      On crée un état initial $0$ et un état par position. Une transition
-      issue de $0$ mène à chaque position de $P$ ; chaque facteur $x_i y_j$
-      donne une transition de $i$ à $j$, étiquetée par $y$ après délinéarisation.
-      L'état $4$ est le seul état final, car le mot vide n'est pas reconnu.
-      #align(center, cetz.canvas({
+      On obtient
+      $ P = {a_1,b_3,b_4}, $
+      $ S = {b_4} $
+      et
+      $ F = {a_1 b_2, b_2 a_1, b_2 b_3, b_2 b_4, b_3 a_1, b_3 b_3, b_3 b_4}. $
+      #align(center, cetz.canvas(length: 0.9cm, {
         import finite.draw: state, transition
         cetz.draw.set-style(transition: (label: (angle: 0deg)))
         state((0, 0), "0", label: $0$, initial: (label: none))
-        state((3, 2), "1", label: $1$)
-        state((6, 2), "2", label: $2$)
-        state((4.5, -1), "3", label: $3$)
-        state((9, 0), "4", label: $4$, final: true)
-        transition("0", "1", label: $a$, curve: 0)
-        transition("0", "3", label: $b$, curve: 0)
+        state((3, 2), "a1", label: $a_1$)
+        state((6, 2), "b2", label: $b_2$)
+        state((4.5, -1), "b3", label: $b_3$)
+        state((9, 0), "b4", label: $b_4$, final: true)
+        transition("0", "a1", label: $a$, curve: 0)
+        transition("0", "b3", label: $b$, curve: 0)
         // Passer sous l’état central et sa boucle pour dégager l’étiquette.
-        transition("0", "4", label: $b$, curve: -5)
-        transition("1", "2", label: $b$, curve: 0.4)
-        transition("2", "1", label: $a$, curve: 0.4)
-        transition("2", "3", label: $b$, curve: 0)
-        transition("2", "4", label: $b$, curve: 0)
-        transition("3", "1", label: $a$, curve: 0)
-        transition("3", "3", label: $b$, anchor: bottom)
-        transition("3", "4", label: $b$, curve: 0)
+        transition("0", "b4", label: $b$, curve: -5)
+        transition("a1", "b2", label: $b$, curve: 0.4)
+        transition("b2", "a1", label: $a$, curve: 0.4)
+        transition("b2", "b3", label: $b$, curve: 0)
+        transition("b2", "b4", label: $b$, curve: 0)
+        transition("b3", "a1", label: $a$, curve: 0)
+        transition("b3", "b3", label: $b$, anchor: bottom)
+        transition("b3", "b4", label: $b$, curve: 0)
       }))
     ]),
     question([
@@ -54,29 +52,20 @@
       Puisque tout mot de $L$ appartient à $L_1$ et à $L_2$, on a
       $ P(L) ⊆ P(L_1) ∩ P(L_2), quad S(L) ⊆ S(L_1) ∩ S(L_2), $
       $ F(L) ⊆ F(L_1) ∩ F(L_2). $
-      En effet, une première lettre, une dernière lettre ou un facteur de
-      longueur deux d'un mot de $L$ apparaît aussi dans un mot de chacun
-      des langages $L_1$ et $L_2$.
 
-      Soit $u = u_1 … u_n$ un mot non vide, avec $n ≥ 1$.
-      Si $u ∈ L$, alors, par définition de ces ensembles,
-      $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et
-      $u_k u_(k+1) ∈ F(L)$ pour tout $k ∈ {1, …, n-1}$.
-
-      Réciproquement, supposons que $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et
+      Soit $u = u_1 … u_n in Sigma^*$ avec $n ≥ 1$.
+      Supposons que $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et
       que tous les facteurs $u_k u_(k+1)$ de longueur deux de $u$
       appartiennent à $F(L)$.
-      Les inclusions précédentes donnent, pour chaque $i ∈ {1,2}$,
+
+      Les inclusions précédentes donnent, pour chaque $i ∈ {1,2}$ :
       $ u_1 ∈ P(L_i), quad u_n ∈ S(L_i), quad
         ∀ k ∈ {1, …, n-1}, u_k u_(k+1) ∈ F(L_i). $
       Comme $L_i$ est local, ces conditions entraînent $u ∈ L_i$.
       Ainsi $u ∈ L_1$ et $u ∈ L_2$, donc $u ∈ L$.
 
-      On a donc établi la caractérisation locale de $L$ pour tout mot
-      non vide. Lorsque $n = 1$, la condition sur les facteurs de longueur
-      deux est vide. Enfin, $ε ∈ L$ si et seulement si $ε ∈ L_1$ et
-      $ε ∈ L_2$ ; le statut du mot vide n'intervient pas dans cette
-      caractérisation. Le langage $L_1 ∩ L_2$ est donc local.
+      Enfin, $ε ∈ L$ si et seulement si $ε ∈ L_1$ et
+      $ε ∈ L_2$. Le langage $L = L_1 ∩ L_2$ est donc local.
     ]),
     question([
       Montrer qu'il existe un nombre fini de langages locaux sur un alphabet fixé.

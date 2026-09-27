@@ -31,7 +31,7 @@ PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf buil
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
 PDF_SUJETS := $(foreach s,$(SUJETS),build/sujets/$(s)/enonce.pdf build/sujets/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles sujets catalogue check test w wf ws clean help
+.PHONY: all exercices feuilles sujets catalogue check test f w wf ws clean help
 all: exercices feuilles sujets catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
@@ -80,6 +80,10 @@ test:
 	$(TYPST) compile $(TYPST_FLAGS) ressources/centrale-2022-mp-informatique/test.typ build/ressources/centrale-2022-mp-informatique/test.pdf
 	$(OCAML) -I ressources/centrale-2022-mp-informatique ressources/centrale-2022-mp-informatique/test.ml
 
+f:
+	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
+	$(MAKE) "build/feuilles/$(F_SANS_PREFIXE).pdf" "build/feuilles/$(F_SANS_PREFIXE)-corrige.pdf"
+
 w:
 	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }
 	@mkdir -p "build/exercices/$(E_SANS_PREFIXE)"
@@ -89,7 +93,7 @@ w:
 
 wf:
 	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
-	@mkdir -p build/feuilles
+	@mkdir -p "build/feuilles/$(dir $(F_SANS_PREFIXE))"
 	$(TYPST) compile $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
 	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"; fi
 	$(TYPST) w $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
@@ -108,6 +112,7 @@ help:
 	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"
 	@echo "make sujets           Compiler les sujets de concours et leurs corrigés"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
+	@echo "make f F=feuilles/langages/td-kleene.typ"
 	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
 	@echo "make wf F=langages [C=true] [O=0]"
 	@echo "make ws S=centrale-2022-mp-informatique [C=true] [O=0]"

@@ -2,7 +2,7 @@
 
 #let ex = exercice(
   meta: (
-    titre: "Reconnaissable ⇒ régulier par programmation dynamique (≈ Floyd–Warshall)",
+    titre: "Reconnaissable ⇒ régulier par programmation dynamique",
     chapitres: ("langages-reguliers", "automates-finis", "algorithmique"),
     algorithmes: ("programmation-dynamique",),
     structures: (),
@@ -14,7 +14,7 @@
   contenu: (
     [
       Cet exercice est une alternative à la méthode d'élimination des états
-      pour obtenir une expression régulière à partir d'un automate.
+      pour obtenir une expression régulière à partir d'un automate, avec une méthode similaire à l'algorithme de Floyd-Warshall. 
 
       Soit $(Σ,Q,0,F,δ)$ un automate déterministe tel que $Q = {0, …, n-1}$.
 

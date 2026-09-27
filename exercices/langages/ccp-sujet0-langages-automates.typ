@@ -52,7 +52,7 @@
     ]),
     question([
       On considère l'automate non déterministe suivant :
-      #align(center, cetz.canvas({
+      #align(center, cetz.canvas(length: 0.9cm, {
         import finite.draw: state, transition
         cetz.draw.set-style(transition: (label: (angle: 0deg)))
         state((0, 0), "s0", label: $0$, initial: (label: none))
@@ -75,7 +75,7 @@
     ], solution: [
       #enum(numbering: "(a)",
         [Avant la première lecture et après chaque lettre lue, on ajoute tous les états accessibles par zéro, une ou plusieurs $ε$-transitions, qui se franchissent sans lire de lettre.
-          #align(center, cetz.canvas({
+          #align(center, cetz.canvas(length: 0.9cm, {
             import finite.draw: state, transition
             cetz.draw.set-style(transition: (label: (angle: 0deg)))
             state((0, 0), "0,2", label: ${0,2}$, radius: 0.8, initial: (label: none))

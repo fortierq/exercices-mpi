@@ -164,7 +164,7 @@
     if corrige {
       block(
         width: 100%, stroke: (left: 0.4pt + luma(60%)),
-        inset: (left: 10pt, y: 3pt), above: 5pt, below: 9pt,
+        inset: (left: 10pt, y: 3pt), above: 8pt, below: 10pt,
         if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
       )
     }

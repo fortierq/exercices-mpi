@@ -95,7 +95,7 @@
       en étendant la fonction de transition des lettres aux mots.
 
       Dans la question 9, on considère l'automate $A=({a,b},{q_0,q_1,q_2},{q_0},{q_0,q_2},δ)$ suivant :
-      #align(center, cetz.canvas({
+      #align(center, cetz.canvas(length: 0.9cm, {
         import finite.draw: state, transition
         cetz.draw.set-style(transition: (label: (angle: 0deg)))
         state((0, 0), "q0", label: $q_0$, initial: (label: none), final: true)
@@ -126,7 +126,7 @@
     ]),
     question([
       En utilisant une méthode similaire, déterminer le langage reconnu par l'automate suivant :
-      #align(center, cetz.canvas({
+      #align(center, cetz.canvas(length: 0.9cm, {
         import finite.draw: state, transition
         cetz.draw.set-style(transition: (label: (angle: 0deg)))
         state((0, 0), "q0", label: $q_0$, initial: (label: none))
