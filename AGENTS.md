@@ -2,6 +2,8 @@
 
 ## Consignes générales
 
+- Poser des questions pour clarifier les besoins de l’utilisateur si besoin. Ne pas choisir silencieusement en cas d’ambiguïté.
+- Commenter à l'utilisateur des choix et idées importantes pour comprendre le code, tout en restant concis.
 - Rester concis, précis et simple si possible. Refactoriser les abstractions devenues inutiles.
 
 ## Structure, ajout et conversion
@@ -20,12 +22,15 @@
 - Corriger uniquement les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l’utilisateur pour toute modification de présentation ou de contenu.
 - Pour déterminiser, dessiner l'automate plutôt que donner la table de transition. 
 
-## Syntaxe
+## Code Typst
 
+- Dans les fichiers `.typ`, revenir à la ligne lorsque cela facilite la lecture ou marque une articulation logique du paragraphe, sans limite explicite de caractères. Préserver les retours structurels (paragraphes, listes, titres, code et formules).
 - Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
 - Délimiter les extraits de code Typst, inline ou en bloc, par des accents graves avec le langage adéquat, par exemple ```ocaml arbre_a_mot``` ; ne pas les entourer d'apostrophes.
-- Noter un graphe `G = (S, A)`, où `S` est l’ensemble des sommets et `A`
-  l’ensemble des arcs (ou des arêtes pour un graphe non orienté). Utiliser ces notations de façon cohérente dans les énoncés, corrigés et modèles.
+
+## Syntaxe
+
+- Noter un graphe `G = (S, A)`, où `S` est l’ensemble des sommets et `A` l’ensemble des arcs (ou des arêtes pour un graphe non orienté). Utiliser ces notations de façon cohérente dans les énoncés, corrigés et modèles.
 - Pour la programmation en MP2I ou MPI, utiliser exclusivement C, OCaml ou Python, dans les questions comme dans les solutions. Le pseudocode reste possible lorsqu’une question demande seulement de décrire un algorithme.
 - Utiliser les caractères Unicode pour les symboles mathématiques, par exemple `Σ` pour l’alphabet, `ε` pour le mot vide, `∪` pour l’union, `∩` pour l’intersection, `*` pour l’étoile de Kleene, `→` pour la flèche d’une fonction (sauf en programmation), `∀` et `∃` pour les quantificateurs. 
 - Utiliser régulier au lieu de rationnel pour un langage ou expression régulière. Utiliser hors-contexte au lieu de langage algébrique. Utiliser | au lieu de + sur les expressions régulières.
@@ -61,7 +66,8 @@
 
 ## Commits
 
-- Pour chaque nouvelle modification majeure (ajout d'un nouvel exercice...), créer une pull request dédiée après les vérifications sans demander de confirmation supplémentaire. Inclure l’exercice et des commentaires pertinents éventuels. Ne pas créer de pull request pour des modifications mineures.
+- Pour chaque nouvelle modification majeure (ajout d'un nouvel exercice...), créer une pull request dédiée après les vérifications sans demander de confirmation supplémentaire. Inclure l’exercice et des commentaires pertinents éventuels. 
+- Pour une modification mineure, ne pas créer de pull request et faire un commit directement sur la branche principale.
 - Ne pas créer d'autre fichier de commentaires, si non demandé par l’utilisateur.
 - Ne pas inclure les modifications de l’utilisateur sans rapport avec l’exercice.
 - Indiquer dans la réponse finale la pull request créée et les vérifications effectuées.

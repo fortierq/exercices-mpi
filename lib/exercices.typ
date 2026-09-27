@@ -146,9 +146,8 @@
         let c = ex.meta.concours
         [#texte-concours(c) #h(1em)]
       }
-      Chapitres : #ex.meta.chapitres.join(", ") |
-      Difficulté : #ex.meta.difficulte/5 |
-      #if ex.meta.duree != none [ Durée : #ex.meta.duree min]
+      Chapitres : #ex.meta.chapitres.join(", ") | Difficulté : #ex.meta.difficulte/5
+      #if ex.meta.duree != none [ | Durée : #ex.meta.duree min]
     ])
   }
   let i = ex.debut

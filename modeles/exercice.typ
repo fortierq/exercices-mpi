@@ -18,8 +18,8 @@
     question(
       [Proposer un algorithme qui détecte un cycle dans $G$.],
       solution: [Effectuer un parcours en profondeur avec trois couleurs.
-        Une arête vers un sommet gris révèle un cycle. La complexité est
-        $O(abs(S) + abs(A))$ avec des listes d'adjacence.],
+      Une arête vers un sommet gris révèle un cycle.
+      La complexité est $O(abs(S) + abs(A))$ avec des listes d'adjacence.],
     ),
     [On suppose désormais que le graphe est représenté par des listes d'adjacence.],
     question(
