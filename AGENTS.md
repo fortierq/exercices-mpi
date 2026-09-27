@@ -55,7 +55,7 @@
 
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
 
-- Signaler chaque correction par une coche (✓) dans la marge gauche, centrée verticalement sur la solution, sans libellé « Solution ».
+- Présenter les corrections sans icône ni libellé « Solution ».
 
 ## Figures
 

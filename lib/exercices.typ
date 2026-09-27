@@ -166,12 +166,7 @@
       block(
         width: 100%, stroke: (left: 0.4pt + luma(60%)),
         inset: (left: 10pt, y: 3pt), above: 5pt, below: 9pt,
-        grid(
-          columns: (0pt, 1fr), column-gutter: 0pt,
-          align: (left + horizon, left + top),
-          move(dx: -24pt, box(width: 10pt, text(size: 11pt, fill: luma(45%))[$✓$])),
-          if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
-        ),
+        if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
       )
     }
     i += 1
