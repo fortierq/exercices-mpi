@@ -13,10 +13,10 @@
 #let titre-exercice(titre, prefixe, concours: none, niveau: 1) = {
   block(above: 12pt, below: 12pt, breakable: false)[
     #heading(level: niveau)[
-      #grid(columns: (auto, 1fr, auto), column-gutter: 1em, align: horizon,
+      #grid(columns: (1fr, auto), column-gutter: 1em, align: (left, right),
         [#prefixe -- #titre],
         [#if concours != none {
-          text(size: 8pt, fill: luma(35%).transparentize(30%))[
+          text(size: 10pt, fill: luma(35%).transparentize(30%))[
             #texte-concours(concours)
           ]
         }],

@@ -22,8 +22,7 @@
 - Les consignes de conversion sont maintenues dans ce dépôt ; aucun skill externe n'est nécessaire.
 - Résoudre les `\input` et `\include`, y compris les anciens chemins `/workspaces/…`, à partir des dépôts voisins. Lire aussi les corrigés séparés ou sous `\if\cor1`, et ignorer les exercices commentés. Ne pas modifier les originaux LaTeX.
 - Conserver l'ordre, les questions, les sous-questions, les textes intermédiaires, les notations et les arguments de la source, sous réserve des corrections importantes et des conventions ci-dessous. Associer les solutions aux questions par leur contenu plutôt que par leur seul numéro.
-- Ne pas ajouter silencieusement de questions ou de solutions absentes de la source. Laisser `solution: none` si le corrigé manque. Signaler les difficultés estimées et les adaptations de contenu ou de présentation dans la réponse et la pull request.
-- Vérifier en particulier le mot vide, l'ensemble vide, les domaines, les hypothèses de finitude et les indices des récurrences. Après conversion, contrôler le nombre et l'ordre des questions ainsi que la séparation entre énoncés et solutions.
+- Ajouter un corrigé si le corrigé manque. 
 
 ### Périmètre et corrections
 
@@ -37,6 +36,7 @@
 - Dans les fichiers `.typ`, revenir à la ligne lorsque cela facilite la lecture ou marque une articulation logique du paragraphe, sans limite explicite de caractères. Préserver les retours structurels (paragraphes, listes, titres, code et formules).
 - Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
 - Délimiter les extraits de code Typst, inline ou en bloc, par des accents graves avec le langage adéquat, par exemple ```ocaml arbre_a_mot``` ; ne pas les entourer d'apostrophes.
+- Être concis.
 
 ## Syntaxe
 

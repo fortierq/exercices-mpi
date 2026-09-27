@@ -19,7 +19,6 @@
       On obtient
       $ P = {a_1,b_3,b_4}, $
       $ S = {b_4} $
-      et
       $ F = {a_1 b_2, b_2 a_1, b_2 b_3, b_2 b_4, b_3 a_1, b_3 b_3, b_3 b_4}. $
       #align(center, cetz.canvas(length: 0.9cm, {
         import finite.draw: state, transition
