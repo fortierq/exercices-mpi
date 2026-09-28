@@ -7,10 +7,10 @@
 			"path": "../exos-src"
 		},
 		{
-			"path": "../cours-src"
+			"path": "../texmf"
 		},
 		{
-			"path": "../texmf"
+			"path": "../../../../repo/cours-src"
 		}
 	],
 	"settings": {}

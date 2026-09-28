@@ -11,7 +11,7 @@
 
 // Titres communs aux exercices et aux parties des sujets.
 #let titre-exercice(titre, prefixe, concours: none, niveau: 1) = {
-  block(above: 12pt, below: 12pt, breakable: false)[
+  block(above: 16pt, below: 16pt, breakable: false)[
     #heading(level: niveau)[
       #grid(columns: (1fr, auto), column-gutter: 1em, align: (left, right),
         [#prefixe -- #titre],
@@ -153,11 +153,11 @@
   let i = ex.debut
   for q in aplatir(ex.contenu) {
     if type(q) == content {
-      block(width: 100%, above: 9pt, below: 9pt, q)
+      block(width: 100%, above: 12pt, below: 12pt, q)
       continue
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
-    block(width: 100%, above: 8pt, below: 0pt,
+    block(width: 100%, above: 12pt, below: 5pt,
       enum(start: i, numbering: "1.",
         indent: 0pt, body-indent: 0.5em, q.enonce),
     )
@@ -185,7 +185,7 @@
   let titre-affiche = titre + if corrige { " : corrigé" } else { "" }
   set document(title: titre-affiche)
   set text(font: "New Computer Modern", size: 11pt, lang: "fr")
-  set par(justify: true, leading: 0.55em, spacing: 0.65em)
+  set par(justify: true, leading: 0.55em, spacing: 0.8em)
   set page(
     paper: "a4", margin: (x: 14mm, top: 25mm, bottom: 18mm),
     header-ascent: 9mm,
