@@ -7,7 +7,7 @@ Sources locales :
 - `exos-src/exos/language/ensembles_inevitables/ensembles_inevitables.yml`.
 
 Les douze questions, numérotées de 0 à 11, et leur corrigé ont été convertis.
-L'attribution « ENS Ulm, oral MP, 2019 » est reprise du YAML, sans vérification
+L'attribution « ENS, oral MP, 2019 » est reprise du YAML, sans vérification
 indépendante. Son titre « Preuve de programmes en logique de Hoare » et son
 étiquette `proof`, manifestement sans rapport, ont été remplacés. La difficulté
 4/5 est une estimation ajoutée lors de cette conversion.

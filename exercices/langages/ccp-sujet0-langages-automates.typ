@@ -11,7 +11,7 @@
     langages: (),
     difficulte: 2,
     niveaux: ("MPI",),
-    concours: (nom: "CCP", annee: 2022, filiere: "MPI", oral: true),
+    concours: (nom: "CCINP", annee: 2022, filiere: "MPI", oral: true),
   ),
   contenu: (
     question([Rappeler la définition d'un langage régulier.], solution: [

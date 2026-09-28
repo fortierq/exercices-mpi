@@ -42,10 +42,11 @@
 #let concours-possibles = (
   "Centrale",
   "Mines-Ponts",
-  "CCP",
+  "CCINP",
   "ENS",
-  "ENS Ulm",
   "EPITA",
+  "X",
+  "X-ENS",
 )
 
 #let filieres-possibles = (

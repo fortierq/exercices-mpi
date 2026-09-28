@@ -5,6 +5,7 @@
 - Poser des questions pour clarifier les besoins de l'utilisateur si besoin. Ne pas choisir silencieusement en cas d'ambiguïté.
 - Commenter à l'utilisateur des choix et idées importantes pour comprendre le code, tout en restant concis.
 - Rester concis, précis et simple si possible. Refactoriser les abstractions devenues inutiles.
+- Essayer de faire tenir le pdf sur un nombre pair de pages.
 
 ## Structure, ajout et conversion
 
@@ -27,7 +28,7 @@
 ### Sujets de concours et rapports du jury
 
 - Ranger les sujets dans `concours/<année sur deux chiffres>/` et partir de `templates/sujet-concours.typ`. Garder les questions, définitions et figures dans un seul sujet ; conserver la numérotation des questions source.
-- Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l'énoncé, signaler les parties/questions corrigées dans la liste initiale du corrigé et expliquer brièvement le problème ou le changement pour chacune. Ne pas conserver deux versions contradictoires du code.
+- Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l'énoncé, signaler les parties/questions corrigées dans la liste initiale du corrigé et expliquer brièvement le problème et/ou le changement pour chacune. Ne pas conserver deux versions contradictoires du code.
 - Renseigner `corrections` de `exercice` avec une simple liste des parties/questions corrigées, chacune accompagnée d'une brève explication du problème ou du changement. Le corrigé commence par « Correction par rapport à l'énoncé initial : » puis cette liste. Placer ensuite les commentaires généraux du jury dans `remarques`, sous forme de liste, sans titre, source ni référence affichés.
 - Associer les observations relatives à une partie ou sous-partie au paramètre `commentaire` de `partie` ; les afficher dans le corrigé immédiatement après son titre. Tous les commentaires du jury (généraux, de partie et de question) sont en italique.
 - Associer chaque observation pertinente du jury à la question concernée via `commentaire` de `question`. Elle apparaît uniquement dans le corrigé, en italique, immédiatement après l'énoncé de la question et avant sa solution.
@@ -41,6 +42,7 @@
 - Utiliser les chapitres de /Users/qfortier/repo/cours-src (fichiers de la forme poly_*.tex) pour une référence de cours.
 - Corriger uniquement les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l'utilisateur pour toute modification de présentation ou de contenu.
 - Pour déterminiser, dessiner l'automate plutôt que donner la table de transition. 
+- Les complexités doivent être justifiées, sauf mention contraire ou évidente.
 
 ## Code Typst
 
@@ -67,14 +69,11 @@
   Respecter `lib/meta.typ` pour les métadonnées.
 - Renseigner le champ obligatoire `langages` avec les langages de       programmation effectivement utilisés dans l'énoncé ou le corrigé : `("C",)`, `("OCaml",)`, `("SQL",)`, `("Python",)` ou plusieurs de ces valeurs. Utiliser `()` pour un exercice sans langage de programmation, par exemple en présence de pseudocode seulement.
 - Utiliser uniquement `concours` pour une attribution : `none` ou `(nom: "…", annee: …, filiere: "…")`. La filière est `"MPI"` par défaut. Choisir le concours et la filière dans `lib/meta.typ` ; ne pas utiliser de champ `reference` ni inventer une année.
-
 - Renseigner `duree` par un couple `(heures, minutes)` d'entiers, avec une durée strictement positive et `0 ≤ minutes < 60`, ou `none`. Afficher par exemple « 3 h », « 1 h 30 min » ou « 20 min ».
 
 ## Présentation
 
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
-
-- Présenter les corrections sans icône ni libellé « Solution ».
 - Dans le corrigé, masquer les blocs libres de `contenu` (préliminaires, définitions, notations et textes de contexte). Conserver les titres des parties, les questions, leurs commentaires et leurs solutions. Les figures incluses dans les questions et solutions restent affichées.
 
 ## Figures

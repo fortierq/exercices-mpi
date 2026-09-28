@@ -311,7 +311,7 @@ python3 scripts/catalogue.py --langage OCaml
 python3 scripts/catalogue.py --chapitre automates-finis
 python3 scripts/catalogue.py --algorithme parcours-en-profondeur --difficulte-max 4
 python3 scripts/catalogue.py --structure graphe-oriente --niveau MPI
-python3 scripts/catalogue.py --concours 'ENS Ulm' --sortie build/selection.json
+python3 scripts/catalogue.py --concours 'ENS' --sortie build/selection.json
 ```
 
 Les filtres se combinent par « et » et utilisent des valeurs exactes. Le champ

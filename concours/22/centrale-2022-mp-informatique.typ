@@ -217,7 +217,6 @@
   corrections: [
     - Partie I.D : préciser que la minimalité concerne les automates déterministes complets.
     - Questions 26–27 : remplacer $δ^*({I},u)$ par $δ^*(I,u)$, car l'état initial du déterminisé est $I$.
-    - Partie II.A : supprimer le ```ocaml ;;``` prématuré après ```ocaml Union```, qui interrompait la déclaration du type ```ocaml exprat```.
     - Partie II.B.3, avant la question 38 : $a$ est une expression régulière quelconque, pas nécessairement une lettre.
   ],
   remarques: [
