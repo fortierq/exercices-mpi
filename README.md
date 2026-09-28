@@ -40,7 +40,7 @@ templates/exercice.typ               Exercice minimal à copier
 templates/fiche.typ                           Point d’entrée pour un exercice isolé
 templates/feuille.typ                         Feuille minimale à copier
 templates/sujet-concours.typ                  Sujet minimal à copier
-sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
+concours/centrale-2022-mp-informatique.typ   Sujet complet, 50 questions corrigées
 ressources/centrale-2022-mp-informatique/    Code OCaml et tests du sujet
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
 docs/ensembles-inevitables-migration.md      Provenance et corrections de la source
@@ -101,7 +101,7 @@ Copier `templates/feuille.typ` vers `feuilles/ma-feuille.typ`, puis importer les
 
 `contenu` est une suite ordonnée : `[texte libre]` peut apparaître avant, entre
 ou après les appels à `question(...)`. Seules les questions sont numérotées ;
-Copier `templates/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
+Copier `templates/sujet-concours.typ` dans `concours/mon-sujet.typ`. Le fichier
 
 Les notes de conversion se placent dans `docs/`. Si un exercice nécessite des
 images ou des modules Typst auxiliaires, les placer dans
@@ -112,7 +112,7 @@ tableaux, etc.
 
 ### Métadonnées
 
-  --input exercice=/sujets/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
+  --input exercice=/concours/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
 | --- | --- | --- |
 | `id` | chaîne, obligatoire | Stable et unique, indépendante du chemin |
 | `titre` | chaîne, obligatoire | Titre lisible |
@@ -185,10 +185,10 @@ restent sans gras. Chaque solution commence par « Solution. » souligné. Les f
 
 ## Sujets de concours et extraits
 
-Copier `templates/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
+Copier `templates/sujet-concours.typ` dans `concours/mon-sujet.typ`. Le fichier
 exporte `ex`, construit avec `exercice`, comme tout exercice de la banque.
 Son `contenu` mêle des textes, des `question` et des `partie`.
-Les dossiers `sujets/` et `exercices/` servent au classement ; le type de données
+Les dossiers `concours/` et `exercices/` servent au classement ; le type de données
 et le modèle de compilation (`templates/fiche.typ`) sont les mêmes.
 Les définitions et consignes initiales sont de simples blocs de texte au début
 de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
@@ -201,10 +201,10 @@ La mise en page utilise directement `feuille` et `afficher-exercice` de
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
 
 ```sh
-make sujets
-make build/sujets/centrale-2022-mp-informatique/corrige.pdf
+make concours
+make build/concours/centrale-2022-mp-informatique/corrige.pdf
 typst compile --root . --ignore-system-fonts \
-  --input exercice=/sujets/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
+  --input exercice=/concours/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
 ```
 
 Pour partager une partie, la définir dans une variable exportée du sujet,
@@ -214,7 +214,7 @@ L’exercice autonome ajoute les rappels nécessaires et ses métadonnées :
 
 ```typst
 #import "/lib/exercices.typ": exercice
-#import "/sujets/centrale-2022-mp-informatique.typ": palindromes
+#import "/concours/centrale-2022-mp-informatique.typ": palindromes
 
 #let ex = exercice(
   meta: (..palindromes.meta, titre: palindromes.titre, niveaux: ("MPI", "MP")),

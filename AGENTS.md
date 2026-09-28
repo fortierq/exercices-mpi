@@ -79,8 +79,4 @@
 
 ## Commits
 
-- Pour chaque nouvelle modification majeure (ajout d'un nouvel exercice...), créer une pull request dédiée après les vérifications sans demander de confirmation supplémentaire. Inclure l’exercice et des commentaires pertinents éventuels. 
-- Pour une modification mineure, ne pas créer de pull request et faire un commit directement sur la branche principale.
-- Ne pas créer d'autre fichier de commentaires, si non demandé par l’utilisateur.
-- Ne pas inclure les modifications de l’utilisateur sans rapport avec l’exercice.
-- Indiquer dans la réponse finale la pull request créée et les vérifications effectuées.
+- Pour chaque modification, faire un commit directement sur la branche principale.

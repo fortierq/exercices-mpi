@@ -15,7 +15,7 @@ E_SANS_PREFIXE := $(patsubst exercices/%,%,$(E_SANS_EXTENSION))
 F_SANS_EXTENSION := $(patsubst %.typ,%,$(F))
 F_SANS_PREFIXE := $(patsubst feuilles/%,%,$(F_SANS_EXTENSION))
 S_SANS_EXTENSION := $(patsubst %.typ,%,$(S))
-S_SANS_PREFIXE := $(patsubst sujets/%,%,$(S_SANS_EXTENSION))
+S_SANS_PREFIXE := $(patsubst concours/%,%,$(S_SANS_EXTENSION))
 ifeq ($(shell uname -s),Darwin)
 O_PDF ?= open -a "Visual Studio Code"
 else
@@ -24,26 +24,26 @@ endif
 
 EXERCICES := $(patsubst exercices/%.typ,%,$(shell find exercices -mindepth 2 -maxdepth 2 -name '*.typ' | sort))
 FS := $(patsubst feuilles/%.typ,%,$(wildcard feuilles/*.typ))
-SUJETS := $(patsubst sujets/%.typ,%,$(wildcard sujets/*.typ))
+CONCOURS := $(patsubst concours/%.typ,%,$(wildcard concours/*.typ))
 # Dépendances conservatrices : un import ou une image modifiés déclenchent la compilation.
-SOURCES := $(shell find lib templates exercices feuilles sujets $(wildcard ressources) -type f | sort)
+SOURCES := $(shell find lib templates exercices feuilles concours $(wildcard ressources) -type f | sort)
 PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf build/exercices/$(ex)/corrige.pdf)
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
-PDF_SUJETS := $(foreach s,$(SUJETS),build/sujets/$(s)/enonce.pdf build/sujets/$(s)/corrige.pdf)
+PDF_CONCOURS := $(foreach s,$(CONCOURS),build/concours/$(s)/enonce.pdf build/concours/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles sujets catalogue check test f w wf ws clean help
-all: exercices feuilles sujets catalogue
+.PHONY: all exercices feuilles concours catalogue check test f w wf ws clean help
+all: exercices feuilles concours catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
-sujets: $(PDF_SUJETS)
+concours: $(PDF_CONCOURS)
 
-build/sujets/%/enonce.pdf: sujets/%.typ $(SOURCES) Makefile
+build/concours/%/enonce.pdf: concours/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/sujets/$*.typ" templates/fiche.typ "$@"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$*.typ" templates/fiche.typ "$@"
 
-build/sujets/%/corrige.pdf: sujets/%.typ $(SOURCES) Makefile
+build/concours/%/corrige.pdf: concours/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/sujets/$*.typ" --input corrige=true templates/fiche.typ "$@"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$*.typ" --input corrige=true templates/fiche.typ "$@"
 
 build/exercices/%/enonce.pdf: exercices/%.typ $(SOURCES) Makefile
 	@mkdir -p "$(@D)"
@@ -72,8 +72,8 @@ check: all test
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/fiche.typ build/templates/exercice-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) templates/feuille.typ build/templates/feuille.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/feuille.typ build/templates/feuille-corrige.pdf
-	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ templates/fiche.typ build/templates/sujet.pdf
-	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ --input corrige=true templates/fiche.typ build/templates/sujet-corrige.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ templates/fiche.typ build/templates/concours.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ --input corrige=true templates/fiche.typ build/templates/concours-corrige.pdf
 
 test:
 	@mkdir -p build/ressources/centrale-2022-mp-informatique
@@ -99,18 +99,18 @@ wf:
 	$(TYPST) w $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
 
 ws:
-	@test -f "sujets/$(S_SANS_PREFIXE).typ" || { echo "Sujet introuvable : $(S)"; exit 1; }
-	@mkdir -p "build/sujets/$(S_SANS_PREFIXE)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/sujets/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/sujets/$(S_SANS_PREFIXE)/apercu.pdf"
-	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/sujets/$(S_SANS_PREFIXE)/apercu.pdf"; fi
-	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/sujets/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/sujets/$(S_SANS_PREFIXE)/apercu.pdf"
+	@test -f "concours/$(S_SANS_PREFIXE).typ" || { echo "Sujet introuvable : $(S)"; exit 1; }
+	@mkdir -p "build/concours/$(S_SANS_PREFIXE)"
+	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"
+	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"; fi
+	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/concours/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"
 
 clean:
 	rm -rf build
 
 help:
 	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"
-	@echo "make sujets           Compiler les sujets de concours et leurs corrigés"
+	@echo "make concours         Compiler les sujets de concours et leurs corrigés"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
 	@echo "make f F=feuilles/langages/td-kleene.typ"
 	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
