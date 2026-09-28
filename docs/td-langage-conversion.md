@@ -54,8 +54,8 @@ Les expressions, l'ordre des questions et les méthodes de preuve sont conservé
 
 ```sh
 nix develop path:.
-make watch-feuille FEUILLE=td-langage
-make watch-feuille FEUILLE=td-langage C=true
+make wf F=td-langage
+make wf F=td-langage C=true
 ```
 
 Le PDF de prévisualisation est `build/feuilles/td-langage-apercu.pdf`.
