@@ -5,6 +5,8 @@
 #show: feuille.with(
   titre: ex.meta.titre,
   niveau: ex.meta.niveaux.join(" / "),
+  auteur: ex.meta.at("auteur", default: none),
+  concours: ex.meta.concours,
   exercices: (ex,),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
   details: sys.inputs.at("details", default: "true") == "true",

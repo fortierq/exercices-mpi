@@ -8,6 +8,7 @@
 #show: feuille.with(
   titre: "Théorème de Kleene",
   niveau: "MPI",
+  auteur: "Q. Fortier",
   exercices: (locaux, ccp, stabilite, dynamique, residuels),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
   details: sys.inputs.at("details", default: "false") == "true",

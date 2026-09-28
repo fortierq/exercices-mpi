@@ -28,7 +28,7 @@
       #grid(columns: (1fr, auto), column-gutter: 1em, align: (left, right),
         [#prefixe -- #titre],
         [#if duree != none {
-          text(size: 10pt, fill: luma(35%).transparentize(30%))[
+          text(fill: luma(35%).transparentize(30%))[
             #texte-duree(duree)
           ]
         }],
@@ -206,20 +206,17 @@
 #let feuille(
   titre: "Feuille d'exercices",
   niveau: none,
+  auteur: none,
+  concours: none,
   exercices: (),
   corrige: false,
   details: true,
   nouvelle-page: false,
   body,
 ) = {
-  let titre-affiche = titre + if corrige { " : corrigé" } else { "" }
-  let durees = exercices.map(ex => ex.meta.duree).filter(duree => duree != none)
-  let duree = if durees.len() == exercices.len() {
-    let minutes = durees.map(duree => 60 * duree.first() + duree.last()).sum()
-    (calc.floor(minutes / 60), calc.rem(minutes, 60))
-  } else {
-    none
-  }
+  let titre-principal = if concours == none { titre } else { texte-concours(concours) }
+  let titre-affiche = titre-principal + if corrige { " : corrigé" } else { "" }
+  let duree = if concours == none or exercices.len() != 1 { none } else { exercices.first().meta.duree }
   set document(title: titre-affiche)
   set text(font: "New Computer Modern", size: 11pt, lang: "fr")
   set par(justify: true, leading: 0.55em, spacing: 0.8em)
@@ -232,7 +229,7 @@
         columns: (24mm, 1fr, 24mm), align: (left, center, right),
         if niveau != none { niveau } else { [] },
         text(size: 12pt, weight: "bold", titre-affiche),
-        if duree != none { texte-duree(duree) } else { [] },
+        if concours != none and duree != none { texte-duree(duree) } else if auteur != none { auteur },
       )
       #v(4pt)
       #line(length: 100%, stroke: 0.4pt)
