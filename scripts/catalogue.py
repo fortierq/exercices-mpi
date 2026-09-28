@@ -17,7 +17,7 @@ def catalogue(typst):
         relative = source.relative_to(ROOT).as_posix()
         result = subprocess.run(
             [typst, "eval", "--root", str(ROOT), "--ignore-system-fonts",
-             "--input", f"exercice=/{relative}", "--in", str(ROOT / "modeles/fiche.typ"),
+             "--input", f"exercice=/{relative}", "--in", str(ROOT / "templates/fiche.typ"),
              "query(<exercice-meta>).map(m => m.value).first()"],
             check=True, capture_output=True, text=True,
         )

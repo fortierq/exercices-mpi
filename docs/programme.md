@@ -63,6 +63,6 @@ La permission d'utiliser Python dans cette banque est une **convention locale**,
 
 ## Application à cette banque
 
-- Consulter ce fichier avant de choisir un outil ; citer section/page lors d'une extension de [lib/programme.typ](../lib/programme.typ). Ce fichier Typst contient un vocabulaire initial, pas tout le programme. Ne pas ajouter automatiquement toutes les notions ci-dessus aux étiquettes.
+- Consulter ce fichier avant de choisir un outil ; citer section/page lors d'une extension de [lib/meta.typ](../lib/meta.typ). Ce fichier Typst contient un vocabulaire initial, pas tout le programme. Ne pas ajouter automatiquement toutes les notions ci-dessus aux étiquettes.
 - Métadonnées : ne retenir que les outils effectivement utilisés ; une liste vide est valide. Un appel récursif seul ne justifie pas l'étiquette 'pile'. Les langages formels vont dans 'chapitres' ; les langages de programmation dans 'langages'.
 - Classement : 'graphes' (§3.4/4.5), 'langages-reguliers' pour les mots et expressions (§8.1), 'recursivite-et-induction' pour l'induction structurelle (§2). Ne pas inventer d'étiquette décrivant simplement une tâche.

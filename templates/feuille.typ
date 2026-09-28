@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": feuille
-#import "/modeles/exercice.typ": ex
+#import "/templates/exercice.typ": ex
 
 #show: feuille.with(
   titre: "Travaux dirigés",

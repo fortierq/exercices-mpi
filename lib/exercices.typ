@@ -134,11 +134,8 @@
       block(
         width: 100%, stroke: (left: 0.4pt + luma(60%)),
         inset: (left: 10pt, y: 3pt), above: 5pt, below: 9pt,
-      )[
-        #underline[Solution] 
-
-        #if q.solution == none { emph[Corrigé à compléter.] } else { q.solution }
-      ]
+        if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
+      )
     }
     i += 1
   }
