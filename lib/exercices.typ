@@ -175,7 +175,10 @@
     ]
   }
   if corrige and ex.remarques != none {
-    block(width: 100%, above: 12pt, below: 12pt, text(style: "italic", ex.remarques))
+    block(width: 100%, above: 12pt, below: 12pt)[
+      Commentaires généraux du jury :
+      #text(style: "italic", ex.remarques)
+    ]
   }
   let i = ex.debut
   // Les textes de contexte restent dans l'énoncé ; les titres des parties sont conservés.
