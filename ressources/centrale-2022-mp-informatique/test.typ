@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": aplatir, nombre-questions, est-partie
-#import "/concours/centrale-2022-mp-informatique.typ": ex as sujet, palindromes
+#import "/concours/22/centrale-2022-mp-informatique.typ": ex as sujet, palindromes
 #import "/exercices/langages/palindromes-et-rationalite.typ": ex
 
 #assert(nombre-questions(sujet.contenu) == 50)

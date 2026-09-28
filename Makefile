@@ -7,7 +7,7 @@ OCAML ?= ocaml
 TYPST_FLAGS := --root . --ignore-system-fonts
 E ?= langage/ensembles-inevitables
 F ?= langages
-S ?= centrale-2022-mp-informatique
+S ?= 22/centrale-2022-mp-informatique
 C ?= true
 O ?= 1
 E_SANS_EXTENSION := $(patsubst %.typ,%,$(E))
@@ -24,7 +24,7 @@ endif
 
 EXERCICES := $(patsubst exercices/%.typ,%,$(shell find exercices -mindepth 2 -maxdepth 2 -name '*.typ' | sort))
 FS := $(patsubst feuilles/%.typ,%,$(wildcard feuilles/*.typ))
-CONCOURS := $(patsubst concours/%.typ,%,$(wildcard concours/*.typ))
+CONCOURS := $(patsubst concours/%.typ,%,$(shell find concours -name '*.typ' | sort))
 # Dépendances conservatrices : un import ou une image modifiés déclenchent la compilation.
 SOURCES := $(shell find lib templates exercices feuilles concours $(wildcard ressources) -type f | sort)
 PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf build/exercices/$(ex)/corrige.pdf)
@@ -79,6 +79,10 @@ test:
 	@mkdir -p build/ressources/centrale-2022-mp-informatique
 	$(TYPST) compile $(TYPST_FLAGS) ressources/centrale-2022-mp-informatique/test.typ build/ressources/centrale-2022-mp-informatique/test.pdf
 	$(OCAML) -I ressources/centrale-2022-mp-informatique ressources/centrale-2022-mp-informatique/test.ml
+	@mkdir -p build/ressources/mines-ponts-2019-mp-informatique
+	$(TYPST) compile $(TYPST_FLAGS) ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test-corrige.pdf
+	$(OCAML) -I ressources/mines-ponts-2019-mp-informatique ressources/mines-ponts-2019-mp-informatique/test.ml
 
 f:
 	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
@@ -115,6 +119,6 @@ help:
 	@echo "make f F=feuilles/langages/td-kleene.typ"
 	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
 	@echo "make wf F=langages [C=true] [O=0]"
-	@echo "make ws S=centrale-2022-mp-informatique [C=true] [O=0]"
+	@echo "make ws S=22/centrale-2022-mp-informatique [C=true] [O=0]"
 	@echo "make catalogue        Régénérer build/catalogue.json"
 	@echo "make clean            Supprimer uniquement build/"

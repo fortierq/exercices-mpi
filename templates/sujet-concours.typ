@@ -8,6 +8,8 @@
     difficulte: 2, niveaux: ("MPI",), duree: 240,
     concours: none, // Renseigner le concours, l'année et la filière attestés.
   ),
+  // Affiché uniquement en fin de corrigé. Indiquer source, pages et questions.
+  rapport: none,
   contenu: (
     [Les réponses doivent être justifiées.
       On fixe un alphabet $Σ$.],

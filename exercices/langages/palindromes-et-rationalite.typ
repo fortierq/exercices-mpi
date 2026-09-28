@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": exercice
-#import "/concours/centrale-2022-mp-informatique.typ": palindromes
+#import "/concours/22/centrale-2022-mp-informatique.typ": palindromes
 
 // La partie est partagée avec le sujet ; seuls ses rappels sont ajoutés ici.
 #let ex = exercice(

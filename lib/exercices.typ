@@ -51,7 +51,7 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
-#let exercice(meta: (:), contenu: (), debut: 1) = {
+#let exercice(meta: (:), contenu: (), debut: 1, rapport: none) = {
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
     assert(champ in meta, message: "Métadonnée manquante : " + champ)
@@ -123,11 +123,13 @@
     }
   }
   verifier(contenu)
+  assert(rapport == none or type(rapport) == content, message: "rapport doit être un contenu Typst ou none")
   assert(nombre-questions(contenu) > 0, message: "Un exercice doit contenir au moins une question")
   (
     meta: (niveaux: (), duree: none, ..meta, concours: concours-normalise),
     contenu: contenu,
     debut: debut,
+    rapport: rapport,
   )
 }
 
@@ -169,6 +171,11 @@
       )
     }
     i += 1
+  }
+  if corrige and ex.at("rapport", default: none) != none {
+    pagebreak(weak: true)
+    heading(level: 1)[Rapport du jury]
+    ex.rapport
   }
 }
 

@@ -209,6 +209,29 @@
     niveaux: ("MP", "MPI"), duree: 180,
     concours: concours,
   ),
+  rapport: [
+    Source : #link("https://www.concours-centrale-supelec.fr/sites/default/files/documents/rapCS2022MP_0.pdf#page=40")[Rapport Centrale-Supélec 2022, MP, option informatique],
+    p. E–34 à E–36 (pages 40–42 du PDF).
+
+    == Programmation et représentation des ensembles (p. E–35)
+    « L’indentation, certes utile pour comprendre le code, n’est pas un délimiteur comme en Python. »
+
+    Synthèse du rapport : aux questions 19–24, travailler directement avec la représentation binaire
+    évite les parcours et conversions de listes qui annulent le gain recherché.
+    À la question 22, répéter le parcours de toutes les transitions pour chaque couple d’états est inutilement coûteux.
+
+    == Automates et preuves (p. E–36)
+    « beaucoup de confusions dans les objets manipulés »
+
+    Synthèse du rapport : distinguer un langage, un ensemble de langages et leur union (questions 1 et 9).
+    Aux questions 14–15, vérifier le déterminisme et marquer les états finaux.
+    Aux questions 26–27, raisonner sur les chemins et distinguer accessibilité et coaccessibilité.
+    À la question 34, simplifier récursivement toute l’expression, pas seulement sa racine.
+    Aux questions 38–41, partager les calculs répétés avant de compter les appels récursifs.
+
+    Les remarques du rapport sur les outils hors programme concernent le programme MP de 2022 ;
+    les corrigés de cette banque suivent le programme MP2I–MPI actuel.
+  ],
   contenu: (
     [
       Ce sujet aborde différents problèmes autour des automates et des expressions régulières.

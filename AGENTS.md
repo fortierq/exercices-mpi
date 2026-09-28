@@ -24,6 +24,15 @@
 - Conserver l'ordre, les questions, les sous-questions, les textes intermédiaires, les notations et les arguments de la source, sous réserve des corrections importantes et des conventions ci-dessous. Associer les solutions aux questions par leur contenu plutôt que par leur seul numéro.
 - Ajouter un corrigé si le corrigé manque. 
 
+### Sujets de concours et rapports du jury
+
+- Ranger les sujets dans `concours/<année sur deux chiffres>/` et partir de `templates/sujet-concours.typ`. Garder les questions, définitions et figures dans un seul sujet ; conserver la numérotation des questions source.
+- Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l’énoncé, signaler la correction près de la question et documenter sa raison dans le corrigé. Ne pas conserver deux versions contradictoires du code.
+- Renseigner le paramètre `rapport` de `exercice` avec des extraits pertinents du rapport du jury. Il est affiché uniquement à la fin du corrigé sous « Rapport du jury », sans modifier la numérotation des questions.
+- Chercher d’abord le rapport dans les sources voisines, puis sur le site officiel du concours. Vérifier concours, année, filière et épreuve ; indiquer la source, les pages et les questions concernées. Si le rapport est introuvable, le signaler sans inventer d’extrait.
+- Conserver les citations exactes et courtes, entre guillemets ; indiquer explicitement les synthèses et distinguer les remarques du jury des corrections éditoriales. Respecter les limites de citation des sources. Replacer les remarques sur le programme dans leur contexte historique.
+- Stocker le code des corrigés dans `ressources/<identifiant>/` et l’afficher depuis ces mêmes fichiers pour tester exactement le code publié.
+
 ### Périmètre et corrections
 
 - Les sujets et corrections doivent utiliser les outils du programme : [résume du programme](docs/programme.md). Les sujets peuvent introduire de nouvelles notions.
@@ -54,7 +63,7 @@
   Consulter d’abord le [résume du programme](docs/programme.md), qui distingue notions exigibles, outils après rappel et exclusions.
   Respecter `lib/meta.typ` pour les métadonnées.
 - Renseigner le champ obligatoire `langages` avec les langages de       programmation effectivement utilisés dans l’énoncé ou le corrigé : `("C",)`, `("OCaml",)`, `("SQL",)`, `("Python",)` ou plusieurs de ces valeurs. Utiliser `()` pour un exercice sans langage de programmation, par exemple en présence de pseudocode seulement.
-- Utiliser uniquement `concours` pour une attribution : `none` ou `(nom: "…", annee: …, filiere: "…")`. La filière est `"MPI"` par défaut. Choisir le concours et la filière dans `lib/concours.typ` ; ne pas utiliser de champ `reference` ni inventer une année.
+- Utiliser uniquement `concours` pour une attribution : `none` ou `(nom: "…", annee: …, filiere: "…")`. La filière est `"MPI"` par défaut. Choisir le concours et la filière dans `lib/meta.typ` ; ne pas utiliser de champ `reference` ni inventer une année.
 
 ## Présentation
 

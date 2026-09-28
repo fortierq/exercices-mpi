@@ -41,6 +41,7 @@
 // Valeurs autorisées pour les métadonnées de concours.
 #let concours-possibles = (
   "Centrale",
+  "Mines-Ponts",
   "CCP",
   "ENS",
   "ENS Ulm",

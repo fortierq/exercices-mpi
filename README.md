@@ -40,7 +40,7 @@ templates/exercice.typ               Exercice minimal à copier
 templates/fiche.typ                           Point d’entrée pour un exercice isolé
 templates/feuille.typ                         Feuille minimale à copier
 templates/sujet-concours.typ                  Sujet minimal à copier
-concours/centrale-2022-mp-informatique.typ   Sujet complet, 50 questions corrigées
+concours/22/centrale-2022-mp-informatique.typ   Sujet complet, 50 questions corrigées
 ressources/centrale-2022-mp-informatique/    Code OCaml et tests du sujet
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
 docs/ensembles-inevitables-migration.md      Provenance et corrections de la source
@@ -101,7 +101,7 @@ Copier `templates/feuille.typ` vers `feuilles/ma-feuille.typ`, puis importer les
 
 `contenu` est une suite ordonnée : `[texte libre]` peut apparaître avant, entre
 ou après les appels à `question(...)`. Seules les questions sont numérotées ;
-Copier `templates/sujet-concours.typ` dans `concours/mon-sujet.typ`. Le fichier
+Copier `templates/sujet-concours.typ` dans `concours/19/mon-sujet.typ`. Le fichier
 
 Les notes de conversion se placent dans `docs/`. Si un exercice nécessite des
 images ou des modules Typst auxiliaires, les placer dans
@@ -112,7 +112,7 @@ tableaux, etc.
 
 ### Métadonnées
 
-  --input exercice=/concours/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
+  --input exercice=/concours/19/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
 | --- | --- | --- |
 | `id` | chaîne, obligatoire | Stable et unique, indépendante du chemin |
 | `titre` | chaîne, obligatoire | Titre lisible |
@@ -123,7 +123,7 @@ tableaux, etc.
 | `difficulte` | entier de 1 à 5, obligatoire | Estimation pédagogique |
 | `niveaux` | tableau de chaînes | `()`, `("MPI",)`, `("MP", "MPI")`… |
 | `duree` | entier positif ou `none` | Minutes, estimation facultative |
-| `concours` | dictionnaire ou `none` | `nom`, `annee`, `filiere` (par défaut : `"MPI"`) ; valeurs dans `lib/concours.typ` |
+| `concours` | dictionnaire ou `none` | `nom`, `annee`, `filiere` (par défaut : `"MPI"`) ; valeurs dans `lib/meta.typ` |
 
 Échelle proposée : 1 = application directe ; 2 = exercice standard ;
 3 = plusieurs idées à combiner ; 4 = exercice difficile ; 5 = très difficile.
@@ -185,7 +185,7 @@ restent sans gras. Chaque solution commence par « Solution. » souligné. Les f
 
 ## Sujets de concours et extraits
 
-Copier `templates/sujet-concours.typ` dans `concours/mon-sujet.typ`. Le fichier
+Copier `templates/sujet-concours.typ` dans `concours/19/mon-sujet.typ`. Le fichier
 exporte `ex`, construit avec `exercice`, comme tout exercice de la banque.
 Son `contenu` mêle des textes, des `question` et des `partie`.
 Les dossiers `concours/` et `exercices/` servent au classement ; le type de données
@@ -200,11 +200,21 @@ La mise en page utilise directement `feuille` et `afficher-exercice` de
 `lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
 
+Le paramètre facultatif `rapport` de `exercice` contient du texte Typst, séparé des
+questions. Il apparaît uniquement à la fin du corrigé, sous « Rapport du jury ».
+Indiquer le concours, l’année, la filière, la source et les pages, puis choisir de
+courtes citations en précisant les questions concernées. Les synthèses doivent
+être annoncées comme telles. Garder `rapport: none` si aucun rapport n’est disponible.
+Les sujets Mines-Ponts 2019 et Centrale 2022 en donnent deux exemples.
+
+Les sujets sont rangés par année sur deux chiffres dans `concours/` ;
+`make concours` recherche aussi les sous-dossiers.
+
 ```sh
 make concours
-make build/concours/centrale-2022-mp-informatique/corrige.pdf
+make build/concours/22/centrale-2022-mp-informatique/corrige.pdf
 typst compile --root . --ignore-system-fonts \
-  --input exercice=/concours/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
+  --input exercice=/concours/19/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
 ```
 
 Pour partager une partie, la définir dans une variable exportée du sujet,
@@ -214,7 +224,7 @@ L’exercice autonome ajoute les rappels nécessaires et ses métadonnées :
 
 ```typst
 #import "/lib/exercices.typ": exercice
-#import "/concours/centrale-2022-mp-informatique.typ": palindromes
+#import "/concours/22/centrale-2022-mp-informatique.typ": palindromes
 
 #let ex = exercice(
   meta: (..palindromes.meta, titre: palindromes.titre, niveaux: ("MPI", "MP")),
