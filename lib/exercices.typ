@@ -38,22 +38,26 @@
 }
 
 // Le contexte contient les rappels à ajouter dans un exercice autonome.
-#let partie(numero, titre, contenu: (), contexte: (), meta: (:)) = {
+#let partie(numero, titre, contenu: (), contexte: (), meta: (:), commentaire: none) = {
   assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
   assert(type(titre) == str and titre != "", message: "Titre de partie vide")
   assert(type(contenu) == array and type(contexte) == array)
   assert(contexte.all(bloc => type(bloc) == content), message: "Le contexte contient uniquement du texte Typst")
-  (type: "partie", numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
+  assert(commentaire == none or type(commentaire) == content)
+  (commentaire: commentaire, type: "partie", numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
 }
 
 #let est-partie(bloc) = type(bloc) == dictionary and bloc.at("type", default: none) == "partie"
 
-#let aplatir(contenu, niveau: 1, textes: true) = {
+#let aplatir(contenu, niveau: 1, textes: true, commentaires: false) = {
   let resultat = ()
   for bloc in contenu {
     if est-partie(bloc) {
       resultat.push(titre-exercice(bloc.titre, bloc.numero, niveau: niveau))
-      resultat += aplatir(bloc.contenu, niveau: niveau + 1, textes: textes)
+      if commentaires and bloc.commentaire != none {
+        resultat.push(text(style: "italic", bloc.commentaire))
+      }
+      resultat += aplatir(bloc.contenu, niveau: niveau + 1, textes: textes, commentaires: commentaires)
     } else if textes or type(bloc) != content {
       resultat.push(bloc)
     }
@@ -63,7 +67,7 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
-#let exercice(meta: (:), contenu: (), debut: 1, remarques: none) = {
+#let exercice(meta: (:), contenu: (), debut: 1, remarques: none, corrections: none) = {
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
     assert(champ in meta, message: "Métadonnée manquante : " + champ)
@@ -142,6 +146,7 @@
     }
   }
   verifier(contenu)
+  assert(corrections == none or type(corrections) == content, message: "corrections doit être un contenu Typst ou none")
   assert(remarques == none or type(remarques) == content, message: "remarques doit être un contenu Typst ou none")
   assert(nombre-questions(contenu) > 0, message: "Un exercice doit contenir au moins une question")
   (
@@ -149,6 +154,7 @@
     contenu: contenu,
     debut: debut,
     remarques: remarques,
+    corrections: corrections,
   )
 }
 
@@ -171,12 +177,18 @@
       #if ex.meta.duree != none [ | Durée : #texte-duree(ex.meta.duree)]
     ])
   }
+  if corrige and ex.corrections != none {
+    block(width: 100%, above: 12pt, below: 12pt)[
+      Correction par rapport à l’énoncé initial :
+      #ex.corrections
+    ]
+  }
   if corrige and ex.remarques != none {
-    block(width: 100%, above: 12pt, below: 12pt, ex.remarques)
+    block(width: 100%, above: 12pt, below: 12pt, text(style: "italic", ex.remarques))
   }
   let i = ex.debut
   // Les textes de contexte restent dans l’énoncé ; les titres des parties sont conservés.
-  for q in aplatir(ex.contenu, textes: not corrige) {
+  for q in aplatir(ex.contenu, textes: not corrige, commentaires: corrige) {
     if type(q) == content {
       block(width: 100%, above: 12pt, below: 12pt, q)
       continue

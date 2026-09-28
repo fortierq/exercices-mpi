@@ -8,13 +8,14 @@
     difficulte: 2, niveaux: ("MPI",), duree: (4, 0),
     concours: none, // Renseigner le concours, l'année et la filière attestés.
   ),
-  // Liste affichée en début de corrigé : remarques générales du jury et erreurs corrigées.
+  // Parties/questions corrigées, puis remarques générales du jury en italique.
   // Conserver les sources en commentaires, sans les afficher.
+  corrections: none, // Exemple : [- Question 1.]
   remarques: none,
   contenu: (
     [Les réponses doivent être justifiées.
       On fixe un alphabet $Σ$.],
-    partie("I", "Langages", contenu: (
+    partie("I", "Langages", commentaire: none, contenu: (
       partie("I.A", "Langages finis", contexte: ([On fixe un alphabet $Σ$.],), contenu: (
         question([Montrer qu'un langage fini sur $Σ$ est régulier.],
           commentaire: none, // Observation du jury, affichée en italique avant la solution.

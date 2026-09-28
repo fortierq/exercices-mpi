@@ -214,14 +214,18 @@
   // Rapport Centrale-Supélec 2022, MP, option informatique, p. E–34 à E–36 (PDF p. 40–42).
   // https://www.concours-centrale-supelec.fr/sites/default/files/documents/rapCS2022MP_0.pdf
   // Remarques générales et commentaires de questions : synthèses du rapport, sauf la citation.
+  // Corrections : I.D précise la minimalité parmi les déterministes complets et remplace δ*({I},u)
+  // par δ*(I,u) aux questions 26–27 ; II.A supprime le ;; prématuré après Union ;
+  // II.B.3 précise que a est une expression régulière quelconque, pas nécessairement une lettre.
+  corrections: [
+    - Partie I.D et questions 26–27.
+    - Partie II.A.
+    - Partie II.B.3.
+  ],
   remarques: [
     - Justifier les réponses théoriques et les calculs de complexité.
     - Lire chaque partie avant de programmer ; les trois parties sont indépendantes.
     - « L’indentation, certes utile pour comprendre le code, n’est pas un délimiteur comme en Python. »
-    - Énoncé initial, questions 26–27 : l’état initial du déterminisé est $I$, et non ${I}$ ; écrire $δ^*(I,u)$.
-    - Énoncé initial, partie I.D : la minimalité obtenue concerne les automates déterministes complets.
-    - Énoncé initial, type ```ocaml exprat``` : supprimer le ```ocaml ;;``` placé après le constructeur ```ocaml Union```, qui interrompait la déclaration.
-    - Énoncé initial, avant la question 38 : $a$ est une expression régulière quelconque, pas nécessairement une lettre.
   ],
   contenu: (
     [
@@ -314,7 +318,9 @@
         ]),
       )),
       palindromes,
-      partie("I.C", "Déterminisation", contenu: (
+      partie("I.C", "Déterminisation",
+        commentaire: [Pour la représentation binaire, travailler directement sur les entiers : les conversions intermédiaires en listes annulent le gain recherché.],
+        contenu: (
         [Pour tout automate non déterministe $A=(Q,I,F,T)$, on définit le déterminisé accessible $A_"det"=(Y,{I},F',δ)$, où $Y ⊆ cal(P)(Q)$ est l'ensemble des états accessibles depuis l'état initial $I$ dans l'automate des parties.
           Il reconnaît le même langage que $A$.],
         question([Écrire un automate $cal(A)_2$ non déterministe à quatre états reconnaissant $L_2=(b | a b)^* b a$, avec un unique état initial et un unique état final.], solution: [
@@ -371,7 +377,6 @@
         [Soit $ℓ$ une liste d'états pouvant contenir des doublons, représentant $X$.],
         question([Écrire ```ocaml numero : int list -> int``` qui calcule le numéro de $X$.
           Par exemple, ```ocaml [1; 5; 2; 5; 2; 5; 2; 2; 1; 2; 1]``` représente ${1,2,5}$, de numéro $38=2^1+2^2+2^5$.],
-          commentaire: [Travailler directement avec le codage binaire.],
           solution: [
           #code("Q20")
           On ajoute $2^q$ seulement si le bit correspondant n'est pas déjà présent.
@@ -397,7 +402,6 @@
           solution: [#code("Q23")]),
         question([Écrire ```ocaml determinise : automate -> automate``` qui calcule le déterminisé accessible.
           Expliquer brièvement la démarche.],
-          commentaire: [Conserver la représentation binaire pendant les calculs.],
           solution: [
           #code("Q24")
           La liste ```ocaml attente``` est une pile des parties découvertes et non encore traitées.
@@ -415,21 +419,21 @@
             Comme $N ≤ 2^n$, le temps peut être exponentiel en $n$.
           ]),
       )),
-      partie("I.D", "Algorithme de Brzozowski", contenu: (
+      partie("I.D", "Algorithme de Brzozowski",
+        commentaire: [Raisonner sur les chemins ; distinguer accessibilité et coaccessibilité.],
+        contenu: (
         [L'algorithme de Brzozowski donne un automate déterministe complet ayant un nombre minimal d'états parmi les automates déterministes complets reconnaissant le même langage.
           On se donne $A=(Q,I,{f},T)$ reconnaissant $L$, dont le miroir $tilde(A)$ est déterministe et accessible.
           On note $A_"det"=(Y,{I},F',δ)$ son déterminisé accessible.
           Pour $u ∈ Σ^*$, on pose $u^(-1)L={w ∈ Σ^* | u w ∈ L}$.],
         question([Soient $q ∈ Q$ et $u ∈ Σ^*$.
           Montrer que si $q ∈ δ^*(I,u)$, alors il existe $w ∈ Σ^*$ tel que $u w ∈ L$.],
-          commentaire: [Raisonner sur les chemins ; distinguer accessibilité et coaccessibilité.],
           solution: [
           L'accessibilité de $tilde(A)$ fournit un chemin de $f$ à $q$.
           En le renversant, on obtient dans $A$ un chemin de $q$ à $f$, étiqueté par un mot $w$.
           Comme $q ∈ δ^*(I,u)$, un chemin étiqueté $u$ joint un état initial à $q$ ; leur concaténation accepte $u w$.
         ]),
         question([Montrer la propriété $(*)$ : si $u^(-1)L=v^(-1)L$, alors $δ^*(I,u)=δ^*(I,v)$.],
-          commentaire: [Raisonner sur les chemins ; distinguer accessibilité et coaccessibilité.],
           solution: [
           Prenons $q ∈ δ^*(I,u)$ et un chemin de $q$ à $f$ étiqueté $w$.
           Alors $u w ∈ L$, donc $v w ∈ L$.
@@ -542,7 +546,9 @@
             Même raisonnement pour $1$ vers $0$.
           ]),
         )),
-        partie("II.B.3", "Étoile d'une matrice de taille quelconque", contenu: (
+        partie("II.B.3", "Étoile d'une matrice de taille quelconque",
+        commentaire: [Calculer chaque résultat récursif une seule fois avant de compter les appels et de résoudre la récurrence.],
+        contenu: (
           [On définit récursivement l'étoile de $M$ : si $M=(e)$ est de taille $1$, alors $M^*=(e^*)$.
             Sinon, on découpe en blocs
             $ M=mat(A,B;C,D), quad M^*=mat(A',B';C',D'), $
@@ -565,7 +571,6 @@
           question([Évaluer les complexités des sommes et produits.
             En déduire que le coût $C(n)$ du calcul de l'étoile vérifie $C(n)=2C(n-1)+O(n^2)$.
             En déduire la complexité de cet algorithme.],
-            commentaire: [Partager les calculs répétés avant de compter les appels récursifs.],
             solution: [
               Posons $m=n-1$.
               On calcule et conserve $D^*$ et $a^*$. $D^* C$ coûte $Θ(m^2)$, puis $B(D^* C)$ coûte $Θ(m)$. $a^* B$ coûte $Θ(m)$ et $C(a^* B)$ coûte $Θ(m^2)$ ; l'addition à $D$ coûte $Θ(m^2)$.
@@ -582,7 +587,6 @@
             On découpe $M=mat(A,B;C,D)$ avec $A,D$ de taille $n/2$.],
           question([Évaluer les complexités des sommes et produits.
             En déduire $C(n)=4C(n/2)+O(n^3)$, puis la complexité de l'algorithme.],
-            commentaire: [Partager les calculs répétés avant de compter les appels récursifs.],
             solution: [
             On conserve les quatre étoiles $A^*$, $D^*$, $A'$ et $D'$ pour les réutiliser.
             Il y a un nombre constant de produits de matrices de taille $n/2$, coûtant chacun $Θ(n^3)$, et de sommes coûtant $Θ(n^2)$.
@@ -602,7 +606,6 @@
             Les $O(n^2)$ feuilles donnent encore un coût $O(n^3)$.
           ]),
           question([Écrire ```ocaml etoile : mat -> mat``` qui renvoie l'étoile d'une matrice avec l'algorithme récursif le plus adéquat.],
-            commentaire: [Calculer chaque résultat récursif une seule fois.],
             solution: [
             #code("Q41")
             Chaque sous-matrice carrée passée récursivement est strictement plus petite.

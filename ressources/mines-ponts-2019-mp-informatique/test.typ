@@ -16,7 +16,7 @@
 
 #let questions = aplatir(ex.contenu).filter(b => type(b) == dictionary)
 #assert(questions.at(6).commentaire != none and questions.at(7).commentaire != none)
-#assert(questions.at(12).commentaire != none and questions.at(21).commentaire != none)
+#assert(questions.at(12).commentaire != none and questions.at(21).commentaire == none)
 #let questions-centrale = aplatir(centrale.contenu).filter(b => type(b) == dictionary)
 #assert(questions-centrale.at(8).commentaire == [Distinguer une famille de langages de leur union.])
 #assert(aplatir(ex.contenu, textes: false).filter(b => type(b) == dictionary) == questions)
@@ -25,15 +25,21 @@
 #let temoin(nom) = [#metadata(nom) <presentation-test>]
 #let exemple = exercice(
   meta: ex.meta,
+  corrections: [
+    - #temoin("erratum") #context assert(text.style == "normal") Question 1.
+  ],
   remarques: [
-    - #temoin("general") Remarque générale.
-    - #temoin("erratum") Erreur de l’énoncé initial.
+    - #temoin("general") #context assert(text.style == "italic") Remarque générale.
   ],
   contenu: (
     [#temoin("preambule") Préliminaire.],
-    partie("I", "Partie témoin", contenu: (
+    partie("I", "Partie témoin",
+      commentaire: [#temoin("partie") #context assert(text.style == "italic") Commentaire de partie.],
+      contenu: (
       [#temoin("definition") Définition.],
-      partie("I.A", "Sous-partie témoin", contenu: (
+      partie("I.A", "Sous-partie témoin",
+        commentaire: [#temoin("sous-partie") #context assert(text.style == "italic") Commentaire de sous-partie.],
+        contenu: (
         [#temoin("notation") Notation.],
         question([#temoin("question") Question témoin.],
           commentaire: [#temoin("commentaire") #context assert(text.style == "italic") Commentaire du jury.],
@@ -47,7 +53,7 @@
 #context {
   let ordre = query(<presentation-test>).map(m => m.value)
   assert(ordre == if corrige {
-    ("general", "erratum", "question", "commentaire", "solution")
+    ("erratum", "general", "partie", "sous-partie", "question", "commentaire", "solution")
   } else {
     ("preambule", "definition", "notation", "question")
   }, message: repr(ordre))

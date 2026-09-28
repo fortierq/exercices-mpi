@@ -117,13 +117,12 @@
   ),
   // Rapport Mines-Ponts 2019, § 4.2, p. 66–68 : cours-src/langage/ds/cmp19/rapport.pdf.
   // Les commentaires de questions reprennent ou résument les observations p. 67.
+  corrections: [
+    - Question 27.
+    - Question 36.
+  ],
   remarques: [
     - Le jury demande des preuves argumentées, en citant les propriétés et résultats antérieurs utilisés.
-    - La dernière partie fait la synthèse du sujet : chaque résultat réutilisé doit être cité au moment où il intervient.
-    - Énoncé initial, question 27 : préciser que les entiers peuvent être nuls et que la condition sur le premier élément concerne les tableaux non vides.
-    - Énoncé initial, question 36 : le sens du chemin était inversé.
-      Il faut chercher un chemin de $(p,q)$ vers une paire dont exactement un état est final,
-      afin de calculer les paires distinguables pour la question 37.
   ],
   contenu: (
     [L’épreuve comporte 37 questions réparties en cinq parties après les préliminaires.
@@ -347,7 +346,9 @@
           La seconde projection $ψ(q,q')=q'$ est de même un morphisme vers $cal(A)'$.
         ]),
       )),
-      partie("IV.B", "Diagramme d’automates", contenu: (
+      partie("IV.B", "Diagramme d’automates",
+        commentaire: [L’alternative entre égalité des images par $φ$ et par $ψ$ peut changer à chaque pas de la chaîne ; le jury relève des confusions sur ce point.],
+        contenu: (
         [Dans toute cette sous-partie, $cal(A)$, $cal(A)'$ et $cal(B)$ sont accessibles,
           et $φ: cal(B) → cal(A)$ et $ψ: cal(B) → cal(A)'$ sont des morphismes.
           On veut construire un automate accessible $cal(C)$ et trois morphismes $φ'$, $ψ'$, $η$ :
@@ -357,7 +358,6 @@
           $ ∀ 0 ≤ j < k, quad φ(q_j)=φ(q_(j+1)) " ou " ψ(q_j)=ψ(q_(j+1)). $
         ],
         question([Montrer que $≡$ est une relation d’équivalence sur $Q_cal(B)$.],
-          commentaire: [L’alternative entre égalité des images par $φ$ et par $ψ$ peut changer à chaque pas de la chaîne ; le jury relève des confusions sur ce point.],
           solution: [
           - Réflexivité : la suite réduite à $p$ convient ($k=0$).
           - Symétrie : on renverse une suite reliant $p$ à $q$.
@@ -426,7 +426,10 @@
         ]),
       )),
     )),
-    partie("V", "Réduction d’automates", contenu: (
+    partie("V", "Réduction d’automates",
+      // Rapport, p. 68.
+      commentaire: [« Chacune de ces questions doit être citée dans une argumentation, au moment de leur utilisation. »],
+      contenu: (
       partie("V.A", "Existence et unicité", contenu: (
         question([Montrer que, si deux automates accessibles $cal(A)$ et $cal(A)'$ acceptent le même langage,
           on peut construire un automate $cal(C)$ et deux morphismes $φ': cal(A) → cal(C)$ et $ψ': cal(A)' → cal(C)$.], solution: [

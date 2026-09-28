@@ -200,16 +200,20 @@ La mise en page utilise directement `feuille` et `afficher-exercice` de
 `lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
 
-Le paramètre facultatif `remarques` de `exercice` contient une simple liste Typst
-avec les remarques générales du jury et les erreurs corrigées de l’énoncé initial.
-Elle apparaît au début du corrigé, sans titre ni source affichée. Les sources et
-les pages restent dans les commentaires du fichier ou dans la documentation.
-Les erreurs de l’énoncé sont explicitement distinguées des observations du jury.
+Le paramètre facultatif `corrections` de `exercice` contient une simple liste des
+parties/questions corrigées. Le corrigé affiche « Correction par rapport à l’énoncé
+initial : » puis cette liste, sans détailler les erreurs. Les explications restent
+dans la documentation ou les commentaires du fichier.
 
-Chaque `question` peut recevoir `commentaire: [Observation du jury]` : ce texte
-apparaît en italique immédiatement après la question, avant sa solution, uniquement
-dans le corrigé. Les citations restent exactes ; les reformulations sont documentées
-comme synthèses dans la source.
+Le paramètre `remarques` contient ensuite les commentaires généraux du jury,
+sous forme de liste en italique, sans titre ni source affichée.
+Les sources et les pages restent dans les commentaires du fichier ou la documentation.
+
+Les paramètres `commentaire` de `partie` et de `question` permettent de placer une
+observation du jury immédiatement après le titre de la partie ou après la question,
+avant la solution. Tous les commentaires du jury sont en italique et apparaissent
+uniquement dans le corrigé. Privilégier les citations exactes et courtes ; une
+reformulation ou une synthèse est possible pour rester concis et utile.
 
 Les blocs libres de `contenu` (préliminaires, définitions, notations et contexte)
 sont masqués dans le corrigé. Les titres de parties, questions, commentaires et
