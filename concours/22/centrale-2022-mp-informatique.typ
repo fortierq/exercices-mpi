@@ -214,13 +214,11 @@
   // Rapport Centrale-Supélec 2022, MP, option informatique, p. E–34 à E–36 (PDF p. 40–42).
   // https://www.concours-centrale-supelec.fr/sites/default/files/documents/rapCS2022MP_0.pdf
   // Remarques générales et commentaires de questions : synthèses du rapport, sauf la citation.
-  // Corrections : I.D précise la minimalité parmi les déterministes complets et remplace δ*({I},u)
-  // par δ*(I,u) aux questions 26–27 ; II.A supprime le ;; prématuré après Union ;
-  // II.B.3 précise que a est une expression régulière quelconque, pas nécessairement une lettre.
   corrections: [
-    - Partie I.D et questions 26–27.
-    - Partie II.A.
-    - Partie II.B.3.
+    - Partie I.D : préciser que la minimalité concerne les automates déterministes complets.
+    - Questions 26–27 : remplacer $δ^*({I},u)$ par $δ^*(I,u)$, car l’état initial du déterminisé est $I$.
+    - Partie II.A : supprimer le ```ocaml ;;``` prématuré après ```ocaml Union```, qui interrompait la déclaration du type ```ocaml exprat```.
+    - Partie II.B.3, avant la question 38 : $a$ est une expression régulière quelconque, pas nécessairement une lettre.
   ],
   remarques: [
     - Justifier les réponses théoriques et les calculs de complexité.

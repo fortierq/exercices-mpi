@@ -201,9 +201,10 @@ La mise en page utilise directement `feuille` et `afficher-exercice` de
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
 
 Le paramètre facultatif `corrections` de `exercice` contient une simple liste des
-parties/questions corrigées. Le corrigé affiche « Correction par rapport à l’énoncé
-initial : » puis cette liste, sans détailler les erreurs. Les explications restent
-dans la documentation ou les commentaires du fichier.
+parties/questions corrigées, avec une brève explication du problème ou du changement
+pour chacune. Le corrigé affiche « Correction par rapport à l’énoncé initial : »
+puis cette liste. Les explications détaillées restent dans la documentation ou
+les commentaires du fichier.
 
 Le paramètre `remarques` contient ensuite les commentaires généraux du jury,
 sous forme de liste en italique, sans titre ni source affichée.

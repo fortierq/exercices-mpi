@@ -118,8 +118,8 @@
   // Rapport Mines-Ponts 2019, § 4.2, p. 66–68 : cours-src/langage/ds/cmp19/rapport.pdf.
   // Les commentaires de questions reprennent ou résument les observations p. 67.
   corrections: [
-    - Question 27.
-    - Question 36.
+    - Question 27 : préciser que les entiers peuvent être nuls et que la condition sur le premier élément ne concerne que les tableaux non vides.
+    - Question 36 : inverser le sens du chemin recherché, de $(p,q)$ vers une paire de caractères finaux différents, pour calculer les paires distinguables.
   ],
   remarques: [
     - Le jury demande des preuves argumentées, en citant les propriétés et résultats antérieurs utilisés.
