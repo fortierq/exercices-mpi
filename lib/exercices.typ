@@ -19,7 +19,7 @@
   concours.at("annee", default: none),
   concours.at("filiere", default: none),
   if "oral" in concours { if concours.oral { "oral" } else { "écrit" } } else { none },
-).filter(valeur => valeur != none).map(valeur => str(valeur)).join(" · ")
+).filter(valeur => valeur != none).map(valeur => str(valeur)).join(" ")
 
 // Titres communs aux exercices et aux parties des sujets.
 #let titre-exercice(titre, prefixe, duree: none, niveau: 1) = {
@@ -176,8 +176,10 @@
   }
   if corrige and ex.remarques != none {
     block(width: 100%, above: 12pt, below: 12pt)[
-      Commentaires généraux du jury :
-      #text(style: "italic", ex.remarques)
+      #text(style: "italic")[
+        Commentaires généraux du jury :
+        #ex.remarques
+      ]
     ]
   }
   let i = ex.debut
