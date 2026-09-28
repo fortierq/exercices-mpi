@@ -36,10 +36,10 @@ les mêmes commandes Make. Avec direnv et nix-direnv, le fichier `.envrc` est
 
 ```text
 lib/exercices.typ                           API et mise en page partagées
-modeles/exercice.typ               Exercice minimal à copier
-modeles/fiche.typ                           Point d’entrée pour un exercice isolé
-modeles/feuille.typ                         Feuille minimale à copier
-modeles/sujet-concours.typ                  Sujet minimal à copier
+templates/exercice.typ               Exercice minimal à copier
+templates/fiche.typ                           Point d’entrée pour un exercice isolé
+templates/feuille.typ                         Feuille minimale à copier
+templates/sujet-concours.typ                  Sujet minimal à copier
 sujets/centrale-2022-mp-informatique.typ     Sujet complet, 50 questions corrigées
 ressources/centrale-2022-mp-informatique/    Code OCaml et tests du sujet
 exercices/langage/ensembles-inevitables.typ  Métadonnées, énoncé et corrigé convertis
@@ -57,7 +57,7 @@ ce dépôt ; configurer également la racine du projet dans l’éditeur Typst.
 
 ```sh
 mkdir -p exercices/graphes
-cp modeles/exercice.typ exercices/graphes/detection-cycle.typ
+cp templates/exercice.typ exercices/graphes/detection-cycle.typ
 ```
 
 Modifier son titre, ses métadonnées et ses questions. Utiliser des noms de dossiers et
@@ -74,10 +74,10 @@ modules auxiliaires hors de `exercices/`.
   meta: (
     titre: "Détecter un cycle",
     chapitres: ("graphes",),
-    algorithmes: ("parcours-en-profondeur",),
-    structures: ("graphe-oriente", "liste-adjacence"),
-    langages: (),
-    difficulte: 2,
+templates/exercice.typ              Exercice minimal à copier
+templates/fiche.typ                           Point d’entrée pour un exercice isolé
+templates/feuille.typ                         Feuille minimale à copier
+templates/sujet-concours.typ                  Sujet minimal à copier
     niveaux: ("MPI",),
     concours: none,
   ),
@@ -91,33 +91,33 @@ modules auxiliaires hors de `exercices/`.
     question([Justifier sa complexité.]),
   ),
 )
-```
+cp templates/exercice.typ exercices/graphes/detection-cycle.typ
 
 Une virgule finale est nécessaire pour les tableaux d’un seul élément, comme
 `("graphes",)` ou `(ex,)`. Les questions commencent à 1 ; `debut: 0` conserve
 une numérotation commençant à 0. La numérotation est locale à chaque exercice.
 Une solution omise reste invisible sur l’énoncé et devient « Corrigé à compléter »
-dans la version corrigée.
+Copier `templates/feuille.typ` vers `feuilles/ma-feuille.typ`, puis importer les
 
 `contenu` est une suite ordonnée : `[texte libre]` peut apparaître avant, entre
 ou après les appels à `question(...)`. Seules les questions sont numérotées ;
-les textes libres apparaissent dans les deux versions, à leur place dans la suite.
+Copier `templates/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
 
 Les notes de conversion se placent dans `docs/`. Si un exercice nécessite des
 images ou des modules Typst auxiliaires, les placer dans
 `ressources/<identifiant>/`, créé uniquement si nécessaire. Utiliser des chemins
 relatifs au fichier qui les importe, ou des chemins depuis la racine Typst.
-Le contenu reste du Typst ordinaire : mathématiques, code, figures, sous-questions,
+et le template de compilation (`templates/fiche.typ`) sont les mêmes.
 tableaux, etc.
 
 ### Métadonnées
 
-| Champ | Valeur | Convention |
+  --input exercice=/sujets/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
 | --- | --- | --- |
 | `id` | chaîne, obligatoire | Stable et unique, indépendante du chemin |
 | `titre` | chaîne, obligatoire | Titre lisible |
 | `chapitres` | tableau de chaînes, obligatoire | Ex. `"automates-finis"`, `"graphes"` |
-| `algorithmes` | tableau de chaînes, obligatoire | `()` si aucun |
+  --input details=false templates/fiche.typ build/enonce-sans-details.pdf
 | `structures` | tableau de chaînes, obligatoire | `()` si aucune |
 | `langages` | tableau, obligatoire | Langages utilisés : `("C",)`, `("OCaml",)`, `("Python",)` ; `()` sans programmation |
 | `difficulte` | entier de 1 à 5, obligatoire | Estimation pédagogique |
@@ -149,7 +149,7 @@ le catalogue n’est jamais à modifier à la main.
 
 ## Composer une feuille
 
-Copier `modeles/feuille.typ` vers `feuilles/ma-feuille.typ`, puis importer les
+Copier `templates/feuille.typ` vers `feuilles/ma-feuille.typ`, puis importer les
 exercices sous des alias :
 
 ```typst
@@ -185,11 +185,11 @@ restent sans gras. Chaque solution commence par « Solution. » souligné. Les f
 
 ## Sujets de concours et extraits
 
-Copier `modeles/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
+Copier `templates/sujet-concours.typ` dans `sujets/mon-sujet.typ`. Le fichier
 exporte `ex`, construit avec `exercice`, comme tout exercice de la banque.
 Son `contenu` mêle des textes, des `question` et des `partie`.
 Les dossiers `sujets/` et `exercices/` servent au classement ; le type de données
-et le modèle de compilation (`modeles/fiche.typ`) sont les mêmes.
+et le modèle de compilation (`templates/fiche.typ`) sont les mêmes.
 Les définitions et consignes initiales sont de simples blocs de texte au début
 de `contenu`, comme dans un exercice. Tout le sujet (parties, corrections et
 figures) tient dans un seul fichier Typst. Les parties peuvent contenir des
@@ -204,7 +204,7 @@ La numérotation des questions est continue dans le sujet, sous la forme « 1. �
 make sujets
 make build/sujets/centrale-2022-mp-informatique/corrige.pdf
 typst compile --root . --ignore-system-fonts \
-  --input exercice=/sujets/mon-sujet.typ modeles/fiche.typ build/mon-sujet.pdf
+  --input exercice=/sujets/mon-sujet.typ templates/fiche.typ build/mon-sujet.pdf
 ```
 
 Pour partager une partie, la définir dans une variable exportée du sujet,
@@ -277,7 +277,7 @@ Compilation directe, par exemple pour masquer les métadonnées sur l’énoncé
 ```sh
 typst compile --root . --ignore-system-fonts \
   --input exercice=/exercices/langage/ensembles-inevitables.typ \
-  --input details=false modeles/fiche.typ build/enonce-sans-details.pdf
+  --input details=false templates/fiche.typ build/enonce-sans-details.pdf
 ```
 
 ## Trouver des exercices

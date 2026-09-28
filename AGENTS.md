@@ -9,10 +9,10 @@
 ## Structure, ajout et conversion
 
 - Avant d'ajouter un exercice, vérifier qu’il n’existe pas déjà dans `exercices/`. Comparer pour voir s'il s'agit du même exercice, auquel cas il ne faut pas le dupliquer.
-- Utiliser les modèles Typst dans `modeles/` pour créer/modifier un [exercice](modeles/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin. S'inspirer aussi si besoin des exercices similaires dans `exercices/`.
+- Utiliser les templates Typst dans `templates/` pour créer/modifier un [exercice](templates/exercice.typ) ou une feuille. S'inspirer des exercices existants dans `exercices/` si besoin. S'inspirer aussi si besoin des exercices similaires dans `exercices/`.
 - Lire l’API actuelle dans `lib/exercices.typ` avant toute modification.
 - Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Son identifiant est le nom du fichier sans l'extension `.typ` ; il doit être unique dans toute la banque et ne figure pas dans `meta`. Une feuille `feuilles/<nom>.typ` assemble ces objets dans l’ordre voulu.
-- Sujets et exercices utilisent `exercice` et `modeles/fiche.typ`. Garder chaque sujet dans un seul fichier ; exporter les parties réutilisées dans des variables et les importer dans les exercices, sans duplication ni recherche par numéro.
+- Sujets et exercices utilisent `exercice` et `templates/fiche.typ`. Garder chaque sujet dans un seul fichier ; exporter les parties réutilisées dans des variables et les importer dans les exercices, sans duplication ni recherche par numéro.
 - Placer introductions et définitions dans `contenu` ; ajouter explicitement les rappels nécessaires dans l’exercice autonome.
 
 ## Contenu
