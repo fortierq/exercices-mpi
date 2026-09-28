@@ -157,7 +157,9 @@
     ]),
     [Soit $L ⊆ Σ^*$ un langage reconnu par $A=(Q,I,F,T)$.
       Pour $(q,q') ∈ Q^2$, on note $L_(q,q')$ le langage des mots étiquetant un chemin de $q$ à $q'$ dans $A$.],
-    question([Montrer que $L_(q,q')$ est reconnaissable et exprimer $L_A$ en fonction des langages $L_(q,q')$.], solution: [
+    question([Montrer que $L_(q,q')$ est reconnaissable et exprimer $L_A$ en fonction des langages $L_(q,q')$.],
+      commentaire: [Distinguer une famille de langages de leur union.],
+      solution: [
       L'automate $(Q,{q},{q'},T)$ reconnaît $L_(q,q')$.
       Un chemin est acceptant s'il part d'un état initial et arrive à un état final, d'où
       $ L_A=union_(i ∈ I) union_(f ∈ F) L_(i,f). $
@@ -206,31 +208,20 @@
     algorithmes: ("determinisation", "diviser-pour-regner"),
     structures: ("liste", "tableau", "arbre"),
     langages: ("OCaml",), difficulte: 4,
-    niveaux: ("MP", "MPI"), duree: 180,
+    niveaux: ("MP", "MPI"), duree: (3, 0),
     concours: concours,
   ),
-  rapport: [
-    Source : #link("https://www.concours-centrale-supelec.fr/sites/default/files/documents/rapCS2022MP_0.pdf#page=40")[Rapport Centrale-Supélec 2022, MP, option informatique],
-    p. E–34 à E–36 (pages 40–42 du PDF).
-
-    == Programmation et représentation des ensembles (p. E–35)
-    « L’indentation, certes utile pour comprendre le code, n’est pas un délimiteur comme en Python. »
-
-    Synthèse du rapport : aux questions 19–24, travailler directement avec la représentation binaire
-    évite les parcours et conversions de listes qui annulent le gain recherché.
-    À la question 22, répéter le parcours de toutes les transitions pour chaque couple d’états est inutilement coûteux.
-
-    == Automates et preuves (p. E–36)
-    « beaucoup de confusions dans les objets manipulés »
-
-    Synthèse du rapport : distinguer un langage, un ensemble de langages et leur union (questions 1 et 9).
-    Aux questions 14–15, vérifier le déterminisme et marquer les états finaux.
-    Aux questions 26–27, raisonner sur les chemins et distinguer accessibilité et coaccessibilité.
-    À la question 34, simplifier récursivement toute l’expression, pas seulement sa racine.
-    Aux questions 38–41, partager les calculs répétés avant de compter les appels récursifs.
-
-    Les remarques du rapport sur les outils hors programme concernent le programme MP de 2022 ;
-    les corrigés de cette banque suivent le programme MP2I–MPI actuel.
+  // Rapport Centrale-Supélec 2022, MP, option informatique, p. E–34 à E–36 (PDF p. 40–42).
+  // https://www.concours-centrale-supelec.fr/sites/default/files/documents/rapCS2022MP_0.pdf
+  // Remarques générales et commentaires de questions : synthèses du rapport, sauf la citation.
+  remarques: [
+    - Justifier les réponses théoriques et les calculs de complexité.
+    - Lire chaque partie avant de programmer ; les trois parties sont indépendantes.
+    - « L’indentation, certes utile pour comprendre le code, n’est pas un délimiteur comme en Python. »
+    - Énoncé initial, questions 26–27 : l’état initial du déterminisé est $I$, et non ${I}$ ; écrire $δ^*(I,u)$.
+    - Énoncé initial, partie I.D : la minimalité obtenue concerne les automates déterministes complets.
+    - Énoncé initial, type ```ocaml exprat``` : supprimer le ```ocaml ;;``` placé après le constructeur ```ocaml Union```, qui interrompait la déclaration.
+    - Énoncé initial, avant la question 38 : $a$ est une expression régulière quelconque, pas nécessairement une lettre.
   ],
   contenu: (
     [
@@ -299,7 +290,9 @@
         [Pour tout mot $w=a_0 a_1 … a_(n-1)$ de longueur $n ∈ NN^*$, son miroir est $tilde(w)=a_(n-1) … a_1 a_0$.
           Le mot vide $ε$ est son propre miroir.
           Pour tout langage $L ⊆ Σ^*$, on pose $tilde(L)={tilde(w) | w ∈ L}$.],
-        question([Décrire le langage $L_1$ de l'automate $cal(A)_1$ de la figure 1 et décrire son langage miroir $tilde(L)_1$.], solution: [
+        question([Décrire le langage $L_1$ de l'automate $cal(A)_1$ de la figure 1 et décrire son langage miroir $tilde(L)_1$.],
+          commentaire: [Distinguer un langage d’un ensemble de langages.],
+          solution: [
           Les chemins acceptants bouclent d'abord sur $0$, lisent $a b$ pour atteindre $2$, puis lisent uniquement des $a$.
           Ainsi
           $ L_1=(a | b)^* a b a^*, quad tilde(L)_1=a^* b a (a | b)^*. $
@@ -331,6 +324,7 @@
         ]),
         question([Déterminiser l'automate miroir $tilde(cal(A))_2$ pour obtenir $cal(A)_3=(tilde(cal(A))_2)_"det"$.
           Renommer ses états $e_0,e_1,…$.],
+          commentaire: [Vérifier le déterminisme et les états finaux.],
           solution: [
             Les états accessibles sont
             $ e_0={3}, quad e_1={2}, quad e_2=∅, quad e_3={0}, quad e_4={0,1}. $
@@ -339,6 +333,7 @@
           ]),
         question([Déterminiser l'automate miroir $tilde(cal(A))_3$ pour obtenir $cal(A)_4=(tilde(cal(A))_3)_"det"$.
           Renommer ses états $q_0,q_1,…$.],
+          commentaire: [Vérifier le déterminisme et les états finaux.],
           solution: [
             Les états accessibles sont
             $ q_0={e_3,e_4}, quad q_1={e_4}, quad q_2={e_1,e_3,e_4}, $
@@ -371,10 +366,13 @@
           #code("pow")
           Soient $q ∈ ⟦0,n-1⟧$ et $k="numero"(X) ∈ ⟦0,2^n-1⟧$.],
         question([Écrire ```ocaml est_dans : int -> int -> bool``` qui teste, à l'aide d'opérations arithmétiques, si $q ∈ X$ en $O(1)$ opérations.],
+          commentaire: [Le codage binaire permet un test en temps constant.],
           solution: [#code("Q19") Le quotient par $2^q$, modulo $2$, est le bit d'indice $q$.]),
         [Soit $ℓ$ une liste d'états pouvant contenir des doublons, représentant $X$.],
         question([Écrire ```ocaml numero : int list -> int``` qui calcule le numéro de $X$.
-          Par exemple, ```ocaml [1; 5; 2; 5; 2; 5; 2; 2; 1; 2; 1]``` représente ${1,2,5}$, de numéro $38=2^1+2^2+2^5$.], solution: [
+          Par exemple, ```ocaml [1; 5; 2; 5; 2; 5; 2; 2; 1; 2; 1]``` représente ${1,2,5}$, de numéro $38=2^1+2^2+2^5$.],
+          commentaire: [Travailler directement avec le codage binaire.],
+          solution: [
           #code("Q20")
           On ajoute $2^q$ seulement si le bit correspondant n'est pas déjà présent.
           Le coût est linéaire dans la longueur de la liste.
@@ -385,7 +383,9 @@
           Pour $X ⊆ Q$ et $c ∈ Σ$, la transition du déterminisé est
           $ δ(X,c)=union_(q ∈ X) {q' ∈ Q | (q,c,q') ∈ T}. $
           En parcourant $T$, on calcule simultanément $δ(X,a)$ et $δ(X,b)$.],
-        question([Écrire ```ocaml etat_suivant : int -> (int * char * int) list -> int * int``` qui, à partir de $k="numero"(X)$ et de $T$, renvoie $(k_a,k_b)=("numero"(δ(X,a)),"numero"(δ(X,b)))$.], solution: [
+        question([Écrire ```ocaml etat_suivant : int -> (int * char * int) list -> int * int``` qui, à partir de $k="numero"(X)$ et de $T$, renvoie $(k_a,k_b)=("numero"(δ(X,a)),"numero"(δ(X,b)))$.],
+          commentaire: [Éviter les parcours répétés de toutes les transitions et les conversions en listes.],
+          solution: [
           #code("Q22")
           Chaque transition issue de $X$ ajoute son arrivée à l'accumulateur de sa lettre.
           Les doublons ne changent pas le résultat.
@@ -396,7 +396,9 @@
         question([Écrire ```ocaml cherche : int -> (int * int) list -> int``` qui renvoie le nouveau numéro associé à $k$, ou $-1$ si $k$ est absent.],
           solution: [#code("Q23")]),
         question([Écrire ```ocaml determinise : automate -> automate``` qui calcule le déterminisé accessible.
-          Expliquer brièvement la démarche.], solution: [
+          Expliquer brièvement la démarche.],
+          commentaire: [Conserver la représentation binaire pendant les calculs.],
+          solution: [
           #code("Q24")
           La liste ```ocaml attente``` est une pile des parties découvertes et non encore traitées.
           Chaque partie reçoit son nom lors de sa découverte et n'est empilée qu'une fois.
@@ -419,12 +421,16 @@
           On note $A_"det"=(Y,{I},F',δ)$ son déterminisé accessible.
           Pour $u ∈ Σ^*$, on pose $u^(-1)L={w ∈ Σ^* | u w ∈ L}$.],
         question([Soient $q ∈ Q$ et $u ∈ Σ^*$.
-          Montrer que si $q ∈ δ^*(I,u)$, alors il existe $w ∈ Σ^*$ tel que $u w ∈ L$.], solution: [
+          Montrer que si $q ∈ δ^*(I,u)$, alors il existe $w ∈ Σ^*$ tel que $u w ∈ L$.],
+          commentaire: [Raisonner sur les chemins ; distinguer accessibilité et coaccessibilité.],
+          solution: [
           L'accessibilité de $tilde(A)$ fournit un chemin de $f$ à $q$.
           En le renversant, on obtient dans $A$ un chemin de $q$ à $f$, étiqueté par un mot $w$.
           Comme $q ∈ δ^*(I,u)$, un chemin étiqueté $u$ joint un état initial à $q$ ; leur concaténation accepte $u w$.
         ]),
-        question([Montrer la propriété $(*)$ : si $u^(-1)L=v^(-1)L$, alors $δ^*(I,u)=δ^*(I,v)$.], solution: [
+        question([Montrer la propriété $(*)$ : si $u^(-1)L=v^(-1)L$, alors $δ^*(I,u)=δ^*(I,v)$.],
+          commentaire: [Raisonner sur les chemins ; distinguer accessibilité et coaccessibilité.],
+          solution: [
           Prenons $q ∈ δ^*(I,u)$ et un chemin de $q$ à $f$ étiqueté $w$.
           Alors $u w ∈ L$, donc $v w ∈ L$.
           Un chemin acceptant pour $v w$ passe, après $v$, par un état $q' ∈ δ^*(I,v)$, puis lit $w$ jusqu'à $f$.
@@ -484,7 +490,9 @@
             Il faut $n+1$ applications : les $n$ concaténations avec $∅$ sont supprimées de l'intérieur vers l'extérieur, puis $a | ∅$ devient $a$.
             Aucune concaténation extérieure n'est simplifiable avant que sa sous-expression droite ne soit devenue $∅$.
           ]),
-          question([Écrire ```ocaml simplifie : exprat -> exprat``` qui simplifie une expression selon ces règles.], solution: [
+          question([Écrire ```ocaml simplifie : exprat -> exprat``` qui simplifie une expression selon ces règles.],
+            commentaire: [Simplifier toute l’expression en profondeur.],
+            solution: [
             #code("Q34")
             On simplifie les fils avant la racine.
             Par induction, les fils sont irréductibles ; la règle appliquée à la racine renvoie alors soit un fils déjà simplifié, soit un constructeur auquel plus aucune règle ne s'applique.
@@ -557,6 +565,7 @@
           question([Évaluer les complexités des sommes et produits.
             En déduire que le coût $C(n)$ du calcul de l'étoile vérifie $C(n)=2C(n-1)+O(n^2)$.
             En déduire la complexité de cet algorithme.],
+            commentaire: [Partager les calculs répétés avant de compter les appels récursifs.],
             solution: [
               Posons $m=n-1$.
               On calcule et conserve $D^*$ et $a^*$. $D^* C$ coûte $Θ(m^2)$, puis $B(D^* C)$ coûte $Θ(m)$. $a^* B$ coûte $Θ(m)$ et $C(a^* B)$ coûte $Θ(m^2)$ ; l'addition à $D$ coûte $Θ(m^2)$.
@@ -572,7 +581,9 @@
           [Supposons maintenant que $n ≥ 2$ est une puissance de $2$.
             On découpe $M=mat(A,B;C,D)$ avec $A,D$ de taille $n/2$.],
           question([Évaluer les complexités des sommes et produits.
-            En déduire $C(n)=4C(n/2)+O(n^3)$, puis la complexité de l'algorithme.], solution: [
+            En déduire $C(n)=4C(n/2)+O(n^3)$, puis la complexité de l'algorithme.],
+            commentaire: [Partager les calculs répétés avant de compter les appels récursifs.],
+            solution: [
             On conserve les quatre étoiles $A^*$, $D^*$, $A'$ et $D'$ pour les réutiliser.
             Il y a un nombre constant de produits de matrices de taille $n/2$, coûtant chacun $Θ(n^3)$, et de sommes coûtant $Θ(n^2)$.
             Le découpage et le recollement coûtent $Θ(n^2)$.
@@ -590,7 +601,9 @@
             Au niveau $k$, il y a au plus $4^k$ appels sur des tailles au plus $ceil(n/2^k)$, d'où le même majorant géométrique $O(n^3/2^k)$ avant le dernier niveau.
             Les $O(n^2)$ feuilles donnent encore un coût $O(n^3)$.
           ]),
-          question([Écrire ```ocaml etoile : mat -> mat``` qui renvoie l'étoile d'une matrice avec l'algorithme récursif le plus adéquat.], solution: [
+          question([Écrire ```ocaml etoile : mat -> mat``` qui renvoie l'étoile d'une matrice avec l'algorithme récursif le plus adéquat.],
+            commentaire: [Calculer chaque résultat récursif une seule fois.],
+            solution: [
             #code("Q41")
             Chaque sous-matrice carrée passée récursivement est strictement plus petite.
             Les formules de l'énoncé donnent la correction par récurrence sur $n$.

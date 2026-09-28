@@ -1,7 +1,19 @@
 #import "meta.typ": chapitres-programme, algorithmes-programme, structures-programme, concours-possibles, filieres-possibles
 
 // Aucun paquet externe : les exercices sont des données Typst ordinaires.
-#let question(enonce, solution: none) = (type: "question", enonce: enonce, solution: solution)
+#let question(enonce, solution: none, commentaire: none) = {
+  assert(commentaire == none or type(commentaire) == content,
+    message: "commentaire doit être un contenu Typst ou none")
+  (type: "question", enonce: enonce, solution: solution, commentaire: commentaire)
+}
+
+#let texte-duree(duree) = {
+  let (heures, minutes) = duree
+  if heures == 0 { str(minutes) + " min" }
+  else if minutes == 0 { str(heures) + " h" }
+  else { str(heures) + " h " + str(minutes) + " min" }
+}
+
 #let texte-concours(concours) = (
   concours.at("nom", default: none),
   concours.at("annee", default: none),
@@ -36,13 +48,13 @@
 
 #let est-partie(bloc) = type(bloc) == dictionary and bloc.at("type", default: none) == "partie"
 
-#let aplatir(contenu, niveau: 1) = {
+#let aplatir(contenu, niveau: 1, textes: true) = {
   let resultat = ()
   for bloc in contenu {
     if est-partie(bloc) {
       resultat.push(titre-exercice(bloc.titre, bloc.numero, niveau: niveau))
-      resultat += aplatir(bloc.contenu, niveau: niveau + 1)
-    } else {
+      resultat += aplatir(bloc.contenu, niveau: niveau + 1, textes: textes)
+    } else if textes or type(bloc) != content {
       resultat.push(bloc)
     }
   }
@@ -51,7 +63,7 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
-#let exercice(meta: (:), contenu: (), debut: 1, rapport: none) = {
+#let exercice(meta: (:), contenu: (), debut: 1, remarques: none) = {
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
     assert(champ in meta, message: "Métadonnée manquante : " + champ)
@@ -84,8 +96,15 @@
     }
   }
   let duree = meta.at("duree", default: none)
-  assert(duree == none or (type(duree) == int and duree > 0),
-    message: "duree doit être un entier strictement positif ou none")
+  if duree != none {
+    assert(type(duree) == array and duree.len() == 2,
+      message: "duree doit être un couple (heures, minutes) ou none")
+    let (heures, minutes) = duree
+    assert(type(heures) == int and type(minutes) == int,
+      message: "heures et minutes doivent être des entiers")
+    assert(heures >= 0 and minutes >= 0 and minutes < 60 and heures + minutes > 0,
+      message: "duree doit être positive, avec 0 ≤ minutes < 60")
+  }
   assert(not ("reference" in meta), message: "Utiliser concours au lieu de reference")
   let concours = meta.at("concours", default: none)
   let concours-normalise = if concours != none {
@@ -123,13 +142,13 @@
     }
   }
   verifier(contenu)
-  assert(rapport == none or type(rapport) == content, message: "rapport doit être un contenu Typst ou none")
+  assert(remarques == none or type(remarques) == content, message: "remarques doit être un contenu Typst ou none")
   assert(nombre-questions(contenu) > 0, message: "Un exercice doit contenir au moins une question")
   (
     meta: (niveaux: (), duree: none, ..meta, concours: concours-normalise),
     contenu: contenu,
     debut: debut,
-    rapport: rapport,
+    remarques: remarques,
   )
 }
 
@@ -149,11 +168,15 @@
         [#texte-concours(c) #h(1em)]
       }
       Chapitres : #ex.meta.chapitres.join(", ") | Difficulté : #ex.meta.difficulte/5
-      #if ex.meta.duree != none [ | Durée : #ex.meta.duree min]
+      #if ex.meta.duree != none [ | Durée : #texte-duree(ex.meta.duree)]
     ])
   }
+  if corrige and ex.remarques != none {
+    block(width: 100%, above: 12pt, below: 12pt, ex.remarques)
+  }
   let i = ex.debut
-  for q in aplatir(ex.contenu) {
+  // Les textes de contexte restent dans l’énoncé ; les titres des parties sont conservés.
+  for q in aplatir(ex.contenu, textes: not corrige) {
     if type(q) == content {
       block(width: 100%, above: 12pt, below: 12pt, q)
       continue
@@ -164,6 +187,9 @@
         indent: 0pt, body-indent: 0.5em, q.enonce),
     )
     if corrige {
+      if q.commentaire != none {
+        block(width: 100%, above: 5pt, below: 5pt, text(style: "italic", q.commentaire))
+      }
       block(
         width: 100%, stroke: (left: 0.4pt + luma(60%)),
         inset: (left: 10pt, y: 3pt), above: 8pt, below: 10pt,
@@ -171,11 +197,6 @@
       )
     }
     i += 1
-  }
-  if corrige and ex.at("rapport", default: none) != none {
-    pagebreak(weak: true)
-    heading(level: 1)[Rapport du jury]
-    ex.rapport
   }
 }
 

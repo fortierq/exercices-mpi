@@ -9,7 +9,7 @@
     langages: ("OCaml",),
     difficulte: 4,
     niveaux: ("MPI",),
-    duree: 60,
+    duree: (1, 0),
     concours: none,
   ),
   contenu: (

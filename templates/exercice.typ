@@ -9,7 +9,7 @@
     langages: (), // C, OCaml et/ou Python en MP2I–MPI
     difficulte: 2,
     niveaux: ("MPI",),
-    duree: 20, // Minutes ; none si non estimée.
+    duree: (0, 20), // (Heures, minutes) ; none si non estimée.
     concours: none, // Ou (nom: "ENS Ulm", annee: 2019, filiere: "MP", oral: true) ; champs facultatifs.
     // Les champs supplémentaires (auteur, mots-clés…) sont libres.
   ),

@@ -112,29 +112,18 @@
     chapitres: ("automates-finis", "langages-reguliers", "graphes"),
     algorithmes: ("parcours-en-profondeur",),
     structures: ("tableau", "liste", "graphe-oriente", "graphe-non-oriente", "liste-adjacence"),
-    langages: ("OCaml",), difficulte: 4, niveaux: ("MPI",), duree: 180,
+    langages: ("OCaml",), difficulte: 4, niveaux: ("MPI",), duree: (3, 0),
     concours: (nom: "Mines-Ponts", annee: 2019, filiere: "MP"),
   ),
-  rapport: [
-    Source : Concours commun Mines-Ponts, rapport des épreuves écrites 2019,
-    § 4.2 « Informatique option — filière MP », p. 66–68
-    (fichier source : `cours-src/langage/ds/cmp19/rapport.pdf`).
-
-    == Parcours et renumérotation (questions 7–8, p. 67)
-    « Une attention toute particulière devait être consacrée à l’ordre exigé du résultat. »
-
-    « Beaucoup de candidats ont mal renuméroté les sommets du graphe ou les transitions. »
-
-    == Justification des morphismes (question 13, p. 67)
-    « On doit citer les propriétés d’un morphisme utilisées, à chaque étape du raisonnement. »
-
-    == Relation d’équivalence (questions 22–28, p. 67)
-    Le jury relève une confusion entre une alternative à chaque pas de la chaîne
-    et le choix d’un même morphisme pour toute la chaîne.
-    Cette phrase résume le rapport : le « ou » peut changer d’un indice à l’autre.
-
-    == Synthèse (partie V, p. 68)
-    « Chacune de ces questions doit être citée dans une argumentation, au moment de leur utilisation. »
+  // Rapport Mines-Ponts 2019, § 4.2, p. 66–68 : cours-src/langage/ds/cmp19/rapport.pdf.
+  // Les commentaires de questions reprennent ou résument les observations p. 67.
+  remarques: [
+    - Le jury demande des preuves argumentées, en citant les propriétés et résultats antérieurs utilisés.
+    - La dernière partie fait la synthèse du sujet : chaque résultat réutilisé doit être cité au moment où il intervient.
+    - Énoncé initial, question 27 : préciser que les entiers peuvent être nuls et que la condition sur le premier élément concerne les tableaux non vides.
+    - Énoncé initial, question 36 : le sens du chemin était inversé.
+      Il faut chercher un chemin de $(p,q)$ vers une paire dont exactement un état est final,
+      afin de calculer les paires distinguables pour la question 37.
   ],
   contenu: (
     [L’épreuve comporte 37 questions réparties en cinq parties après les préliminaires.
@@ -199,6 +188,7 @@
         et d’une liste $A$ d’entiers entre $0$ et $n-1$, renvoie un tableau $T$ de taille $n$ :
         $T[i]=-1$ si $i$ est absent de $A$, et $T[i]$ est l’indice de l’une de ses occurrences sinon.
         Par exemple, ```ocaml numero 5 [3;2;0]``` peut renvoyer ```ocaml [|2;-1;1;0;-1|]```.],
+        commentaire: [Le jury recommande un compteur et un parcours simple de la liste ; certaines solutions correctes étaient inutilement quadratiques.],
         solution: [On mémorise la position courante ; en cas de répétition, on conserve la dernière occurrence.
           #code("numero") Le coût est $O(n+abs(A))$.]),
       [Un état $q$ de $cal(A)=⟨ Q_cal(A),i_cal(A),δ_cal(A),F_cal(A) ⟩$ est accessible
@@ -209,14 +199,18 @@
         Un automate est accessible si tous ses états le sont.],
       question([Écrire ```ocaml etats_accessibles : automate -> int list``` renvoyant les états accessibles
         dans l’ordre de leur première rencontre lors d’un parcours en profondeur depuis l’état initial,
-        sans doublons. Donner sa complexité.], solution: [
+        sans doublons. Donner sa complexité.],
+        commentaire: [« Une attention toute particulière devait être consacrée à l’ordre exigé du résultat. » Le jury relève aussi des confusions avec le parcours en largeur et des oublis de marquage.],
+        solution: [
         On marque chaque état avant d’explorer ses successeurs, d’abord par $a$.
         #code("etats_accessibles")
         Chaque état accessible est traité une seule fois, avec deux transitions à examiner.
         L’initialisation coûte $O(n)$, comme le temps total et l’espace utilisé.
       ]),
       question([Écrire ```ocaml partie_accessible : automate -> automate``` construisant la partie accessible
-        de l’automate donné. On pourra réemployer les questions 6 et 7.], solution: [
+        de l’automate donné. On pourra réemployer les questions 6 et 7.],
+        commentaire: [« Beaucoup de candidats ont mal renuméroté les sommets du graphe ou les transitions. »],
+        solution: [
         On renumérote dans l’ordre obtenu précédemment : la liste commence par $0$, qui reste l’état initial.
         Les successeurs d’un état accessible sont accessibles.
         #code("partie_accessible") La complexité est $O(n)$.
@@ -250,7 +244,9 @@
         ]),
       )),
       partie("III.B", "Propriétés des morphismes d’automates", contenu: (
-        question([Montrer que deux automates acceptent le même langage dès qu’il existe un morphisme de l’un vers l’autre.], solution: [
+        question([Montrer que deux automates acceptent le même langage dès qu’il existe un morphisme de l’un vers l’autre.],
+          commentaire: [« On doit citer les propriétés d’un morphisme utilisées, à chaque étape du raisonnement. »],
+          solution: [
           Pour un morphisme $φ: cal(A) → cal(B)$, montrons par récurrence sur $abs(w)$ que
           $ ∀ q ∈ Q_cal(A), quad φ(δ_cal(A)^*(q,w))=δ_cal(B)^*(φ(q),w). quad "(∗)" $
           Pour $w=ε$, les deux membres valent $φ(q)$.
@@ -263,7 +259,9 @@
           Les langages sont donc égaux.
         ]),
         question([Montrer qu’un morphisme $φ$ entre deux automates de même nombre d’états est bijectif
-          et que $φ^(-1)$ est encore un morphisme. On dit alors que $φ$ est un isomorphisme.], solution: [
+          et que $φ^(-1)$ est encore un morphisme. On dit alors que $φ$ est un isomorphisme.],
+          commentaire: [Le jury relève des preuves confuses du caractère bijectif.],
+          solution: [
           Une surjection entre ensembles finis de même cardinal est bijective.
           Vérifions les quatre conditions pour $φ^(-1)$ :
           - Elle est bijective, donc surjective.
@@ -283,7 +281,9 @@
          #a6 #align(center)[Figure 6 — Automate $cal(A)_6$]],
       )),
       partie("III.C", "Existence de morphismes entre automates accessibles", contenu: (
-        question([Montrer que (1) découle de (2), (3) et (4) lorsque les deux automates sont accessibles.], solution: [
+        question([Montrer que (1) découle de (2), (3) et (4) lorsque les deux automates sont accessibles.],
+          commentaire: [Pour établir la surjectivité, le jury attend un antécédent explicite pour chaque état.],
+          solution: [
           La preuve de (∗) n’utilise que (3). Pour tout $q' ∈ Q_cal(B)$, l’accessibilité donne
           un mot $w$ avec $q'=δ_cal(B)^*(i_cal(B),w)=φ(δ_cal(A)^*(i_cal(A),w))$, par (2) et (∗).
           Ainsi $φ$ est surjective. L’accessibilité de $cal(A)$ et (4) ne sont pas nécessaires ici.
@@ -291,7 +291,9 @@
         question([Écrire ```ocaml existe_morphisme : automate -> automate -> bool * morphisme```
           qui, pour deux automates accessibles, indique s’il existe un morphisme du premier vers le second
           et en renvoie un lorsqu’il existe. Sinon, le tableau renvoyé est quelconque.
-          On pourra expliquer le principe de l’algorithme avant le code.], solution: [
+          On pourra expliquer le principe de l’algorithme avant le code.],
+          commentaire: [Le jury conseille de décrire l’algorithme et de commenter les différentes étapes du code.],
+          solution: [
           On impose l’image de l’état initial, puis celles des états rencontrés en profondeur.
           L’appel ```ocaml visiter q q'``` impose $φ(q)=q'$ : si l’image est déjà fixée, on vérifie sa compatibilité ;
           sinon, on vérifie le caractère final et on propage aux deux successeurs.
@@ -312,14 +314,19 @@
           $ δ_(cal(A) × cal(A)')((q,q'),σ)=(δ_cal(A)(q,σ),δ_(cal(A)')(q',σ)). $
         ],
         question([Dessiner, sans justification, la partie accessible du produit $cal(A)_3 × cal(A)_4$.],
+          commentaire: [Le jury relève des incompréhensions de la définition du produit d’automates.],
           solution: [#produit-accessible]),
-        question([Écrire ```ocaml produit : automate -> automate -> automate``` renvoyant le produit des deux automates donnés.], solution: [
+        question([Écrire ```ocaml produit : automate -> automate -> automate``` renvoyant le produit des deux automates donnés.],
+          commentaire: [Le jury insiste sur la renumérotation des couples d’états et des transitions associées.],
+          solution: [
           On représente $(q,q')$ par $q+n q'$, où $n$ est le nombre d’états du premier automate.
           L’état initial $(0,0)$ est codé par $0$.
           #code("produit") La complexité est $O(n n')$.
         ]),
         question([Soit $(q,q')$ un état accessible du produit de deux automates acceptant le même langage.
-          Montrer que $q$ est final dans le premier si et seulement si $q'$ est final dans le second.], solution: [
+          Montrer que $q$ est final dans le premier si et seulement si $q'$ est final dans le second.],
+          commentaire: [Le jury a trouvé peu de preuves convaincantes pour cette question.],
+          solution: [
           Par récurrence sur $abs(w)$,
           $ δ_(cal(A) × cal(A)')^*((q,q'),w)=(δ_cal(A)^*(q,w),δ_(cal(A)')^*(q',w)). $
           L’accessibilité fournit donc un même mot $w$ tel que $q=δ_cal(A)^*(i_cal(A),w)$ et
@@ -327,7 +334,9 @@
           Alors $q ∈ F_cal(A) ⇔ w ∈ L(cal(A)) ⇔ w ∈ L(cal(A)') ⇔ q' ∈ F_(cal(A)')$.
         ]),
         question([Montrer qu’il existe toujours un morphisme de la partie accessible du produit
-          de deux automates accessibles acceptant le même langage vers chacun de ces automates.], solution: [
+          de deux automates accessibles acceptant le même langage vers chacun de ces automates.],
+          commentaire: [Le jury a trouvé peu de preuves convaincantes pour cette question.],
+          solution: [
           Soit $cal(B)$ cette partie accessible et $φ(q,q')=q$ la première projection.
           - Pour chaque $q$, l’accessibilité de $cal(A)$ fournit $w$ menant à $q$.
             Avec $q'=δ_(cal(A)')^*(i_(cal(A)'),w)$, le couple $(q,q')$ est accessible et d’image $q$ : $φ$ est surjective.
@@ -347,7 +356,9 @@
           $p=q_0,q_1,…,q_k=q$, avec $k ∈ NN$, telle que
           $ ∀ 0 ≤ j < k, quad φ(q_j)=φ(q_(j+1)) " ou " ψ(q_j)=ψ(q_(j+1)). $
         ],
-        question([Montrer que $≡$ est une relation d’équivalence sur $Q_cal(B)$.], solution: [
+        question([Montrer que $≡$ est une relation d’équivalence sur $Q_cal(B)$.],
+          commentaire: [L’alternative entre égalité des images par $φ$ et par $ψ$ peut changer à chaque pas de la chaîne ; le jury relève des confusions sur ce point.],
+          solution: [
           - Réflexivité : la suite réduite à $p$ convient ($k=0$).
           - Symétrie : on renverse une suite reliant $p$ à $q$.
           - Transitivité : on concatène les suites de $p$ à $q$ et de $q$ à $r$, en gardant une seule fois le terme commun $q$.
@@ -489,9 +500,6 @@
           si et seulement s’il existe un chemin de $(p,q)$ vers un couple $(p_0,q_0)$
           dont exactement un état appartient à $F$.
           On essaiera de ne pas dépasser $O(n^2)$.
-
-          /Correction de l’énoncé :/ le sujet original demandait un chemin de $(p_0,q_0)$ vers $(p,q)$.
-          Le sens est inversé ici pour calculer les paires distinguables et permettre la question 37.
         ], solution: [
           On construit les listes de prédécesseurs des sommets de $P$, puis on parcourt le graphe à rebours
           depuis les paires de caractères finaux différents.

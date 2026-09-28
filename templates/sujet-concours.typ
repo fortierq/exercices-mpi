@@ -5,17 +5,19 @@
     titre: "Titre du sujet de concours",
     chapitres: ("langages-reguliers", "automates-finis"),
     algorithmes: (), structures: (), langages: (),
-    difficulte: 2, niveaux: ("MPI",), duree: 240,
+    difficulte: 2, niveaux: ("MPI",), duree: (4, 0),
     concours: none, // Renseigner le concours, l'année et la filière attestés.
   ),
-  // Affiché uniquement en fin de corrigé. Indiquer source, pages et questions.
-  rapport: none,
+  // Liste affichée en début de corrigé : remarques générales du jury et erreurs corrigées.
+  // Conserver les sources en commentaires, sans les afficher.
+  remarques: none,
   contenu: (
     [Les réponses doivent être justifiées.
       On fixe un alphabet $Σ$.],
     partie("I", "Langages", contenu: (
       partie("I.A", "Langages finis", contexte: ([On fixe un alphabet $Σ$.],), contenu: (
         question([Montrer qu'un langage fini sur $Σ$ est régulier.],
+          commentaire: none, // Observation du jury, affichée en italique avant la solution.
           solution: [Un mot est décrit par la concaténation de ses lettres
             (par $ε$ pour le mot vide).
             Une union finie de telles expressions

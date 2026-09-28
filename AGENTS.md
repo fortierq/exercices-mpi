@@ -27,9 +27,10 @@
 ### Sujets de concours et rapports du jury
 
 - Ranger les sujets dans `concours/<année sur deux chiffres>/` et partir de `templates/sujet-concours.typ`. Garder les questions, définitions et figures dans un seul sujet ; conserver la numérotation des questions source.
-- Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l’énoncé, signaler la correction près de la question et documenter sa raison dans le corrigé. Ne pas conserver deux versions contradictoires du code.
-- Renseigner le paramètre `rapport` de `exercice` avec des extraits pertinents du rapport du jury. Il est affiché uniquement à la fin du corrigé sous « Rapport du jury », sans modifier la numérotation des questions.
-- Chercher d’abord le rapport dans les sources voisines, puis sur le site officiel du concours. Vérifier concours, année, filière et épreuve ; indiquer la source, les pages et les questions concernées. Si le rapport est introuvable, le signaler sans inventer d’extrait.
+- Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l’énoncé, signaler la correction dans la liste initiale du corrigé et en expliquer la raison. Ne pas conserver deux versions contradictoires du code.
+- Placer les remarques générales du jury et les erreurs corrigées de l’énoncé initial dans `remarques` de `exercice`, sous forme d’une simple liste au début du corrigé, sans titre, source ni référence affichés. Identifier explicitement les erreurs de l’énoncé pour ne pas les attribuer au jury.
+- Associer chaque observation pertinente du jury à la question concernée via `commentaire` de `question`. Elle apparaît uniquement dans le corrigé, en italique, immédiatement après l’énoncé de la question et avant sa solution.
+- Chercher d’abord le rapport dans les sources voisines, puis sur le site officiel du concours. Vérifier concours, année, filière et épreuve ; conserver la source, les pages et les questions concernées dans les commentaires du fichier Typst ou dans la documentation, sans les afficher dans le corrigé. Si le rapport est introuvable, le signaler sans inventer d’extrait.
 - Conserver les citations exactes et courtes, entre guillemets ; indiquer explicitement les synthèses et distinguer les remarques du jury des corrections éditoriales. Respecter les limites de citation des sources. Replacer les remarques sur le programme dans leur contexte historique.
 - Stocker le code des corrigés dans `ressources/<identifiant>/` et l’afficher depuis ces mêmes fichiers pour tester exactement le code publié.
 
@@ -65,11 +66,14 @@
 - Renseigner le champ obligatoire `langages` avec les langages de       programmation effectivement utilisés dans l’énoncé ou le corrigé : `("C",)`, `("OCaml",)`, `("SQL",)`, `("Python",)` ou plusieurs de ces valeurs. Utiliser `()` pour un exercice sans langage de programmation, par exemple en présence de pseudocode seulement.
 - Utiliser uniquement `concours` pour une attribution : `none` ou `(nom: "…", annee: …, filiere: "…")`. La filière est `"MPI"` par défaut. Choisir le concours et la filière dans `lib/meta.typ` ; ne pas utiliser de champ `reference` ni inventer une année.
 
+- Renseigner `duree` par un couple `(heures, minutes)` d’entiers, avec une durée strictement positive et `0 ≤ minutes < 60`, ou `none`. Afficher par exemple « 3 h », « 1 h 30 min » ou « 20 min ».
+
 ## Présentation
 
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
 
 - Présenter les corrections sans icône ni libellé « Solution ».
+- Dans le corrigé, masquer les blocs libres de `contenu` (préliminaires, définitions, notations et textes de contexte). Conserver les titres des parties, les questions, leurs commentaires et leurs solutions. Les figures incluses dans les questions et solutions restent affichées.
 
 ## Figures
 

@@ -122,7 +122,7 @@ tableaux, etc.
 | `langages` | tableau, obligatoire | Langages utilisés : `("C",)`, `("OCaml",)`, `("Python",)` ; `()` sans programmation |
 | `difficulte` | entier de 1 à 5, obligatoire | Estimation pédagogique |
 | `niveaux` | tableau de chaînes | `()`, `("MPI",)`, `("MP", "MPI")`… |
-| `duree` | entier positif ou `none` | Minutes, estimation facultative |
+| `duree` | couple `(heures, minutes)` ou `none` | Durée positive, entiers avec `0 ≤ minutes < 60` ; affichage « 3 h », « 1 h 30 min », « 20 min » |
 | `concours` | dictionnaire ou `none` | `nom`, `annee`, `filiere` (par défaut : `"MPI"`) ; valeurs dans `lib/meta.typ` |
 
 Échelle proposée : 1 = application directe ; 2 = exercice standard ;
@@ -181,7 +181,7 @@ code sur fond blanc entre deux filets. `niveau` et `auteur` (facultatifs) règle
 les côtés gauche et droit de l’en-tête ; le titre occupe le centre. L’en-tête est
 affiché uniquement sur la première page. Il n’y a pas de sous-titre ; le corrigé
 ajoute « : corrigé » au titre. Les titres des exercices sont en gras ; le corps et les numéros des questions
-restent sans gras. Chaque solution commence par « Solution. » souligné. Les fichiers LaTeX ne sont pas nécessaires à la compilation.
+restent sans gras. Les solutions sont présentées sans icône ni libellé « Solution ». Les fichiers LaTeX ne sont pas nécessaires à la compilation.
 
 ## Sujets de concours et extraits
 
@@ -200,12 +200,20 @@ La mise en page utilise directement `feuille` et `afficher-exercice` de
 `lib/exercices.typ`, y compris les titres, les métadonnées et les solutions.
 La numérotation des questions est continue dans le sujet, sous la forme « 1. », comme dans les exercices.
 
-Le paramètre facultatif `rapport` de `exercice` contient du texte Typst, séparé des
-questions. Il apparaît uniquement à la fin du corrigé, sous « Rapport du jury ».
-Indiquer le concours, l’année, la filière, la source et les pages, puis choisir de
-courtes citations en précisant les questions concernées. Les synthèses doivent
-être annoncées comme telles. Garder `rapport: none` si aucun rapport n’est disponible.
-Les sujets Mines-Ponts 2019 et Centrale 2022 en donnent deux exemples.
+Le paramètre facultatif `remarques` de `exercice` contient une simple liste Typst
+avec les remarques générales du jury et les erreurs corrigées de l’énoncé initial.
+Elle apparaît au début du corrigé, sans titre ni source affichée. Les sources et
+les pages restent dans les commentaires du fichier ou dans la documentation.
+Les erreurs de l’énoncé sont explicitement distinguées des observations du jury.
+
+Chaque `question` peut recevoir `commentaire: [Observation du jury]` : ce texte
+apparaît en italique immédiatement après la question, avant sa solution, uniquement
+dans le corrigé. Les citations restent exactes ; les reformulations sont documentées
+comme synthèses dans la source.
+
+Les blocs libres de `contenu` (préliminaires, définitions, notations et contexte)
+sont masqués dans le corrigé. Les titres de parties, questions, commentaires et
+solutions restent affichés. Les figures des questions et solutions sont conservées.
 
 Les sujets sont rangés par année sur deux chiffres dans `concours/` ;
 `make concours` recherche aussi les sous-dossiers.
