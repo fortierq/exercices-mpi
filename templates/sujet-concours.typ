@@ -10,7 +10,7 @@
   ),
   // Parties/questions corrigées, puis remarques générales du jury en italique.
   // Conserver les sources en commentaires, sans les afficher.
-  corrections: none, // Exemple : [- Question 1 : ajouter l’hypothèse de finitude.]
+  corrections: none, // Exemple : [- Question 1 : ajouter l'hypothèse de finitude.]
   remarques: none,
   contenu: (
     [Les réponses doivent être justifiées.

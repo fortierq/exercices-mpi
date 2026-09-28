@@ -12,14 +12,14 @@
 #assert(ex.meta.algorithmes == () and ex.meta.structures == ())
 #assert(ex.meta.difficulte == 3 and ex.meta.duree == none)
 
-// L’exercice autonome réutilise directement l’objet exporté par le sujet.
+// L'exercice autonome réutilise directement l'objet exporté par le sujet.
 #assert(sujet.contenu.filter(b => type(b) == dictionary).first().contenu.at(1) == palindromes)
 #assert(ex.contenu == palindromes.contexte + palindromes.contenu)
 #assert(ex.meta.concours == palindromes.meta.concours)
 
 #let parties = sujet.contenu.filter(est-partie)
 #assert(parties.map(p => nombre-questions(p.contenu)) == (29, 14, 7))
-// L’insertion de la partie partagée conserve l’ordre des questions 6 à 12.
+// L'insertion de la partie partagée conserve l'ordre des questions 6 à 12.
 #let questions = aplatir(sujet.contenu).filter(b => type(b) == dictionary)
 #assert(questions.slice(5, 12) == palindromes.contenu.filter(b => type(b) == dictionary))
 

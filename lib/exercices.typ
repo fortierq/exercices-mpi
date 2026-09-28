@@ -179,7 +179,7 @@
   }
   if corrige and ex.corrections != none {
     block(width: 100%, above: 12pt, below: 12pt)[
-      Correction par rapport à l’énoncé initial :
+      Modifications par rapport à l'énoncé initial :
       #ex.corrections
     ]
   }
@@ -187,7 +187,7 @@
     block(width: 100%, above: 12pt, below: 12pt, text(style: "italic", ex.remarques))
   }
   let i = ex.debut
-  // Les textes de contexte restent dans l’énoncé ; les titres des parties sont conservés.
+  // Les textes de contexte restent dans l'énoncé ; les titres des parties sont conservés.
   for q in aplatir(ex.contenu, textes: not corrige, commentaires: corrige) {
     if type(q) == content {
       block(width: 100%, above: 12pt, below: 12pt, q)

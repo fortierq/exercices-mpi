@@ -30,7 +30,7 @@
         state((9, 0), "b4", label: $b_4$, final: true)
         transition("0", "a1", label: $a$, curve: 0)
         transition("0", "b3", label: $b$, curve: 0)
-        // Passer sous l’état central et sa boucle pour dégager l’étiquette.
+        // Passer sous l'état central et sa boucle pour dégager l'étiquette.
         transition("0", "b4", label: $b$, curve: -5)
         transition("a1", "b2", label: $b$, curve: 0.4)
         transition("b2", "a1", label: $a$, curve: 0.4)

@@ -24,7 +24,7 @@ def catalogue(typst):
         if result.stderr:
             print(result.stderr, end="", file=sys.stderr)
         # Le constructeur Typst valide les champs communs ; ici, on contrôle
-        # l’unicité à l’échelle de toute la banque, même en cas de filtrage.
+        # l'unicité à l'échelle de toute la banque, même en cas de filtrage.
         meta = json.loads(result.stdout)
         identifier = source.stem
         if identifier in identifiers:
@@ -62,7 +62,7 @@ def main():
         output = json.dumps(entries, ensure_ascii=False, indent=2) + "\n"
         if args.sortie:
             args.sortie.parent.mkdir(parents=True, exist_ok=True)
-            # Ne pas remplacer un catalogue valide avant la fin de l’export.
+            # Ne pas remplacer un catalogue valide avant la fin de l'export.
             temporary = args.sortie.with_suffix(args.sortie.suffix + ".tmp")
             temporary.write_text(output, encoding="utf-8")
             temporary.replace(args.sortie)

@@ -120,7 +120,7 @@
 
 #let concours = (nom: "Centrale", annee: 2022, filiere: "MP")
 
-// Partie partagée avec l’exercice autonome sur les palindromes.
+// Partie partagée avec l'exercice autonome sur les palindromes.
 #let palindromes = partie("I.B", "Palindromes et régularité",
   contexte: ([Sur un alphabet fini $Σ$, on note $tilde(w)$ le miroir du mot $w$, obtenu en inversant l'ordre de ses lettres ; $tilde(ε)=ε$.],),
   meta: (
@@ -216,14 +216,14 @@
   // Remarques générales et commentaires de questions : synthèses du rapport, sauf la citation.
   corrections: [
     - Partie I.D : préciser que la minimalité concerne les automates déterministes complets.
-    - Questions 26–27 : remplacer $δ^*({I},u)$ par $δ^*(I,u)$, car l’état initial du déterminisé est $I$.
+    - Questions 26–27 : remplacer $δ^*({I},u)$ par $δ^*(I,u)$, car l'état initial du déterminisé est $I$.
     - Partie II.A : supprimer le ```ocaml ;;``` prématuré après ```ocaml Union```, qui interrompait la déclaration du type ```ocaml exprat```.
     - Partie II.B.3, avant la question 38 : $a$ est une expression régulière quelconque, pas nécessairement une lettre.
   ],
   remarques: [
     - Justifier les réponses théoriques et les calculs de complexité.
     - Lire chaque partie avant de programmer ; les trois parties sont indépendantes.
-    - « L’indentation, certes utile pour comprendre le code, n’est pas un délimiteur comme en Python. »
+    - « L'indentation, certes utile pour comprendre le code, n'est pas un délimiteur comme en Python. »
   ],
   contenu: (
     [
@@ -293,7 +293,7 @@
           Le mot vide $ε$ est son propre miroir.
           Pour tout langage $L ⊆ Σ^*$, on pose $tilde(L)={tilde(w) | w ∈ L}$.],
         question([Décrire le langage $L_1$ de l'automate $cal(A)_1$ de la figure 1 et décrire son langage miroir $tilde(L)_1$.],
-          commentaire: [Distinguer un langage d’un ensemble de langages.],
+          commentaire: [Distinguer un langage d'un ensemble de langages.],
           solution: [
           Les chemins acceptants bouclent d'abord sur $0$, lisent $a b$ pour atteindre $2$, puis lisent uniquement des $a$.
           Ainsi
@@ -493,7 +493,7 @@
             Aucune concaténation extérieure n'est simplifiable avant que sa sous-expression droite ne soit devenue $∅$.
           ]),
           question([Écrire ```ocaml simplifie : exprat -> exprat``` qui simplifie une expression selon ces règles.],
-            commentaire: [Simplifier toute l’expression en profondeur.],
+            commentaire: [Simplifier toute l'expression en profondeur.],
             solution: [
             #code("Q34")
             On simplifie les fils avant la racine.

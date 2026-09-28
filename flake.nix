@@ -1,5 +1,5 @@
 {
-  description = "Banque d’exercices Typst";
+  description = "Banque d'exercices Typst";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 

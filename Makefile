@@ -65,7 +65,7 @@ catalogue:
 	@mkdir -p build
 	$(PYTHON) scripts/catalogue.py --typst "$(TYPST)" --sortie build/catalogue.json
 
-# Compile aussi les modèles, afin qu’ils restent utilisables lors des évolutions de la bibliothèque.
+# Compile aussi les modèles, afin qu'ils restent utilisables lors des évolutions de la bibliothèque.
 check: all test
 	@mkdir -p build/templates
 	$(TYPST) compile $(TYPST_FLAGS) templates/fiche.typ build/templates/exercice.pdf
