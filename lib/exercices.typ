@@ -22,14 +22,14 @@
 ).filter(valeur => valeur != none).map(valeur => str(valeur)).join(" · ")
 
 // Titres communs aux exercices et aux parties des sujets.
-#let titre-exercice(titre, prefixe, concours: none, niveau: 1) = {
+#let titre-exercice(titre, prefixe, duree: none, niveau: 1) = {
   block(above: 16pt, below: 16pt, breakable: false)[
     #heading(level: niveau)[
       #grid(columns: (1fr, auto), column-gutter: 1em, align: (left, right),
         [#prefixe -- #titre],
-        [#if concours != none {
+        [#if duree != none {
           text(size: 10pt, fill: luma(35%).transparentize(30%))[
-            #texte-concours(concours)
+            #texte-duree(duree)
           ]
         }],
       )
@@ -165,17 +165,8 @@
   [#metadata(ex.meta) <exercice-meta>]
   if afficher-titre {
     let prefixe = if numero == none { "I" } else { numbering("I", numero) }
-    titre-exercice(ex.meta.titre, prefixe, concours: ex.meta.concours)
-  }
-  if details and corrige {
-    block(above: 0pt, below: 9pt, text(size: 9pt, fill: luma(35%))[
-      #if ex.meta.concours != none {
-        let c = ex.meta.concours
-        [#texte-concours(c) #h(1em)]
-      }
-      Chapitres : #ex.meta.chapitres.join(", ") | Difficulté : #ex.meta.difficulte/5
-      #if ex.meta.duree != none [ | Durée : #texte-duree(ex.meta.duree)]
-    ])
+    let titre = if ex.meta.concours == none { ex.meta.titre } else { texte-concours(ex.meta.concours) }
+    titre-exercice(titre, prefixe, duree: ex.meta.duree)
   }
   if corrige and ex.corrections != none {
     block(width: 100%, above: 12pt, below: 12pt)[
@@ -215,7 +206,6 @@
 #let feuille(
   titre: "Feuille d'exercices",
   niveau: none,
-  auteur: none,
   exercices: (),
   corrige: false,
   details: true,
@@ -223,6 +213,13 @@
   body,
 ) = {
   let titre-affiche = titre + if corrige { " : corrigé" } else { "" }
+  let durees = exercices.map(ex => ex.meta.duree).filter(duree => duree != none)
+  let duree = if durees.len() == exercices.len() {
+    let minutes = durees.map(duree => 60 * duree.first() + duree.last()).sum()
+    (calc.floor(minutes / 60), calc.rem(minutes, 60))
+  } else {
+    none
+  }
   set document(title: titre-affiche)
   set text(font: "New Computer Modern", size: 11pt, lang: "fr")
   set par(justify: true, leading: 0.55em, spacing: 0.8em)
@@ -235,7 +232,7 @@
         columns: (24mm, 1fr, 24mm), align: (left, center, right),
         if niveau != none { niveau } else { [] },
         text(size: 12pt, weight: "bold", titre-affiche),
-        if auteur != none { auteur } else { [] },
+        if duree != none { texte-duree(duree) } else { [] },
       )
       #v(4pt)
       #line(length: 100%, stroke: 0.4pt)

@@ -9,7 +9,6 @@
 #show: feuille.with(
   titre: "Langages réguliers",
   niveau: "MPI",
-  auteur: "Q. Fortier",
   exercices: (commutation, fibonacci, regles, exemples, hamming, sur-mots),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
   details: sys.inputs.at("details", default: "false") == "true",
