@@ -188,8 +188,7 @@
       les deux automates obtenus (une autre méthode consistant à tester si
       $L_1 Δ L_2 = ∅$).
 
-      Il est possible de déterminer l'automate minimal équivalent à un automate
-      donné grâce à l'algorithme de Moore.
+      L'algorithme de Moore permet de construire l'automate minimal équivalent à un automate donné.
     ],
   ),
 )

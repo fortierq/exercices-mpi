@@ -24,6 +24,7 @@
 - Résoudre les `\input` et `\include`, y compris les anciens chemins `/workspaces/…`, à partir des dépôts voisins. Lire aussi les corrigés séparés ou sous `\if\cor1`, et ignorer les exercices commentés. Ne pas modifier les originaux LaTeX.
 - Conserver l'ordre, les questions, les sous-questions, les textes intermédiaires, les notations et les arguments de la source, sous réserve des corrections importantes et des conventions ci-dessous. Associer les solutions aux questions par leur contenu plutôt que par leur seul numéro.
 - Ajouter un corrigé si le corrigé manque. 
+- Il est possible de reformuler les formulations maladroites ou qui peuvent être reformulées de façon plus concise.
 
 ### Sujets de concours et rapports du jury
 
