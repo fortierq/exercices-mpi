@@ -179,7 +179,6 @@
   if corrige and ex.remarques != none {
     block(width: 100%, above: 12pt, below: 12pt)[
       #text(style: "italic")[
-        Commentaires généraux du jury :
         #ex.remarques
       ]
     ]

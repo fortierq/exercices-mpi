@@ -87,6 +87,7 @@ test:
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test-corrige.pdf
 	$(OCAML) -I ressources/mines-ponts-2019-mp-informatique ressources/mines-ponts-2019-mp-informatique/test.ml
 	$(OCAML) -I ressources/grammaires-lineaires ressources/grammaires-lineaires/test.ml
+	$(PYTHON) ressources/ens-2018-mp-reparation-langage/test.py
 
 c:
 	@case "$(COMPILE_CIBLE)" in \
