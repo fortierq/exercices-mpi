@@ -67,7 +67,8 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
-#let exercice(meta: (:), contenu: (), debut: 1, remarques: none, corrections: none) = {
+#let exercice(meta: (:), contenu: (), debut: 1, remarques: none, corrections: none, sujet-ecrit: false) = {
+  assert(type(sujet-ecrit) == bool, message: "sujet-ecrit doit être un booléen")
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
     assert(champ in meta, message: "Métadonnée manquante : " + champ)
@@ -155,6 +156,7 @@
     debut: debut,
     remarques: remarques,
     corrections: corrections,
+    sujet-ecrit: sujet-ecrit,
   )
 }
 
@@ -183,8 +185,8 @@
     ]
   }
   let i = ex.debut
-  // Les textes de contexte restent dans l'énoncé ; les titres des parties sont conservés.
-  for q in aplatir(ex.contenu, textes: not corrige, commentaires: corrige) {
+  // Seuls les sujets de concours écrits masquent le contexte dans leur corrigé.
+  for q in aplatir(ex.contenu, textes: not (corrige and ex.sujet-ecrit), commentaires: corrige) {
     if type(q) == content {
       block(width: 100%, above: 12pt, below: 12pt, q)
       continue

@@ -1,6 +1,7 @@
 #import "/lib/exercices.typ": exercice, question, partie
 
 #let ex = exercice(
+  sujet-ecrit: true, // Mettre false pour un exercice oral ou un extrait autonome.
   meta: (
     titre: "Titre du sujet de concours",
     chapitres: ("langages-reguliers", "automates-finis"),

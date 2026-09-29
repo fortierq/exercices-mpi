@@ -107,6 +107,7 @@
 }))
 
 #let ex = exercice(
+  sujet-ecrit: true,
   meta: (
     titre: "Morphismes d'automates",
     chapitres: ("automates-finis", "langages-reguliers", "graphes"),

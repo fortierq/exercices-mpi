@@ -216,9 +216,14 @@ avant la solution. Tous les commentaires du jury sont en italique et apparaissen
 uniquement dans le corrigé. Privilégier les citations exactes et courtes ; une
 reformulation ou une synthèse est possible pour rester concis et utile.
 
-Les blocs libres de `contenu` (préliminaires, définitions, notations et contexte)
-sont masqués dans le corrigé. Les titres de parties, questions, commentaires et
-solutions restent affichés. Les figures des questions et solutions sont conservées.
+Les corrigés d'exercices conservent tout l'énoncé, y compris les blocs libres de
+`contenu` (préliminaires, définitions, notations et contexte).
+Seuls les sujets de concours écrits utilisent `sujet-ecrit: true` dans `exercice`
+pour masquer ces blocs dans le corrigé ; le modèle de sujet active ce paramètre.
+Les exercices oraux et les extraits autonomes gardent la valeur par défaut `false`,
+même lorsqu'ils portent une attribution de concours.
+Les titres de parties, questions, commentaires, solutions et figures des questions
+et solutions restent affichés.
 
 Les sujets sont rangés par année sur deux chiffres dans `concours/` ;
 `make concours` recherche aussi les sous-dossiers.

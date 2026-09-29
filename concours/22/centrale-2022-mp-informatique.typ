@@ -202,6 +202,7 @@
 // Source : épreuve Centrale-Supélec 2022, MP, option informatique, 9 pages.
 // Le PDF fourni porte la mention CC BY-NC-SA.
 #let ex = exercice(
+  sujet-ecrit: true,
   meta: (
     titre: "Option informatique",
     chapitres: ("langages-reguliers", "automates-finis", "recursivite-et-induction", "algorithmique"),

@@ -7,6 +7,7 @@
 #assert(ex.contenu.filter(est-partie).map(p => nombre-questions(p.contenu)) == (5, 3, 9, 11, 9))
 #assert(ex.meta.concours == (nom: "Mines-Ponts", annee: 2019, filiere: "MP"))
 #assert(ex.remarques != none and centrale.remarques != none)
+#assert(ex.sujet-ecrit and centrale.sujet-ecrit)
 #assert(ex.meta.duree == (3, 0) and centrale.meta.duree == (3, 0))
 #assert(texte-duree((3, 0)) == "3 h")
 #assert(texte-duree((1, 30)) == "1 h 30 min")
@@ -49,14 +50,23 @@
   ),
 )
 #let corrige = sys.inputs.at("corrige", default: "false") == "true"
-#show: feuille.with(exercices: (exemple,), corrige: corrige)
+// Sujet écrit, exercice attribué à un écrit et exercice oral : seuls les sujets masquent le contexte.
+#let exemples = (
+  (..exemple, sujet-ecrit: true),
+  exemple,
+  (..exemple, meta: (..exemple.meta, concours: (nom: "ENS", oral: true))),
+)
+#show: feuille.with(exercices: exemples, corrige: corrige)
 #context {
   let ordre = query(<presentation-test>).map(m => m.value)
+  let complet = ("erratum", "general", "preambule", "partie", "definition",
+    "sous-partie", "notation", "question", "commentaire", "solution")
+  let abrege = ("erratum", "general", "partie", "sous-partie", "question", "commentaire", "solution")
   assert(ordre == if corrige {
-    ("erratum", "general", "partie", "sous-partie", "question", "commentaire", "solution")
+    abrege + complet + complet
   } else {
-    ("preambule", "definition", "notation", "question")
+    ("preambule", "definition", "notation", "question") * 3
   }, message: repr(ordre))
   assert(query(heading).map(h => h.body).contains([Rapport du jury]) == false)
-  assert(query(figure).len() == if corrige { 1 } else { 0 })
+  assert(query(figure).len() == if corrige { 3 } else { 0 })
 }
