@@ -1,0 +1,19 @@
+#import "/lib/exercices.typ": feuille
+#import "/exercices/langages/automates-palindromes.typ": ex as palindromes
+#import "/exercices/langages/automates-pile-pompage.typ": ex as pile
+#import "/exercices/langages/automates-monoides.typ": ex as monoides
+#import "/exercices/langages/automates-ordres-partiels.typ": ex as ordres
+#import "/exercices/langages/cloture-commutative-langage.typ": ex as commutative
+#import "/exercices/langages/langages-continuables-primitifs.typ": ex as primitifs
+#import "/exercices/langages/evaluation-acceleree-automates.typ": ex as evaluation
+#import "/exercices/langages/reparation-langage.typ": ex as reparation
+
+#show: feuille.with(
+  titre: "Colle : oraux ENS MP d'informatique",
+  niveau: "MP / MPI",
+  auteur: "Q. Fortier",
+  exercices: (palindromes, pile, monoides, ordres, commutative,
+    primitifs, evaluation, reparation),
+  corrige: false,
+  nouvelle-page: true,
+)
