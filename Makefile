@@ -16,6 +16,7 @@ F_SANS_EXTENSION := $(patsubst %.typ,%,$(F))
 F_SANS_PREFIXE := $(patsubst feuilles/%,%,$(F_SANS_EXTENSION))
 S_SANS_EXTENSION := $(patsubst %.typ,%,$(S))
 S_SANS_PREFIXE := $(patsubst concours/%,%,$(S_SANS_EXTENSION))
+WATCH_CIBLE := $(filter-out w,$(MAKECMDGOALS))
 ifeq ($(shell uname -s),Darwin)
 O_PDF ?= open -a "Visual Studio Code"
 else
@@ -31,7 +32,7 @@ PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf buil
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
 PDF_CONCOURS := $(foreach s,$(CONCOURS),build/concours/$(s)/enonce.pdf build/concours/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles concours catalogue check test f w wf ws clean help
+.PHONY: all exercices feuilles concours catalogue check test f w we wf ws clean help $(WATCH_CIBLE)
 all: exercices feuilles concours catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
@@ -90,6 +91,15 @@ f:
 	$(MAKE) "build/feuilles/$(F_SANS_PREFIXE).pdf" "build/feuilles/$(F_SANS_PREFIXE)-corrige.pdf"
 
 w:
+	@case "$(WATCH_CIBLE)" in \
+	  "") $(MAKE) we E="$(E)" C="$(C)" O="$(O)" ;; \
+	  exercices/*) $(MAKE) we E="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
+	  feuilles/*) $(MAKE) wf F="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
+	  concours/*) $(MAKE) ws S="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
+	  *) echo "Chemin à surveiller invalide : $(WATCH_CIBLE)"; exit 1 ;; \
+	esac
+
+we:
 	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }
 	@mkdir -p "build/exercices/$(E_SANS_PREFIXE)"
 	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
@@ -118,7 +128,8 @@ help:
 	@echo "make concours         Compiler les sujets de concours et leurs corrigés"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
 	@echo "make f F=feuilles/langages/td-kleene.typ"
-	@echo "make w E=exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
+	@echo "make w exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
+	@echo "make w feuilles/td-kleene.typ [C=true] [O=0]"
 	@echo "make wf F=langages [C=true] [O=0]"
 	@echo "make ws S=22/centrale-2022-mp-informatique [C=true] [O=0]"
 	@echo "make catalogue        Régénérer build/catalogue.json"
