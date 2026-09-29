@@ -7,13 +7,14 @@
 #import "/exercices/langages/langages-continuables-primitifs.typ": ex as primitifs
 #import "/exercices/langages/evaluation-acceleree-automates.typ": ex as evaluation
 #import "/exercices/langages/reparation-langage.typ": ex as reparation
+#import "/exercices/langages/morphismes-automates.typ": ex as morphismes
 
 #show: feuille.with(
   titre: "Colle : oraux ENS MP d'informatique",
   niveau: "MP / MPI",
   auteur: "Q. Fortier",
   exercices: (palindromes, pile, monoides, ordres, commutative,
-    primitifs, evaluation, reparation),
-  corrige: false,
+    primitifs, evaluation, reparation, morphismes),
+  corrige: sys.inputs.at("corrige", default: "false") == "true",
   nouvelle-page: true,
 )
