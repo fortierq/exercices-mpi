@@ -32,7 +32,7 @@ PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf buil
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
 PDF_CONCOURS := $(foreach s,$(CONCOURS),build/concours/$(s)/enonce.pdf build/concours/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles concours catalogue check test f w we wf ws clean help $(WATCH_CIBLE)
+.PHONY: all exercices feuilles concours catalogue check test f w _w-exercice _w-feuille _w-concours clean help $(WATCH_CIBLE)
 all: exercices feuilles concours catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
@@ -92,28 +92,28 @@ f:
 
 w:
 	@case "$(WATCH_CIBLE)" in \
-	  "") $(MAKE) we E="$(E)" C="$(C)" O="$(O)" ;; \
-	  exercices/*) $(MAKE) we E="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
-	  feuilles/*) $(MAKE) wf F="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
-	  concours/*) $(MAKE) ws S="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
+	  "") $(MAKE) _w-exercice E="$(E)" C="$(C)" O="$(O)" ;; \
+	  exercices/*) $(MAKE) _w-exercice E="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
+	  feuilles/*) $(MAKE) _w-feuille F="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
+	  concours/*) $(MAKE) _w-concours S="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
 	  *) echo "Chemin à surveiller invalide : $(WATCH_CIBLE)"; exit 1 ;; \
 	esac
 
-we:
+_w-exercice:
 	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }
 	@mkdir -p "build/exercices/$(E_SANS_PREFIXE)"
 	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
 	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"; fi
 	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
 
-wf:
+_w-feuille:
 	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
 	@mkdir -p "build/feuilles/$(dir $(F_SANS_PREFIXE))"
 	$(TYPST) compile $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
 	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"; fi
 	$(TYPST) w $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
 
-ws:
+_w-concours:
 	@test -f "concours/$(S_SANS_PREFIXE).typ" || { echo "Sujet introuvable : $(S)"; exit 1; }
 	@mkdir -p "build/concours/$(S_SANS_PREFIXE)"
 	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"
@@ -127,10 +127,9 @@ help:
 	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"
 	@echo "make concours         Compiler les sujets de concours et leurs corrigés"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
-	@echo "make f F=feuilles/langages/td-kleene.typ"
+	@echo "make f F=feuilles/td-kleene.typ  # Énoncé et corrigé, sans veille"
 	@echo "make w exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
 	@echo "make w feuilles/td-kleene.typ [C=true] [O=0]"
-	@echo "make wf F=langages [C=true] [O=0]"
-	@echo "make ws S=22/centrale-2022-mp-informatique [C=true] [O=0]"
+	@echo "make w concours/22/centrale-2022-mp-informatique.typ [C=true] [O=0]"
 	@echo "make catalogue        Régénérer build/catalogue.json"
 	@echo "make clean            Supprimer uniquement build/"
