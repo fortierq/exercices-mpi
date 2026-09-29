@@ -83,6 +83,7 @@ test:
 	$(TYPST) compile $(TYPST_FLAGS) ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test-corrige.pdf
 	$(OCAML) -I ressources/mines-ponts-2019-mp-informatique ressources/mines-ponts-2019-mp-informatique/test.ml
+	$(OCAML) -I ressources/grammaires-lineaires ressources/grammaires-lineaires/test.ml
 
 f:
 	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
