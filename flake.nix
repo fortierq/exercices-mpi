@@ -12,7 +12,7 @@
       devShells = forAllSystems (system:
         let pkgs = packagesFor system; in {
           default = pkgs.mkShellNoCC {
-            packages = [ pkgs.typst pkgs.gnumake pkgs.python3 pkgs.ocaml ];
+            packages = [ pkgs.typst pkgs.gnumake pkgs.python3 pkgs.ocaml pkgs.ripgrep ];
           };
         });
       checks = forAllSystems (system:
