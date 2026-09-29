@@ -16,7 +16,9 @@ F_SANS_EXTENSION := $(patsubst %.typ,%,$(F))
 F_SANS_PREFIXE := $(patsubst feuilles/%,%,$(F_SANS_EXTENSION))
 S_SANS_EXTENSION := $(patsubst %.typ,%,$(S))
 S_SANS_PREFIXE := $(patsubst concours/%,%,$(S_SANS_EXTENSION))
-WATCH_CIBLE := $(filter-out w,$(MAKECMDGOALS))
+CIBLE := $(filter-out w c,$(MAKECMDGOALS))
+WATCH_CIBLE := $(if $(filter w,$(MAKECMDGOALS)),$(CIBLE))
+COMPILE_CIBLE := $(if $(filter c,$(MAKECMDGOALS)),$(CIBLE))
 ifeq ($(shell uname -s),Darwin)
 O_PDF ?= open -a "Visual Studio Code"
 else
@@ -32,7 +34,7 @@ PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf buil
 PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
 PDF_CONCOURS := $(foreach s,$(CONCOURS),build/concours/$(s)/enonce.pdf build/concours/$(s)/corrige.pdf)
 
-.PHONY: all exercices feuilles concours catalogue check test f w _w-exercice _w-feuille _w-concours clean help $(WATCH_CIBLE)
+.PHONY: all exercices feuilles concours catalogue check test c w _w-exercice _w-feuille _w-concours clean help $(CIBLE)
 all: exercices feuilles concours catalogue
 exercices: $(PDF_EXERCICES)
 feuilles: $(PDF_FS)
@@ -86,9 +88,23 @@ test:
 	$(OCAML) -I ressources/mines-ponts-2019-mp-informatique ressources/mines-ponts-2019-mp-informatique/test.ml
 	$(OCAML) -I ressources/grammaires-lineaires ressources/grammaires-lineaires/test.ml
 
-f:
-	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
-	$(MAKE) "build/feuilles/$(F_SANS_PREFIXE).pdf" "build/feuilles/$(F_SANS_PREFIXE)-corrige.pdf"
+c:
+	@case "$(COMPILE_CIBLE)" in \
+	  exercices/*) \
+	    chemin="$(COMPILE_CIBLE)"; nom="$${chemin#exercices/}"; nom="$${nom%.typ}"; \
+	    test -f "exercices/$${nom}.typ" || { echo "Exercice introuvable : $(COMPILE_CIBLE)"; exit 1; }; \
+	    $(MAKE) "build/exercices/$${nom}/enonce.pdf" "build/exercices/$${nom}/corrige.pdf" ;; \
+	  feuilles/*) \
+	    chemin="$(COMPILE_CIBLE)"; nom="$${chemin#feuilles/}"; nom="$${nom%.typ}"; \
+	    test -f "feuilles/$${nom}.typ" || { echo "Feuille introuvable : $(COMPILE_CIBLE)"; exit 1; }; \
+	    $(MAKE) "build/feuilles/$${nom}.pdf" "build/feuilles/$${nom}-corrige.pdf" ;; \
+	  concours/*) \
+	    chemin="$(COMPILE_CIBLE)"; nom="$${chemin#concours/}"; nom="$${nom%.typ}"; \
+	    test -f "concours/$${nom}.typ" || { echo "Sujet introuvable : $(COMPILE_CIBLE)"; exit 1; }; \
+	    $(MAKE) "build/concours/$${nom}/enonce.pdf" "build/concours/$${nom}/corrige.pdf" ;; \
+	  "") echo "Indiquer le chemin d'un exercice, d'une feuille ou d'un sujet"; exit 1 ;; \
+	  *) echo "Chemin à compiler invalide : $(COMPILE_CIBLE)"; exit 1 ;; \
+	esac
 
 w:
 	@case "$(WATCH_CIBLE)" in \
@@ -127,7 +143,9 @@ help:
 	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"
 	@echo "make concours         Compiler les sujets de concours et leurs corrigés"
 	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
-	@echo "make f F=feuilles/td-kleene.typ  # Énoncé et corrigé, sans veille"
+	@echo "make c exercices/langages/residuels-minimisation.typ  # Énoncé et corrigé"
+	@echo "make c feuilles/td-kleene.typ"
+	@echo "make c concours/22/centrale-2022-mp-informatique.typ"
 	@echo "make w exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
 	@echo "make w feuilles/td-kleene.typ [C=true] [O=0]"
 	@echo "make w concours/22/centrale-2022-mp-informatique.typ [C=true] [O=0]"
