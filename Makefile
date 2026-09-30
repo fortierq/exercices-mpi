@@ -16,7 +16,9 @@ F_SANS_EXTENSION := $(patsubst %.typ,%,$(F))
 F_SANS_PREFIXE := $(patsubst feuilles/%,%,$(F_SANS_EXTENSION))
 S_SANS_EXTENSION := $(patsubst %.typ,%,$(S))
 S_SANS_PREFIXE := $(patsubst concours/%,%,$(S_SANS_EXTENSION))
-CIBLE := $(filter-out w c,$(MAKECMDGOALS))
+# Seuls les raccourcis c/w ont un argument de chemin à déclarer .PHONY.
+# Les PDF demandés par leurs sous-make doivent conserver leurs règles implicites.
+CIBLE := $(if $(filter w c,$(MAKECMDGOALS)),$(filter-out w c,$(MAKECMDGOALS)))
 WATCH_CIBLE := $(if $(filter w,$(MAKECMDGOALS)),$(CIBLE))
 COMPILE_CIBLE := $(if $(filter c,$(MAKECMDGOALS)),$(CIBLE))
 ifeq ($(shell uname -s),Darwin)
