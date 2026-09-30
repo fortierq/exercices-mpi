@@ -44,6 +44,7 @@
 - Corriger uniquement les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect, faute d'orthographe manifeste. Avertir l'utilisateur pour toute modification de présentation ou de contenu.
 - Pour déterminiser, dessiner l'automate plutôt que donner la table de transition. 
 - Les complexités doivent être justifiées, sauf mention contraire ou évidente.
+- Dans les preuves : poser les récurrences, séparer visuellement les implications/inclusions...
 
 ## Code Typst
 
@@ -52,6 +53,12 @@
 - Délimiter les extraits de code Typst, inline ou en bloc, par des accents graves avec le langage adéquat, par exemple ```ocaml arbre_a_mot``` ; ne pas les entourer d'apostrophes.
 - Utiliser exclusivement l'apostrophe ASCII `'`, y compris dans les textes français.
 - Être concis.
+- Commenter brièvement les éventuelles parties importantes et non évidentes du code. En particulier, commenter l'intérêt d'une nouvelle fonction/variable introduite si cela aide à la compréhension :
+```ocaml
+let f x = (* f x renvoie ... *)
+  ...
+```
+- Tester le code proposé en corrigé, mais sans utiliser trop de tests. Une dizaine suffit.
 
 ## Syntaxe
 
@@ -60,7 +67,6 @@
 - Utiliser les caractères Unicode pour les symboles mathématiques, par exemple `Σ` pour l'alphabet, `ε` pour le mot vide, `∪` pour l'union, `∩` pour l'intersection, `*` pour l'étoile de Kleene, `→` pour la flèche d'une fonction (sauf en programmation), `∀` et `∃` pour les quantificateurs.
 - Utiliser régulier au lieu de rationnel pour un langage ou expression régulière. Utiliser hors-contexte au lieu de langage algébrique. Utiliser | au lieu de + sur les expressions régulières.
 - Utiliser si possible uniquement les fonctions autorisées par le programme dans docs/programme.md. En particulier, éviter List.fold.
-- Tester le code proposé en corrigé, mais sans utiliser trop de tests. Une dizaine suffit.
 - Utiliser la syntaxe OCaml au lieu de Caml light utilisé par les anciens sujets de concours. Exemple : array au lieu de vect.
 
 ## Métadonnées
