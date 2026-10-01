@@ -13,6 +13,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "qfortier.vscode-exercices-mpi",
         "myriad-dreamin.tinymist"
       ]
     }
