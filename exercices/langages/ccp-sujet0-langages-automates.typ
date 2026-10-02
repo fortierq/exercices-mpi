@@ -1,3 +1,4 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
@@ -52,20 +53,20 @@
     ]),
     question([
       On considère l'automate non déterministe suivant :
-      #align(center, cetz.canvas(length: 0.9cm, {
+      #align(center, cetz.canvas(length: unite-automates, {
         import finite.draw: state, transition
-        cetz.draw.set-style(transition: (label: (angle: 0deg)))
-        state((0, 0), "s0", label: $0$, initial: (label: none))
-        state((3, 0), "s1", label: $1$, final: true)
-        state((0, -3), "s2", label: $2$, initial: (label: none))
-        state((3, -3), "s3", label: $3$, final: true)
+        cetz.draw.set-style(..style-automates)
+        state((0, -0.8), "s0", label: $0$, initial: (label: none))
+        state((0, 3), "s1", label: $1$, final: true)
+        state((-4, -3), "s2", label: $2$, initial: (label: none))
+        state((4, -3), "s3", label: $3$, final: true)
         transition("s0", "s1", label: $a$, curve: 0)
-        transition("s0", "s2", label: $ε$, curve: 0)
-        transition("s2", "s1", label: $a$, curve: 0.35)
-        transition("s2", "s3", label: $b$, curve: 0)
+        transition("s0", "s2", label: (text: $ε$, dist: -0.33), curve: 0)
+        transition("s2", "s1", label: $a$, curve: 0)
+        transition("s2", "s3", label: (text: $b$, dist: -0.33), curve: 0)
         transition("s1", "s3", label: $b$, curve: 0.6)
-        transition("s3", "s1", label: $a$, curve: 0.6)
-        transition("s3", "s0", label: $ε$, curve: 0.35)
+        transition("s3", "s1", label: (text: $a$, dist: -0.33), curve: 0)
+        transition("s3", "s0", label: $ε$, curve: 0)
       }))
       #enum(numbering: "(a)",
         [Déterminiser cet automate.],
@@ -75,13 +76,13 @@
     ], solution: [
       #enum(numbering: "(a)",
         [Avant la première lecture et après chaque lettre lue, on ajoute tous les états accessibles par zéro, une ou plusieurs $ε$-transitions, qui se franchissent sans lire de lettre.
-          #align(center, cetz.canvas(length: 0.9cm, {
+          #align(center, cetz.canvas(length: unite-automates, {
             import finite.draw: state, transition
-            cetz.draw.set-style(transition: (label: (angle: 0deg)))
-            state((0, 0), "0,2", label: ${0,2}$, radius: 0.8, initial: (label: none))
-            state((4, 0), "1", label: ${1}$, radius: 0.8, final: true)
-            state((0, -3), "0,2,3", label: ${0,2,3}$, radius: 0.8, final: true)
-            state((4, -3), "∅", label: $∅$, radius: 0.8)
+            cetz.draw.set-style(..style-automates)
+            state((0, 0), "0,2", label: ${0,2}$, radius: rayon-grand-etat, initial: (label: none))
+            state((4, 0), "1", label: ${1}$, radius: rayon-grand-etat, final: true)
+            state((0, -3), "0,2,3", label: ${0,2,3}$, radius: rayon-grand-etat, final: true)
+            state((4, -3), "∅", label: $∅$, radius: rayon-grand-etat)
             transition("0,2", "1", label: $a$, curve: 0)
             transition("0,2", "0,2,3", label: $b$, curve: 0)
             transition("1", "∅", label: $a$, curve: 0)

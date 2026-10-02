@@ -1,17 +1,19 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question
 // Source : exos-src/exos/automata/morphisme/morphisme.tex, corrigés conditionnels inclus.
 // Exercice adapté, sans attribution attestée ; rapprochement avec Mines-Ponts 2019 dans la documentation.
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
-#let dessiner(etats, arcs) = align(center, cetz.canvas({
+#let dessiner(etats, arcs) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
-  cetz.draw.set-style(transition: (label: (angle: 0deg)))
+  cetz.draw.set-style(..style-automates)
   for (nom, position, initial, final) in etats {
     state(position, nom, label: math.equation(eval(nom, mode: "math")),
       initial: if initial { (label: none) } else { false }, final: final)
   }
   for (p, q, etiquette, style) in arcs {
-    transition(p, q, label: math.equation(eval(etiquette, mode: "math")), ..style)
+    transition(p, q, label: (text: math.equation(eval(etiquette, mode: "math")),
+      dist: if style.at("curve", default: 1) < 0 { -0.33 } else { 0.33 }), ..style)
   }
 }))
 #let a1 = dessiner(
@@ -21,7 +23,7 @@
 )
 #let a2 = dessiner(
   (("0",(0,0),true,false),("1",(3,0),false,false),("2",(6,0),false,true)),
-  (("0","1","a",(:)), ("0","2","b",(curve: -0.65)),
+  (("0","1","a",(:)), ("0","2","b",(curve: -1.8)),
    ("1","1","a",(anchor: top)), ("2","2","a",(anchor: top)),
    ("1","2","b",(curve: 0.25)), ("2","1","b",(curve: 0.25))),
 )
@@ -29,7 +31,7 @@
   (("0",(0,0),true,false),("1",(3,0),false,true),("2",(6,0),false,false)),
   (("0","0","a",(anchor: top)), ("1","1","a",(anchor: top)),
    ("0","1","b",(curve: 0.25)), ("1","0","b",(curve: 0.25)),
-   ("2","0","b",(curve: 0.65)), ("2","1","a",(curve: 0.25))),
+   ("2","0","b",(curve: 1.8)), ("2","1","a",(curve: 0.25))),
 )
 
 #let ex = exercice(

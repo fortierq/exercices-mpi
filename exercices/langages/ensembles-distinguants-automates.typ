@@ -1,3 +1,4 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
@@ -39,17 +40,17 @@
     ]),
     question([Que vaut $"ind"(L_1)$ ?], solution: [
       La question 1 donne $"ind"(L_1)≥3$. L'automate déterministe complet suivant reconnaît $L_1$ :
-      #align(center, cetz.canvas(length: 0.8cm, {
+      #align(center, cetz.canvas(length: unite-automates, {
         import finite.draw: state, transition
-        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        cetz.draw.set-style(..style-automates)
         state((0,0), "0", label: $0$, initial: (label: none), final: true)
         state((3,0), "1", label: $1$)
         state((0,-3), "2", label: $2$)
         transition("0", "1", label: $a$, curve: 0.5)
-        transition("1", "0", label: $b$, curve: 0.5)
-        transition("0", "2", label: $b$, curve: 0)
+        transition("1", "0", label: (text: $b$, dist: -0.33), curve: 0)
+        transition("0", "2", label: (text: $b$, dist: -0.33), curve: 0)
         transition("1", "2", label: $a$, curve: 0)
-        transition("2", "2", label: $a,b$)
+        transition("2", "2", label: $a,b$, anchor: bottom)
       }))
       L'état $0$ suit les mots de $(a b)^*$, l'état $1$ ceux de $(a b)^* a$,
       et l'état $2$ ceux qui ne peuvent plus être complétés en un mot de $L_1$.
@@ -71,21 +72,21 @@
       alors que $v u$ a au moins une parité impaire. D'où $"ind"(L_2)≥4$.
       L'automate déterministe complet ci-dessous suit le couple des parités ; $0,1,2,3$
       représentent respectivement $(0,0),(1,0),(0,1),(1,1)$.
-      #align(center, cetz.canvas(length: 0.8cm, {
+      #align(center, cetz.canvas(length: unite-automates, {
         import finite.draw: state, transition
-        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        cetz.draw.set-style(..style-automates)
         state((0,0), "0", label: $0$, initial: (label: none), final: true)
         state((3,0), "1", label: $1$)
         state((0,-3), "2", label: $2$)
         state((3,-3), "3", label: $3$)
         transition("0", "1", label: $a$, curve: 0.5)
-        transition("1", "0", label: $a$, curve: 0.5)
-        transition("2", "3", label: $a$, curve: 0.5)
+        transition("1", "0", label: (text: $a$, dist: -0.33), curve: 0)
+        transition("2", "3", label: (text: $a$, dist: -0.33), curve: 0)
         transition("3", "2", label: $a$, curve: 0.5)
-        transition("0", "2", label: $b$, curve: 0.5)
+        transition("0", "2", label: (text: $b$, dist: -0.33), curve: 0)
         transition("2", "0", label: $b$, curve: 0.5)
         transition("1", "3", label: $b$, curve: 0.5)
-        transition("3", "1", label: $b$, curve: 0.5)
+        transition("3", "1", label: (text: $b$, dist: -0.33), curve: 0)
       }))
       Ainsi $"ind"(L_2)=4$.
     ]),

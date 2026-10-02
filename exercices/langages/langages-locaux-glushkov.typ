@@ -1,3 +1,4 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
@@ -20,18 +21,18 @@
       $ P = {a_1,b_3,b_4}, $
       $ S = {b_4} $
       $ F = {a_1 b_2, b_2 a_1, b_2 b_3, b_2 b_4, b_3 a_1, b_3 b_3, b_3 b_4}. $
-      #align(center, cetz.canvas(length: 0.9cm, {
+      #align(center, cetz.canvas(length: unite-automates, {
         import finite.draw: state, transition
-        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        cetz.draw.set-style(..style-automates)
         state((0, 0), "0", label: $0$, initial: (label: none))
         state((3, 2), "a1", label: $a_1$)
         state((6, 2), "b2", label: $b_2$)
-        state((4.5, -1), "b3", label: $b_3$)
+        state((4.5, -2), "b3", label: $b_3$)
         state((9, 0), "b4", label: $b_4$, final: true)
         transition("0", "a1", label: $a$, curve: 0)
         transition("0", "b3", label: $b$, curve: 0)
         // Passer sous l'état central et sa boucle pour dégager l'étiquette.
-        transition("0", "b4", label: $b$, curve: -5)
+        transition("0", "b4", label: (text: $b$, dist: -0.33), curve: -6.2)
         transition("a1", "b2", label: $b$, curve: 0.4)
         transition("b2", "a1", label: $a$, curve: 0.4)
         transition("b2", "b3", label: $b$, curve: 0)

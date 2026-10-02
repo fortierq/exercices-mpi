@@ -1,3 +1,4 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
@@ -150,9 +151,9 @@
     ], solution: [
       Les états sont étiquetés par les représentants $ε$, $a$, $a b$
       de leurs résiduels, respectivement $L_1$, $L_1 ∪ b(a|b)^*$ et $(a|b)^*$.
-      #align(center, cetz.canvas(length: 0.9cm, {
+      #align(center, cetz.canvas(length: unite-automates, {
         import finite.draw: state, transition
-        cetz.draw.set-style(transition: (label: (angle: 0deg)))
+        cetz.draw.set-style(..style-automates)
         state((0, 0), "vide", label: $ε$, initial: (label: none))
         state((3, 0), "a", label: $a$)
         state((6, 0), "ab", label: $a b$, final: true)

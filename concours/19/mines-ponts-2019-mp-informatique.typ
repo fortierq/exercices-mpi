@@ -1,3 +1,4 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question, partie
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
@@ -12,15 +13,16 @@
 }
 
 // Positions, états et arcs explicitement conservés depuis les figures sources.
-#let dessiner(etats, arcs) = align(center, cetz.canvas({
+#let dessiner(etats, arcs) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
-  cetz.draw.set-style(transition: (label: (angle: 0deg)))
+  cetz.draw.set-style(..style-automates)
   for (nom, position, initial, final) in etats {
-    state(position, nom, label: math.equation(eval(nom, mode: "math")),
+    state(position, nom, radius: if nom.contains(",") {rayon-grand-etat} else {rayon-etat}, label: math.equation(eval(nom, mode: "math")),
       initial: if initial { (label: none) } else { false }, final: final)
   }
   for (p, q, etiquette, style) in arcs {
-    transition(p, q, label: math.equation(eval(etiquette, mode: "math")), ..style)
+    transition(p, q, label: (text: math.equation(eval(etiquette, mode: "math")),
+      dist: if style.at("curve", default: 1) < 0 { -0.33 } else { 0.33 }), ..style)
   }
 }))
 #let a1 = dessiner(
@@ -34,7 +36,7 @@
 )
 #let a3 = dessiner(
   (("E", (0,0), true, false), ("F", (3,0), false, false), ("G", (6,0), false, true)),
-  (("E","F","a",(curve: 0)), ("E","G","b",(curve: -0.6)),
+  (("E","F","a",(curve: 0)), ("E","G","b",(curve: -1.8)),
    ("F","F","a",(anchor: top)), ("G","G","a",(anchor: top)),
    ("F","G","b",(curve: 0.3)), ("G","F","b",(curve: 0.3))),
 )
@@ -50,7 +52,7 @@
   (("L", (0,0), true, false), ("M", (3,0), false, true), ("N", (6,0), false, false)),
   (("L","L","a",(anchor: top)), ("L","M","b",(curve: 0.3)),
    ("M","L","b",(curve: 0.3)), ("M","N","a",(curve: 0.3)),
-   ("N","M","a",(curve: 0.3)), ("N","L","b",(curve: 0.6))),
+   ("N","M","a",(curve: 0.3)), ("N","L","b",(curve: 1.8))),
 )
 #let a6 = dessiner(
   (("P", (0,0), true, true), ("O", (4,0), false, true),
@@ -61,7 +63,7 @@
    ("Q","R","a",(curve: 0.25)), ("R","Q","a",(curve: 0.25)),
    ("Q","O","b",(curve: 0)), ("R","S","b",(curve: 0)),
    ("S","S","b",(anchor: right)), ("S","T","a",(curve: 0)),
-   ("T","P","b",(curve: 0)), ("T","R","a",(curve: -0.15))),
+   ("T","P","b",(curve: 0)), ("T","R","a",(curve: -2.8))),
 )
 #let produit-accessible = dessiner(
   (("E,H", (0,0), true, false), ("F,I", (3,2), false, false),

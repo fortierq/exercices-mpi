@@ -1,3 +1,4 @@
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question, partie
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
@@ -11,9 +12,9 @@
   raw(source.split(debut).at(1).split(fin).first().trim(), lang: "ocaml", block: true)
 }
 
-#let automate-a1(miroir: false) = align(center, cetz.canvas({
+#let automate-a1(miroir: false) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
-  cetz.draw.set-style(transition: (label: (angle: 0deg)))
+  cetz.draw.set-style(..style-automates)
   state((0, 0), "s0", label: $0$,
     initial: if miroir { false } else { (label: none) }, final: miroir)
   state((2.5, 0), "s1", label: $1$)
@@ -38,9 +39,9 @@
   )
 }))
 
-#let graphe-matrice() = align(center, cetz.canvas({
+#let graphe-matrice() = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
-  cetz.draw.set-style(transition: (label: (angle: 0deg)))
+  cetz.draw.set-style(..style-automates)
   state((0, 0), "s0", label: $0$)
   state((3, 0), "s1", label: $1$)
   transition("s0", "s0", label: $a$, anchor: top)
@@ -49,9 +50,9 @@
   transition("s1", "s0", label: $c$, curve: 0.4)
 }))
 
-#let antimirov() = align(center, cetz.canvas({
+#let antimirov() = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
-  cetz.draw.set-style(transition: (label: (angle: 0deg)))
+  cetz.draw.set-style(..style-automates)
   state((0, 0), "E", label: $E$, initial: (label: none))
   state((3, 0), "bE", label: $b E$)
   state((0, -2.5), "a", label: $a$)
@@ -59,20 +60,20 @@
   transition("E", "E", label: $b$, anchor: top)
   transition("E", "bE", label: $a$, curve: 0.25)
   transition("bE", "E", label: $b$, curve: 0.25)
-  transition("E", "a", label: $b$, curve: 0)
-  transition("a", "epsilon", label: $a$, curve: 0)
+  transition("E", "a", label: (text: $b$, dist: -0.33), curve: 0)
+  transition("a", "epsilon", label: (text: $a$, dist: -0.33), curve: 0)
 }))
 
 // Les données de transitions restent explicites pour vérifier les déterminisations.
-#let dessiner-determinise(etats, transitions) = align(center, cetz.canvas({
+#let dessiner-determinise(etats, transitions) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
-  cetz.draw.set-style(transition: (label: (angle: 0deg)))
+  cetz.draw.set-style(..style-automates)
   for (position, nom, etiquette, initial, final) in etats {
     state(position, nom, label: etiquette,
       initial: if initial { (label: none) } else { false }, final: final)
   }
   for (depart, arrivee, etiquette, style) in transitions {
-    transition(depart, arrivee, label: etiquette, ..style)
+    transition(depart, arrivee, label: (text: etiquette, dist: if style.at("curve", default: 1) < 0 { -0.33 } else { 0.33 }), ..style)
   }
 }))
 
@@ -111,10 +112,10 @@
     ("q1", "q3", $a$, (curve: 0)),
     ("q1", "q0", $b$, (curve: 0.25)),
     ("q2", "q4", $a$, (curve: 0)),
-    ("q2", "q2", $b$, (anchor: top)),
+    ("q2", "q2", $b$, (anchor: bottom)),
     ("q3", "q3", $a,b$, (anchor: right)),
     ("q4", "q3", $a$, (curve: 0)),
-    ("q4", "q0", $b$, (curve: 0.6)),
+    ("q4", "q0", $b$, (curve: 2.2)),
   ),
 )
 

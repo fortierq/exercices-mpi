@@ -84,6 +84,7 @@ let f x = (* f x renvoie ... *)
 
 - Générer les figures (automates, arbres, graphes, schémas…) depuis des sources Typst avec [CeTZ](https://typst.app/universe/package/cetz/), [finite](https://typst.app/universe/package/finite/) pour les automates, ou un autre paquet adapté.
 - Conserver le code des figures dans le même fichier si possible.
+- Pour les automates, utiliser l'échelle et le style communs de `lib/automates.typ` : rayon ordinaire de 4,8 mm, agrandi pour les couples, ensembles et labels longs. Placer les boucles, arcs de retour et étiquettes vers l'extérieur lorsqu'il y a le choix, et éviter les croisements.
 - Fixer les versions des paquets dans les imports. Préserver les informations de la figure source : étiquettes, transitions, états initiaux et finaux, structure des arbres.
 
 
