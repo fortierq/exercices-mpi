@@ -1,30 +1,16 @@
-#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
+#import "/lib/code.typ": code-region
+#import "/lib/automates.typ": dessiner-automate, rayon-etat, rayon-grand-etat
 #import "/lib/exercices.typ": exercice, question, partie
 #import "@preview/cetz:0.4.2" as cetz
-#import "@preview/finite:0.5.1" as finite
 
 // Sources : cours-src/langage/ds/cmp19/{cmp19.pdf,cmp19_cor.tex,rapport.pdf}.
 #let source = read("/ressources/mines-ponts-2019-mp-informatique/corrige.ml")
-#let code(nom) = {
-  let debut = "(* BEGIN " + nom + " *)\n"
-  let fin = "(* END " + nom + " *)"
-  assert(source.split(debut).len() == 2)
-  raw(source.split(debut).at(1).split(fin).first().trim(), lang: "ocaml", block: true)
-}
+#let code = code-region.with(source)
 
 // Positions, états et arcs explicitement conservés depuis les figures sources.
-#let dessiner(etats, arcs) = align(center, cetz.canvas(length: unite-automates, {
-  import finite.draw: state, transition
-  cetz.draw.set-style(..style-automates)
-  for (nom, position, initial, final) in etats {
-    state(position, nom, radius: if nom.contains(",") {rayon-grand-etat} else {rayon-etat}, label: math.equation(eval(nom, mode: "math")),
-      initial: if initial { (label: none) } else { false }, final: final)
-  }
-  for (p, q, etiquette, style) in arcs {
-    transition(p, q, label: (text: math.equation(eval(etiquette, mode: "math")),
-      dist: if style.at("curve", default: 1) < 0 { -0.33 } else { 0.33 }), ..style)
-  }
-}))
+#let dessiner = dessiner-automate.with(
+  rayon: nom => if nom.contains(",") { rayon-grand-etat } else { rayon-etat },
+)
 #let a1 = dessiner(
   (("A", (0,0), true, false), ("B", (3,0), false, true)),
   (("A","B","a,b",(curve: 0.3)), ("B","A","a,b",(curve: 0.3))),

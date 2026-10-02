@@ -1,23 +1,10 @@
-#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
+#import "/lib/automates.typ": dessiner-automate as dessiner
 #import "/lib/exercices.typ": exercice, question, partie
 // Source locale : exos-src/exos/automata ; détails et pages dans docs/conversion-oraux-ens.md.
 // Rapport officiel : https://diplome.di.ens.fr/informatique-ens/annales/2017_InfoU-rapport.pdf
 // Remarque générale reformulée : rapport 2017, p. 3.
 // Question 1 : citation du même rapport, p. 3, recommandations sur les automates.
-#import "@preview/cetz:0.4.2" as cetz
-#import "@preview/finite:0.5.1" as finite
-#let dessiner(etats, arcs) = align(center, cetz.canvas(length: unite-automates, {
-  import finite.draw: state, transition
-  cetz.draw.set-style(..style-automates)
-  for (nom, position, initial, final) in etats {
-    state(position, nom, label: math.equation(eval(nom, mode: "math")),
-      initial: if initial { (label: none) } else { false }, final: final)
-  }
-  for (p, q, etiquette, style) in arcs {
-    transition(p, q, label: (text: math.equation(eval(etiquette, mode: "math")),
-      dist: if style.at("curve", default: 1) < 0 { -0.33 } else { 0.33 }), ..style)
-  }
-}))
+
 #let anbn = dessiner(
   (("q_0",(0,0),true,false), ("q_1",(3,0),false,false), ("q_2",(6,0),false,false), ("q_3",(9,0),false,true)),
   (("q_0","q_1","a:γ_0→γ_0",(:)), ("q_1","q_1","a:γ→γ α",(anchor: top)),

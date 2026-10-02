@@ -31,3 +31,8 @@
   assert(query(enum).map(q => q.start) == (1, 2, 1, 2))
   assert(query(<correction-test>).len() == 1)
 }
+
+// L'extraction conserve exactement le code entre les marqueurs et sa présentation.
+#import "/lib/code.typ": code-region
+#let extrait = code-region("avant\n(* BEGIN test *)\nlet x = 1\n(* END test *)\naprès", "test")
+#assert(extrait.text == "let x = 1" and extrait.lang == "ocaml" and extrait.block)

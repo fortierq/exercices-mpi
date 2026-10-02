@@ -1,24 +1,13 @@
-#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
+#import "/lib/automates.typ": dessiner-automate, rayon-etat, rayon-grand-etat
 #import "/lib/exercices.typ": exercice, question, partie
 // Source locale : exos-src/exos/automata ; détails et pages dans docs/conversion-oraux-ens.md.
 // Rapport officiel : https://diplome.di.ens.fr/informatique-ens/annales/2022_InfoU-rapport.pdf
 // Remarque générale reformulée : rapport 2022, p. 2.
 // Question 2 : synthèse du même rapport, p. 2, paragraphe sur le produit.
-#import "@preview/cetz:0.4.2" as cetz
-#import "@preview/finite:0.5.1" as finite
-#let dessiner(etats, arcs) = align(center, cetz.canvas(length: unite-automates, {
-  import finite.draw: state, transition
-  cetz.draw.set-style(..style-automates)
-  for (nom, position, initial, final) in etats {
-    state((position.at(0)*1.5, position.at(1)*1.3), nom,
-      radius: if nom.len()>5 {1.1} else if nom.len()>2 {rayon-grand-etat} else {rayon-etat}, label: math.equation(eval(nom, mode: "math")),
-      initial: if initial { (label: none) } else { false }, final: final)
-  }
-  for (p, q, etiquette, style) in arcs {
-    transition(p, q, label: (text: math.equation(eval(etiquette, mode: "math")),
-      dist: if style.at("curve", default: 1) < 0 { -0.33 } else { 0.33 }), ..style)
-  }
-}))
+#let dessiner = dessiner-automate.with(
+  echelle: (1.5, 1.3),
+  rayon: nom => if nom.len() > 5 { 1.1 } else if nom.len() > 2 { rayon-grand-etat } else { rayon-etat },
+)
 #let fini = dessiner(
   (("ε",(0,0),true,false), ("a",(2,1),false,false), ("b",(2,-1),false,false),
    ("a b",(4,1),false,false), ("b a",(4,-1),false,false),

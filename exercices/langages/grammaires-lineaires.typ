@@ -1,3 +1,4 @@
+#import "/lib/code.typ": code-region
 #import "/lib/exercices.typ": exercice, question
 
 // Exercice original. Référence de cours :
@@ -5,12 +6,7 @@
 // sections « Définitions », « Langages non-contextuels et langages réguliers »
 // et « Grammaire ambiguë ». La linéarité et la forme restreinte sont introduites.
 #let source = read("/ressources/grammaires-lineaires/corrige.ml")
-#let code(nom) = {
-  let debut = "(* BEGIN " + nom + " *)\n"
-  let fin = "(* END " + nom + " *)"
-  assert(source.split(debut).len() == 2)
-  raw(source.split(debut).at(1).split(fin).first().trim(), lang: "ocaml", block: true)
-}
+#let code = code-region.with(source)
 
 #let ex = exercice(
   meta: (

@@ -1,3 +1,4 @@
+#import "/lib/code.typ": code-region
 #import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
 #import "/lib/exercices.typ": exercice, question, partie
 #import "@preview/cetz:0.4.2" as cetz
@@ -5,12 +6,7 @@
 
 // Le code affiché est exactement celui compilé et testé.
 #let source = read("/ressources/centrale-2022-mp-informatique/corrige.ml")
-#let code(nom) = {
-  let debut = "(* BEGIN " + nom + " *)\n"
-  let fin = "(* END " + nom + " *)"
-  assert(source.split(debut).len() == 2, message: "Région OCaml introuvable : " + nom)
-  raw(source.split(debut).at(1).split(fin).first().trim(), lang: "ocaml", block: true)
-}
+#let code = code-region.with(source)
 
 #let automate-a1(miroir: false) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
