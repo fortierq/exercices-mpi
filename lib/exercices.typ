@@ -83,6 +83,18 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
+// Un barème suit les questions dans l'ordre, y compris dans les parties imbriquées.
+#let verifier-bareme(bareme, nombre) = {
+  if bareme != none {
+    assert(type(bareme) == array, message: "bareme doit être un tableau ou none")
+    assert(bareme.len() == nombre, message: "bareme doit contenir une valeur par question")
+    for points in bareme {
+      assert(points == none or points in (0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
+        message: "Points autorisés : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ou none")
+    }
+  }
+}
+
 /// Construit et valide un exercice ou un sujet, exporté sous le nom `ex`.
 /// L'identifiant est le nom du fichier, jamais un champ de `meta`.
 /// Les vocabulaires autorisés sont exportés par `lib/meta.typ`.
@@ -90,9 +102,10 @@
 /// - contenu (array): Textes libres `[...]`, `question(...)` et `partie(...)` ; au moins une question.
 /// - remarques (content, none): Commentaires généraux du jury, en italique au début du corrigé.
 /// - corrections (content, none): Liste des corrections éditoriales affichée uniquement pour les sujets attribués à un concours, précédée du titre « Modifications par rapport à l'énoncé initial : ».
+/// - bareme (array, none): Points par question dans l'ordre, parties comprises ; `none` omet le barème ou une question. Valeurs : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4. Affichés uniquement en marge du corrigé.
 /// - sujet-ecrit (bool): Masque les textes libres du contexte dans le corrigé d'un sujet écrit seulement. Les questions et figures qu'elles contiennent sont conservées.
 /// -> dictionary
-#let exercice(meta: (:), contenu: (), remarques: none, corrections: none, sujet-ecrit: false) = {
+#let exercice(meta: (:), contenu: (), remarques: none, corrections: none, sujet-ecrit: false, bareme: none) = {
   assert(type(sujet-ecrit) == bool, message: "sujet-ecrit doit être un booléen")
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
@@ -171,6 +184,7 @@
     }
   }
   verifier(contenu)
+  verifier-bareme(bareme, nombre-questions(contenu))
   assert(corrections == none or type(corrections) == content, message: "corrections doit être un contenu Typst ou none")
   assert(remarques == none or type(remarques) == content, message: "remarques doit être un contenu Typst ou none")
   assert(nombre-questions(contenu) > 0, message: "Un exercice doit contenir au moins une question")
@@ -180,6 +194,7 @@
     remarques: remarques,
     corrections: corrections,
     sujet-ecrit: sujet-ecrit,
+    bareme: bareme,
   )
 }
 
@@ -188,9 +203,12 @@
 /// - ex (dictionary): Exercice à afficher.
 /// - numero (int, none): Numéro romain du titre ; `none` utilise I.
 /// - corrige (bool): Afficher solutions et commentaires.
+/// - bareme (array, none): Barème remplaçant celui de l'exercice ; `none` utilise `ex.bareme`.
 /// - afficher-titre (bool): Afficher le titre de l'exercice.
 /// -> content
-#let afficher-exercice(ex, numero: none, corrige: false, afficher-titre: true) = {
+#let afficher-exercice(ex, numero: none, corrige: false, afficher-titre: true, bareme: none) = {
+  let bareme = if bareme == none { ex.bareme } else { bareme }
+  verifier-bareme(bareme, nombre-questions(ex.contenu))
   show strong: it => it.body
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
@@ -220,10 +238,20 @@
       continue
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
-    block(width: 100%, above: 12pt, below: 5pt,
+    block(width: 100%, above: 12pt, below: 5pt, {
+      if corrige and bareme != none and bareme.at(i - 1) != none {
+        let points = bareme.at(i - 1)
+        // Placement hors du corps : la note suit le début de la question sans réserver de hauteur.
+        place(top + right, dx: 12mm,
+          block(width: 10mm)[
+            #metadata((question: i, points: points)) <bareme-question>
+            #text(size: 9pt, weight: "regular",
+              str(points).replace(".", ",") + if points <= 1 { " pt" } else { " pts" })
+          ])
+      }
       enum(start: i, numbering: "1.",
-        indent: 0pt, body-indent: 0.5em, q.enonce),
-    )
+        indent: 0pt, body-indent: 0.5em, q.enonce)
+    })
     if corrige {
       if q.commentaire != none {
         block(width: 100%, above: 5pt, below: 5pt, text(style: "italic", q.commentaire))
@@ -246,6 +274,7 @@
 /// - concours (dictionary, none): Attribution remplaçant le titre ; mêmes champs que `exercice.meta.concours`.
 /// - exercices (array): Objets `ex` importés, dans l'ordre ; `()` crée une feuille vide.
 /// - corrige (bool): Afficher les corrigés ; brancher sur `sys.inputs.at("corrige", default: "false") == "true"`.
+/// - bareme (array, none): Points dans l'ordre de toutes les questions de la feuille ; remplace les barèmes des exercices. `none` conserve ceux des exercices ; une entrée `none` masque les points de cette question.
 /// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page.
 /// - body (content): Contenu placé avant les exercices, fourni par la règle show.
 /// -> content
@@ -257,8 +286,10 @@
   exercices: (),
   corrige: false,
   nouvelle-page: false,
+  bareme: none,
   body,
 ) = {
+  verifier-bareme(bareme, exercices.map(ex => nombre-questions(ex.contenu)).sum(default: 0))
   let titre-principal = if concours == none { titre } else { texte-concours(concours) }
   let titre-affiche = titre-principal + if corrige { " : corrigé" } else { "" }
   let duree = if concours == none or exercices.len() != 1 { none } else { exercices.first().meta.duree }
@@ -292,8 +323,11 @@
     text(size: 9pt, it),
   )
   body
+  let debut-bareme = 0
   for (i, ex) in exercices.enumerate(start: 1) {
     if nouvelle-page and i > 1 { pagebreak() }
-    afficher-exercice(ex, numero: if exercices.len() > 1 { i } else { none }, corrige: corrige, afficher-titre: exercices.len() > 1 or titre != ex.meta.titre)
+    let fin-bareme = debut-bareme + nombre-questions(ex.contenu)
+    afficher-exercice(ex, bareme: if bareme == none { none } else { bareme.slice(debut-bareme, fin-bareme) }, numero: if exercices.len() > 1 { i } else { none }, corrige: corrige, afficher-titre: exercices.len() > 1 or titre != ex.meta.titre)
+    debut-bareme = fin-bareme
   }
 }

@@ -110,6 +110,19 @@
 
 #let ex = exercice(
   sujet-ecrit: true,
+  // Barème pédagogique, non officiel : difficulté et longueur des preuves/code.
+  bareme: (
+    // I : lectures directes, expressions régulières et représentation.
+    0.25, 0.25, 0.5, 1, 0.5,
+    // II : indexation, parcours et renumérotation.
+    1, 1.5, 1.5,
+    // III : exemples, preuves des propriétés et recherche d'un morphisme.
+    0.5, 0.5, 0.5, 0.5, 2, 1.5, 1, 1, 3,
+    // IV : produit, quotient et calcul des classes.
+    1, 1.5, 1.5, 2, 1, 1.5, 1, 2.5, 3, 1.5, 2.5,
+    // V : synthèse, minimalité et algorithme de réduction.
+    0.5, 1.5, 2, 2, 1.5, 0.5, 2, 3.5, 4,
+  ),
   meta: (
     titre: "Morphismes d'automates",
     chapitres: ("automates-finis", "langages-reguliers", "graphes"),

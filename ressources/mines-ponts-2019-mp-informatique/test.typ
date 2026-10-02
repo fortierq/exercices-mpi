@@ -3,6 +3,8 @@
 #import "/concours/22/centrale-2022-mp-informatique.typ": ex as centrale
 
 #assert(nombre-questions(ex.contenu) == 37)
+#assert(ex.bareme.len() == 37)
+#assert(ex.bareme.sum() == 53.5)
 #assert(aplatir(ex.contenu).filter(b => type(b) == dictionary).all(q => q.solution != none))
 #assert(ex.contenu.filter(est-partie).map(p => nombre-questions(p.contenu)) == (5, 3, 9, 11, 9))
 #assert(ex.meta.concours == (nom: "Mines-Ponts", annee: 2019, filiere: "MP"))

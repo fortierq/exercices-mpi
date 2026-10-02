@@ -80,6 +80,20 @@ let f x = (* f x renvoie ... *)
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
 - Dans le corrigé d'un exercice, conserver tout l'énoncé, y compris les blocs libres de `contenu` (préliminaires, définitions, notations et textes de contexte). Uniquement pour un sujet de concours écrit, utiliser `sujet-ecrit: true` dans `exercice` pour masquer ces blocs dans le corrigé. Conserver les titres des parties, les questions, leurs commentaires et leurs solutions. Les figures incluses dans les questions et solutions restent affichées. Les exercices oraux et les extraits autonomes conservent leur contexte, même s'ils portent une attribution de concours.
 
+### Barème
+
+Ajouter `bareme: (0.25, 0.5, 1, ...)` à `exercice(...)` pour un exercice ou un sujet,
+ou à `feuille.with(...)` pour une feuille. Le tableau contient une valeur par question,
+dans l'ordre de lecture, sous-parties comprises. Pour une feuille, il suit aussi l'ordre
+des exercices et remplace leurs barèmes sans modifier les objets importés.
+`none` comme barème conserve ceux des exercices ; une entrée `none` omet les points
+pour la question correspondante. Les points figurent uniquement dans la marge droite du corrigé.
+
+Échelle pédagogique : évidence 0.25, facile 0.5, moyen 1, assez difficile 2,
+difficile 3, très difficile 4. Tenir aussi compte de la longueur de la preuve ou du code ;
+1.5, 2.5 et 3.5 permettent d'affiner. Le total reste brut, sans normalisation.
+Un barème pédagogique de concours n'est pas un barème officiel.
+
 ## Figures
 
 - Générer les figures (automates, arbres, graphes, schémas…) depuis des sources Typst avec [CeTZ](https://typst.app/universe/package/cetz/), [finite](https://typst.app/universe/package/finite/) pour les automates, ou un autre paquet adapté.
