@@ -4,7 +4,6 @@
 // Remarque générale reformulée : rapport 2018, p. 3.
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Évaluation accélérée d'automates",
@@ -14,8 +13,9 @@
     concours: (nom: "ENS", annee: 2018, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Question 5, corrigé : remplacer la décomposition dyadique fautive par un parcours de l'arbre d'intervalles ; conserver l'ordre des compositions.
-    - Question 7, corrigé : conserver le facteur $abs(Q)$ pour les mises à jour et préciser les informations à maintenir.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Question 6, corrigé : remplacer la décomposition dyadique fautive par un parcours de l'arbre d'intervalles ; conserver l'ordre des compositions.
+    - Question 8, corrigé : conserver le facteur $abs(Q)$ pour les mises à jour et préciser les informations à maintenir.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (

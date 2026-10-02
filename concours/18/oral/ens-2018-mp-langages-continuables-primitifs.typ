@@ -4,7 +4,6 @@
 // Remarque générale reformulée : rapport 2018, p. 3.
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Langages continuables et mots primitifs",
@@ -14,9 +13,10 @@
     concours: (nom: "ENS", annee: 2018, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Question 1, corrigé : le bloc répété a longueur $d$, et l'exposant vaut $abs(w)/d$.
-    - Question 5, corrigé : la lecture part de l'état initial ; le parcours inverse part de tous les états finaux.
-    - Question 6, corrigé : inclure $i=0$ lorsque l'automate a un seul état.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Question 2, corrigé : le bloc répété a longueur $d$, et l'exposant vaut $abs(w)/d$.
+    - Question 6, corrigé : la lecture part de l'état initial ; le parcours inverse part de tous les états finaux.
+    - Question 7, corrigé : inclure $i=0$ lorsque l'automate a un seul état.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (

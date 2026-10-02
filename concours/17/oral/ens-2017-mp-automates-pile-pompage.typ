@@ -2,7 +2,7 @@
 // Source locale : exos-src/exos/automata ; détails et pages dans docs/conversion-oraux-ens.md.
 // Rapport officiel : https://diplome.di.ens.fr/informatique-ens/annales/2017_InfoU-rapport.pdf
 // Remarque générale reformulée : rapport 2017, p. 3.
-// Question 0 : citation du même rapport, p. 3, recommandations sur les automates.
+// Question 1 : citation du même rapport, p. 3, recommandations sur les automates.
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
 #let dessiner(etats, arcs) = align(center, cetz.canvas({
@@ -31,7 +31,6 @@
 )
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Automates à pile et lemme de pompage",
@@ -41,9 +40,10 @@
     concours: (nom: "ENS", annee: 2017, filiere: "MP", oral: true),
   ),
   corrections: [
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
     - Définitions : préciser que les ensembles de transitions sont finis, afin que $G$ existe, et parler de couples de configurations et de triplets d'états de base.
-    - Questions 5 et 6, corrigé : une transition peut remplacer le sommet initial, qui n'est donc pas nécessairement conservé au retour. Renforcer le choix des montagnes en imposant aussi le même sommet de sortie.
-    - Question 5, corrigé : sélectionner les hauteurs par minima successifs à rebours ; une montée peut sauter des hauteurs.
+    - Questions 6 et 7, corrigé : une transition peut remplacer le sommet initial, qui n'est donc pas nécessairement conservé au retour. Renforcer le choix des montagnes en imposant aussi le même sommet de sortie.
+    - Question 6, corrigé : sélectionner les hauteurs par minima successifs à rebours ; une montée peut sauter des hauteurs.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (
@@ -94,7 +94,7 @@
     ], solution: [
       On a $L_(≤η)(A)⊆L(A)$ : reproduire un calcul tronqué avec la pile entière.
       À chaque instant, la pile tronquée est un suffixe non vide de la pile entière et possède donc le même sommet. Chaque transition choisie reste légale dans le calcul entier et conduit au même état.
-      L'inclusion peut être stricte : dans l'automate de la question 1, le mot $a a b b$ ne peut être accepté pour $η=1$, car le premier $b$ viderait la pile tronquée.
+      L'inclusion peut être stricte : dans l'automate de la question 2, le mot $a a b b$ ne peut être accepté pour $η=1$, car le premier $b$ viderait la pile tronquée.
 
       Prendre comme états les configurations tronquées, initial $(q_0,γ_0)$, finaux celles dont l'état appartient à $F$, et les transitions définies ci-dessus.
       Leur nombre est $abs(Q)∑_(j=1)^η abs(Γ)^j$, donc fini. Cet automate reconnaît précisément $L_(≤η)(A)$.
@@ -139,10 +139,10 @@
       Déduire des trois questions précédentes le lemme de pompage affaibli : pour tout langage $L$ reconnu par un automate à pile, il existe $p∈NN$ tel que tout $w∈L$ avec $abs(w)>p$ s'écrive $w=u v x y z$, avec $abs(v y)≥1$ et
       $ ∀n∈NN, quad u v^n x y^n z∈L. $
     ], solution: [
-      Prendre $η=η_0+G$ et comme $p$ le nombre d'états de l'automate fini de la question 3.
+      Prendre $η=η_0+G$ et comme $p$ le nombre d'états de l'automate fini de la question 4.
       Si $w∈L_(≤η)(A)$, le lemme de l'étoile fournit $w=u v z$, avec $v≠ε$ et $u v^n z∈L_(≤η)(A)⊆L$. Poser $x=y=ε$.
 
-      Sinon, les questions 4 et 5 donnent deux montagnes imbriquées avec mêmes états d'entrée et de sortie, mêmes sommets d'entrée $γ$ et mêmes sommets de sortie $ρ$.
+      Sinon, les questions 5 et 6 donnent deux montagnes imbriquées avec mêmes états d'entrée et de sortie, mêmes sommets d'entrée $γ$ et mêmes sommets de sortie $ρ$.
       Découper $w$ aux positions $l',l'',r'',r'$ en $u,v,x,y,z$.
       Écrivons la pile extérieure d'entrée $P γ$. Comme la pile ne descend jamais à sa hauteur de base à l'intérieur d'une montagne, le préfixe situé strictement sous son sommet reste intact.
       Les quatre piles aux coupures sont donc

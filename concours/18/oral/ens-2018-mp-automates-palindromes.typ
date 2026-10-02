@@ -5,7 +5,6 @@
 // Commentaire de question : synthèse du même rapport, p. 3 (parcours ou programmation dynamique).
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Automates et palindromes",
@@ -15,8 +14,8 @@
     concours: (nom: "ENS", annee: 2018, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Numérotation : rétablissement des questions 0 à 6 du sujet officiel, qui rend leurs renvois cohérents.
-    - Question 5, corrigé : justifier l'unicité des chemins acceptants du produit, sans supposer ce produit déterministe ; distinguer opérations arithmétiques et coût binaire.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Question 6, corrigé : justifier l'unicité des chemins acceptants du produit, sans supposer ce produit déterministe ; distinguer opérations arithmétiques et coût binaire.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (
@@ -36,7 +35,7 @@
     question([
       En déduire que $Π$ n'est pas régulier.
     ], solution: [
-      Si un automate déterministe complet à $N$ états reconnaissait $Π$, la question 0 donnerait $N≥abs(Σ)^N≥2^N>N$, contradiction.
+      Si un automate déterministe complet à $N$ états reconnaissait $Π$, la question 1 donnerait $N≥abs(Σ)^N≥2^N>N$, contradiction.
     ]),
     question([
       Étant donné un automate fini $A$, peut-on calculer un automate $A_Π$ reconnaissant $L(A)∩Π$ ?
@@ -69,7 +68,7 @@
       Pour un automate déterministe, $m_a≤N$, d'où $O((1+abs(Σ))N^2)$.
     ]),
     question([
-      Modifier l'algorithme de la question 4 pour calculer la cardinalité de $L(A)∩Π_"pair"$ lorsqu'elle est finie, en supposant $A$ déterministe. Comment la complexité est-elle affectée ?
+      Modifier l'algorithme de la question 5 pour calculer la cardinalité de $L(A)∩Π_"pair"$ lorsqu'elle est finie, en supposant $A$ déterministe. Comment la complexité est-elle affectée ?
     ], solution: [
       Même si $A$ est déterministe, $B$ ne l'est pas nécessairement. En revanche, chaque chemin acceptant de $B$ étiqueté $u$ correspond bijectivement à un chemin acceptant de $A$ étiqueté $u overline(u)$ : il est unique.
       Après émondage, le graphe est acyclique dans le cas fini. Dans l'ordre topologique inverse, calculer
@@ -81,7 +80,7 @@
       En coût binaire, si les compteurs ont au plus $b$ bits, les additions coûtent $O(b)$ et les compteurs $O(N^2 b)$ bits ; on peut prendre $b=O(1+N^2 log(1+abs(Σ)))$, puisque les mots acceptés ont longueur inférieure à $N^2$.
     ]),
     question([
-      Modifier les algorithmes des questions 4 et 5 pour traiter $L(A)∩Π$.
+      Modifier les algorithmes des questions 5 et 6 pour traiter $L(A)∩Π$.
     ], solution: [
       Pour chaque $a∈Σ$, garder le même produit et remplacer $D$ par $D_a={(p,r) | (p,a,r)∈δ}$.
       Il reconnaît ${u | u a overline(u)∈L(A)}$, avec la même correspondance entre chemins acceptants.

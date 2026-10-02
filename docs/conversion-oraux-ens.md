@@ -28,19 +28,20 @@ préalable de leur théorie n'est exigée.
 Les années et la numérotation ont été confrontées aux
 [annales officielles ENS](https://diplome.di.ens.fr/informatique-ens/annales.html).
 Les questions supplémentaires conservées proviennent des sources locales et des
-versions complètes des sujets. Les questions commencent à 0 pour les oraux ENS,
-et à 1 pour les morphismes ; les sous-questions restent groupées.
+versions complètes des sujets. Toutes les questions commencent à 1 dans la banque ;
+les renvois des sources commençant à 0 sont décalés d'une unité.
+Les sous-questions restent groupées.
 
 | Sujet | Source locale sous `exos-src/exos/automata/` | Identification officielle | Questions |
 | --- | --- | --- | --- |
-| Automates et palindromes | `automate_palindrome/*.tex`, `concours/ens/automates_palindromes{,_cor}.pdf` | 2018, A4, rapport p. 8 | 0–6 |
-| Automates à pile | `automate_pile/automate_pile.tex` et `.yml` | 2017, A8, rapport p. 11 ; version complète p. 36–40 | 0–6 |
-| Automates et monoïdes | `automates_monoïdes/*.{tex,yml}` | 2022, C1, rapport p. 13–14 ; version complète p. 25–28 | 0–6 |
-| Automates et ordres partiels | `automates_ordres_partiels/*.{tex,yml}` | 2022, C2, rapport p. 15–16 ; version complète p. 29–32 | 0–4 |
-| Clôture commutative | `cloture_commutative_langage/cloture_commutative_langage.pdf` (corrigé inclus), `.yml` | 2017, A6, rapport p. 9 ; version complète p. 26–30 | 0–7 |
-| Langages continuables et mots primitifs | `concours/ens/continuable_primitif{,_cor}.pdf` | 2018, A7, rapport p. 11 | 0–6, dont 6 a–c |
-| Évaluation accélérée | `evaluation_acceleree/*.{tex,yml}` | 2018, A1, rapport p. 5 | 0–7 |
-| Réparation de mots | `reparation_langage/*.tex` | 2018, A5, rapport p. 9 | 0–9 |
+| Automates et palindromes | `automate_palindrome/*.tex`, `concours/ens/automates_palindromes{,_cor}.pdf` | 2018, A4, rapport p. 8 | 1–7 |
+| Automates à pile | `automate_pile/automate_pile.tex` et `.yml` | 2017, A8, rapport p. 11 ; version complète p. 36–40 | 1–7 |
+| Automates et monoïdes | `automates_monoïdes/*.{tex,yml}` | 2022, C1, rapport p. 13–14 ; version complète p. 25–28 | 1–7 |
+| Automates et ordres partiels | `automates_ordres_partiels/*.{tex,yml}` | 2022, C2, rapport p. 15–16 ; version complète p. 29–32 | 1–5 |
+| Clôture commutative | `cloture_commutative_langage/cloture_commutative_langage.pdf` (corrigé inclus), `.yml` | 2017, A6, rapport p. 9 ; version complète p. 26–30 | 1–8 |
+| Langages continuables et mots primitifs | `concours/ens/continuable_primitif{,_cor}.pdf` | 2018, A7, rapport p. 11 | 1–7, dont 7 a–c |
+| Évaluation accélérée | `evaluation_acceleree/*.{tex,yml}` | 2018, A1, rapport p. 5 | 1–8 |
+| Réparation de mots | `reparation_langage/*.tex` | 2018, A5, rapport p. 9 | 1–10 |
 | Morphismes | `morphisme/morphisme.tex` | Aucune attribution ajoutée | 1–12 |
 
 Les versions complètes sont accessibles pour
@@ -58,9 +59,9 @@ questions concernées. Ils sont distincts des corrections éditoriales.
 
 | Rapport | Pages | Emploi |
 | --- | --- | --- |
-| [ENS Ulm MP 2017](https://diplome.di.ens.fr/informatique-ens/annales/2017_InfoU-rapport.pdf) | 3 | Remarque générale sur le dialogue avec le jury, reformulée ; citation exacte sur le non-déterminisme en question 0 des piles. |
-| [ENS Ulm MP 2018](https://diplome.di.ens.fr/informatique-ens/annales/2018_InfoU-rapport.pdf) | 3 | Remarque générale reformulée ; synthèse des recommandations sur les parcours en question 4 des palindromes et sur la programmation dynamique en question 7 des réparations. |
-| [ENS Ulm MP 2022](https://diplome.di.ens.fr/informatique-ens/annales/2022_InfoU-rapport.pdf) | 2 | Remarque générale reformulée ; synthèse sur la construction du produit en question 1 des ordres partiels. |
+| [ENS Ulm MP 2017](https://diplome.di.ens.fr/informatique-ens/annales/2017_InfoU-rapport.pdf) | 3 | Remarque générale sur le dialogue avec le jury, reformulée ; citation exacte sur le non-déterminisme en question 1 des piles. |
+| [ENS Ulm MP 2018](https://diplome.di.ens.fr/informatique-ens/annales/2018_InfoU-rapport.pdf) | 3 | Remarque générale reformulée ; synthèse des recommandations sur les parcours en question 5 des palindromes et sur la programmation dynamique en question 8 des réparations. |
+| [ENS Ulm MP 2022](https://diplome.di.ens.fr/informatique-ens/annales/2022_InfoU-rapport.pdf) | 2 | Remarque générale reformulée ; synthèse sur la construction du produit en question 2 des ordres partiels. |
 
 Aucun commentaire de jury n'a été attribué à l'exercice sur les morphismes.
 Les remarques sur les anciens programmes n'ont pas été transposées en exigences actuelles.
@@ -69,7 +70,7 @@ Les remarques sur les anciens programmes n'ont pas été transposées en exigenc
 
 Les listes au début de chaque corrigé donnent les questions concernées.
 
-- **Palindromes** : numérotation officielle ; preuve de l'unicité des chemins
+- **Palindromes** : numérotation à partir de 1 ; preuve de l'unicité des chemins
   acceptants dans le produit, qui peut rester non déterministe ; coût binaire du comptage.
 - **Piles** : ensembles de transitions finis pour définir leur taille maximale ;
   preuve du pompage corrigée. Le sommet de départ d'une montagne peut être remplacé
@@ -81,8 +82,8 @@ Les listes au début de chaque corrigé donnent les questions concernées.
   `sqrt(log_2 n)` pour le nombre d'états.
 - **Ordres partiels** : automates incomplets autorisés pour les langages finis ;
   indices distincts et ordonnés dans Higman ; conclusion sur le complémentaire complétée.
-- **Clôture commutative** : exemple de la question 1, échange incorrect de `a` et `b`
-  dans la preuve de la question 3, composantes fortement connexes, stabilisation
+- **Clôture commutative** : exemple de la question 2, échange incorrect de `a` et `b`
+  dans la preuve de la question 4, composantes fortement connexes, stabilisation
   bidimensionnelle explicitée.
 - **Langages continuables** : longueur du bloc et exposant distingués ; parcours
   depuis l'initial et parcours inverse depuis les finaux ; cas de l'automate à un état.
@@ -102,7 +103,8 @@ CeTZ 0.4.2 et finite 0.5.1, directement dans les sujets concernés.
 Les algorithmes demandés restent décrits en français ou en pseudocode.
 
 La bibliothèque commune utilise désormais le libellé imposé
-« Modifications par rapport à l'énoncé initial : » et affiche les remarques générales
+« Modifications par rapport à l'énoncé initial : » uniquement pour les sujets attribués
+à un concours, et affiche les remarques générales
 en italique sous forme de liste, sans titre supplémentaire.
 
 ## Vérification et documents

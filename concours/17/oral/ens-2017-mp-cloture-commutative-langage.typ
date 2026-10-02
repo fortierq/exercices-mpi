@@ -4,7 +4,6 @@
 // Remarque générale reformulée : rapport 2017, p. 3.
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Clôture commutative de langages réguliers",
@@ -14,10 +13,11 @@
     concours: (nom: "ENS", annee: 2017, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Question 1, corrigé : utiliser $b a a∈L_1$ comme témoin (la source écrivait $a b a a$).
-    - Question 3, corrigé : pour un langage $a$-borné, fixer le nombre de $a$ et projeter sur les $b$ ; la source échangeait les deux lettres.
-    - Question 4, corrigé : distinguer composantes fortement connexes et composantes connexes.
-    - Question 6, corrigé : expliciter la croissance dans chacune des deux coordonnées avant de stabiliser la diagonale.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Question 2, corrigé : utiliser $b a a∈L_1$ comme témoin (la source écrivait $a b a a$).
+    - Question 4, corrigé : pour un langage $a$-borné, fixer le nombre de $a$ et projeter sur les $b$ ; la source échangeait les deux lettres.
+    - Question 5, corrigé : distinguer composantes fortement connexes et composantes connexes.
+    - Question 7, corrigé : expliciter la croissance dans chacune des deux coordonnées avant de stabiliser la diagonale.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (
@@ -82,13 +82,13 @@
       == Suite des questions
     ],
     question([
-      Donner un langage régulier qui n'est pas $a b$-borné mais dont la clôture commutative est régulière. Que déduire par rapport à la question 3 ?
+      Donner un langage régulier qui n'est pas $a b$-borné mais dont la clôture commutative est régulière. Que déduire par rapport à la question 4 ?
     ], solution: [
       Le langage $Σ^*$ convient : il est sa propre clôture commutative et contient $a^n b^n$ pour tout $n$. Être $a b$-borné est donc une condition suffisante mais non nécessaire.
     ]),
     question([
       Un langage $L$ est ultimement périodique s'il existe $t∈NN$ et $p∈NN^*$ tels que, pour tous $k,l≥t$, l'existence dans $L$ d'un mot de comptes $(k,l)$ implique l'existence de mots de comptes $(k+p,l)$ et $(k,l+p)$.
-      Montrer que, si $L$ est régulier et ultimement périodique, $"CCl"(L)$ est régulier. Comparer à la question 3.
+      Montrer que, si $L$ est régulier et ultimement périodique, $"CCl"(L)$ est régulier. Comparer à la question 4.
     ], solution: [
       Pour $i,j≥0$, poser
       $ S_(i,j)={(r,s)∈{0,…,p-1}^2 | ∃w∈L, (abs(w)_a,abs(w)_b)=(t+i p+r,t+j p+s)}. $
@@ -99,12 +99,12 @@
       Ainsi tous ces ensembles sont égaux. Posons $T=t+R p$.
 
       Décomposer $L$ selon qu'un compte est inférieur à $T$, ou que les deux sont au moins $T$.
-      La première partie est régulière par intersection avec des compteurs bornés, et $a b$-bornée ; sa clôture est régulière par la question 3 (si $T=0$, elle est vide).
+      La première partie est régulière par intersection avec des compteurs bornés, et $a b$-bornée ; sa clôture est régulière par la question 4 (si $T=0$, elle est vide).
       Pour la seconde, l'égalité précédente dit que les comptes admis sont exactement les couples
       $ (T+i p+r,T+j p+s), quad i,j≥0, quad (r,s)∈S_(R,R). $
       Pour chaque couple de résidus, un automate compte les $a$ et les $b$ jusqu'au seuil $T$, puis modulo $p$ ; il reconnaît les mots de ces comptes.
       Une union finie donne la clôture de cette seconde partie, puis celle de $L$.
-      Tout langage $a b$-borné est ultimement périodique en choisissant $t$ strictement supérieur à sa borne : l'implication devient vide. Le résultat généralise donc la question 3.
+      Tout langage $a b$-borné est ultimement périodique en choisissant $t$ strictement supérieur à sa borne : l'implication devient vide. Le résultat généralise donc la question 4.
     ]),
     question([
       Montrer réciproquement que, si $L$ est régulier et $"CCl"(L)$ est régulier, alors $L$ est ultimement périodique. Conclure.

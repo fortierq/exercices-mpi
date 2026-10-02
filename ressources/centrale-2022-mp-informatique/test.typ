@@ -5,7 +5,7 @@
 #assert(nombre-questions(sujet.contenu) == 50)
 #assert(aplatir(sujet.contenu).filter(b => type(b) == dictionary).all(q => q.solution != none))
 #assert(nombre-questions(ex.contenu) == 7)
-#assert(ex.debut == 1)
+#assert("debut" not in ex)
 #assert(ex.meta.titre == "Palindromes et régularité")
 #assert(ex.meta.concours == sujet.meta.concours)
 #assert(ex.meta.langages == ("OCaml",))

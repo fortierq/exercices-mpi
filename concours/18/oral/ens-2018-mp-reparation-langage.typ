@@ -5,7 +5,6 @@
 // Commentaire de question : synthèse du même rapport, p. 3 (parcours ou programmation dynamique).
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Réparation de mots pour un langage régulier",
@@ -15,10 +14,10 @@
     concours: (nom: "ENS", annee: 2018, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Numérotation : rétablissement des questions 0 à 9 et des renvois du sujet officiel.
-    - Question 5 : une suppression doit donner $u v∈L$, et non seulement $u v∈Σ^*$.
-    - Question 7, corrigé : corriger l'initialisation d'une suppression vide et le sens des transitions dans les minima.
-    - Questions 8 et 9, corrigé : corriger les indices des distances, expliciter leur prétraitement et la reconstruction.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Question 6 : une suppression doit donner $u v∈L$, et non seulement $u v∈Σ^*$.
+    - Question 8, corrigé : corriger l'initialisation d'une suppression vide et le sens des transitions dans les minima.
+    - Questions 9 et 10, corrigé : corriger les indices des distances, expliciter leur prétraitement et la reconstruction.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (
@@ -54,13 +53,13 @@ renvoyer (P ∩ C est non vide)
       Temps $O((n+1)(N+m))$, espace auxiliaire $O(N+m)$, dont $O(N)$ pour les marques et la file.
     ]),
     question([
-      Modifier l'algorithme de la question 1 pour produire une insertion finale de longueur minimale ; préciser les complexités.
+      Modifier l'algorithme de la question 2 pour produire une insertion finale de longueur minimale ; préciser les complexités.
     ], solution: [
       Faire un parcours en largeur depuis tous les finaux dans le graphe inversé.
       Il donne pour chaque état $q$ une distance $d(q,F)$ et une transition témoin allant vers un état de distance inférieure d'une unité.
       Choisir $q∈P_n$ de distance minimale finie et suivre ces transitions pour construire $z$.
       Un plus court chemin n'a pas de répétition, donc $abs(z)≤N-1$.
-      Les complexités de la question 1 restent valables, production du témoin comprise.
+      Les complexités de la question 2 restent valables, production du témoin comprise.
     ]),
     question([
       Décider l'existence d'une réparation par insertion quelconque ; donner les complexités en temps et en espace.
@@ -72,7 +71,7 @@ renvoyer (P ∩ C est non vide)
       Les $n+1$ parcours et les calculs des ensembles prennent $O((n+1)(N+m))$ en temps ; stocker les ensembles de suffixes prend $O((n+1)N)$, et les listes inverses $O(N+m)$.
     ]),
     question([
-      Modifier l'algorithme de la question 3 pour produire une décomposition et une insertion $z$ de longueur minimale.
+      Modifier l'algorithme de la question 4 pour produire une décomposition et une insertion $z$ de longueur minimale.
     ], solution: [
       À chaque coupure, utiliser un parcours en largeur multi-source depuis $P_i$ et prendre la plus petite distance atteinte dans $T_i$.
       Conserver la meilleure coupure et relancer son parcours en mémorisant les prédécesseurs et les lettres des transitions ; leur remontée fournit $z$.
@@ -99,7 +98,7 @@ renvoyer (P ∩ C est non vide)
       Un nombre constant de tableaux et de parcours de transitions par lettre donne $O((n+1)(N+m))$ en temps et $O(N)$ en espace auxiliaire hors automate.
     ]),
     question([
-      Modifier l'algorithme de la question 6 pour produire une suppression minimale, toujours en temps linéaire en $w$.
+      Modifier l'algorithme de la question 7 pour produire une suppression minimale, toujours en temps linéaire en $w$.
     ],
       commentaire: [Préciser les valeurs calculées, leur ordre de calcul et leur occupation mémoire.], solution: [
       Remplacer $D_u$ et $R_u$ par des tableaux de coûts $d_u(q)$ et $r_u(q)$, égaux à $0$ sur $I$ et à $∞$ ailleurs au départ.
@@ -136,7 +135,7 @@ renvoyer (P ∩ C est non vide)
       Soit on supprime $a$, soit on le conserve et on insère ensuite un chemin. Dans le premier cas, les insertions postérieures à la suppression peuvent être déplacées avant celle-ci et sont déjà prises en compte dans $c_u(q)$.
       Les prédécesseurs indiquent si la lettre est supprimée ou conservée ; les chemins témoins donnent les insertions.
       Le coût et le témoin se déduisent du meilleur final. Si tous les coûts finaux sont infinis, $L$ est vide et aucune réparation n'existe.
-      L'ajout d'une possibilité par case ne change pas les bornes de la question 8.
+      L'ajout d'une possibilité par case ne change pas les bornes de la question 9.
     ]),
   ),
 )

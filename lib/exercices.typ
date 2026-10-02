@@ -88,12 +88,11 @@
 /// Les vocabulaires autorisés sont exportés par `lib/meta.typ`.
 /// - meta (dictionary): Champs obligatoires : `titre` (chaîne non vide), `chapitres`, `algorithmes`, `structures`, `langages` (tableaux de chaînes), `difficulte` (entier de 1 à 5). Champs facultatifs : `niveaux` (tableau, défaut `()`), `duree` (couple heures/minutes positif, minutes < 60, ou `none`), `concours` (dictionnaire ou `none`). Concours : `nom`, `annee` (entier positif), `filiere`, `oral` (booléen), tous facultatifs ; aucune filière ajoutée implicitement. Champs supplémentaires libres ; `id` et `reference` interdits.
 /// - contenu (array): Textes libres `[...]`, `question(...)` et `partie(...)` ; au moins une question.
-/// - debut (int): Premier numéro de question, positif ou nul.
 /// - remarques (content, none): Commentaires généraux du jury, en italique au début du corrigé.
-/// - corrections (content, none): Liste des corrections éditoriales, précédée du titre « Modifications par rapport à l'énoncé initial : ».
+/// - corrections (content, none): Liste des corrections éditoriales affichée uniquement pour les sujets attribués à un concours, précédée du titre « Modifications par rapport à l'énoncé initial : ».
 /// - sujet-ecrit (bool): Masque les textes libres du contexte dans le corrigé d'un sujet écrit seulement. Les questions et figures qu'elles contiennent sont conservées.
 /// -> dictionary
-#let exercice(meta: (:), contenu: (), debut: 1, remarques: none, corrections: none, sujet-ecrit: false) = {
+#let exercice(meta: (:), contenu: (), remarques: none, corrections: none, sujet-ecrit: false) = {
   assert(type(sujet-ecrit) == bool, message: "sujet-ecrit doit être un booléen")
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
   for champ in champs {
@@ -159,7 +158,6 @@
   } else {
     none
   }
-  assert(type(debut) == int and debut >= 0, message: "debut doit être un entier positif ou nul")
   let verifier(blocs) = {
     assert(type(blocs) == array, message: "contenu doit être un tableau de textes, questions et parties")
     for bloc in blocs {
@@ -179,7 +177,6 @@
   (
     meta: (niveaux: (), duree: none, ..meta, concours: concours-normalise),
     contenu: contenu,
-    debut: debut,
     remarques: remarques,
     corrections: corrections,
     sujet-ecrit: sujet-ecrit,
@@ -202,7 +199,7 @@
     let titre = if ex.meta.concours == none { ex.meta.titre } else { texte-concours(ex.meta.concours) }
     titre-exercice(titre, prefixe, duree: ex.meta.duree)
   }
-  if corrige and ex.corrections != none {
+  if corrige and ex.meta.concours != none and ex.corrections != none {
     block(width: 100%, above: 12pt, below: 12pt)[
       Modifications par rapport à l'énoncé initial :
       #ex.corrections
@@ -215,7 +212,7 @@
       ]
     ]
   }
-  let i = ex.debut
+  let i = 1
   // Seuls les sujets de concours écrits masquent le contexte dans leur corrigé.
   for q in aplatir(ex.contenu, textes: not (corrige and ex.sujet-ecrit), commentaires: corrige) {
     if type(q) == content {

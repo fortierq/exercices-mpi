@@ -12,7 +12,6 @@
     duree: none,
     concours: (nom: "ENS", annee: 2019, filiere: "MP"),
   ),
-  debut: 0,
   contenu: (
     [
     On fixe l'alphabet $Sigma = {a, b}$.
@@ -68,11 +67,11 @@
     Sur un alphabet fini, être évitable équivaut à admettre des mots évitants de longueurs arbitrairement grandes.
     ],
     question([
-      L'ensemble $S_0$ de la question 0 est-il inévitable ?
+      L'ensemble $S_0$ de la question 1 est-il inévitable ?
       Même question pour $S_1 = {a a a, a b b, b a a, a b a b}$.
     ], solution: [
       Ils sont tous deux évitables.
-      Pour tout $t in NN$, $(a a b b)^t$ évite $S_0$, comme le montre la liste de facteurs de la question 0.
+      Pour tout $t in NN$, $(a a b b)^t$ évite $S_0$, comme le montre la liste de facteurs de la question 1.
       De même, $b^t$ évite $S_1$, dont chaque élément contient au moins un $a$.
     ]),
     question([
@@ -119,10 +118,10 @@
       Un chemin qui répète un sommet contient un cycle ; en parcourant ce cycle autant de fois que voulu, on obtient des mots évitants arbitrairement longs.
       Cet argument vaut aussi lorsque les deux occurrences se chevauchent.
 
-      Par la question 4, un mot évitant de longueur $N$ fournit un tel cycle.
+      Par la question 5, un mot évitant de longueur $N$ fournit un tel cycle.
       Ainsi,
       $ S " est inévitable " <==> " aucun mot de longueur " N " n'évite " S. $
-      Il suffit donc d'énumérer les $r^N$ mots de longueur *exactement* $N$ et de les tester avec l'algorithme de la question 1.
+      Il suffit donc d'énumérer les $r^N$ mots de longueur *exactement* $N$ et de les tester avec l'algorithme de la question 2.
       Un seul témoin évitant suffit pour répondre « évitable ».
 
       Le coût au pire est $O(r^N N L)$ en temps et $O(N)$ en espace auxiliaire, en générant un seul mot à la fois.
@@ -138,7 +137,7 @@
       Une expression régulière $e$ est dite *inévitable* si son langage $L(e)$ est un ensemble inévitable.
       Donner un exemple dont le langage ne contient pas le mot vide.
     ], solution: [
-      L'expression $e = a a a | b a b | b a a b | b b b$ convient, d'après la question 3.
+      L'expression $e = a a a | b a b | b a a b | b b b$ convient, d'après la question 4.
       Il n'est pas nécessaire d'ajouter une étoile : celle-ci ferait appartenir $epsilon$ au langage et rendrait l'inévitabilité immédiate.
     ]),
     question([
@@ -146,7 +145,7 @@
       Si $e$ est bornée, comment déterminer si elle est inévitable ?
     ], solution: [
       Sur un alphabet fini, un langage borné est fini.
-      On peut donc énumérer $L(e)$ puis appliquer la question 5.
+      On peut donc énumérer $L(e)$ puis appliquer la question 6.
 
       Pour rendre cette énumération effective sans connaître de borne à l'avance, on construit un automate déterministe pour $L(e)$ et on ne conserve que les états *utiles*, accessibles depuis l'état initial et depuis lesquels un état final est accessible.
       Le graphe utile est acyclique puisque le langage est fini.
@@ -175,7 +174,7 @@
       est fini.
       Étant donnés $e$ et un ensemble fini $S$, expliquer comment décider cette propriété, ainsi que la propriété opposée.
     ], solution: [
-      On construit un automate déterministe pour $L(e)$ et un automate déterministe complet pour $"Av"(S)$, comme à la question 8 en remplaçant $L(e)$ par l'union finie des mots de $S$.
+      On construit un automate déterministe pour $L(e)$ et un automate déterministe complet pour $"Av"(S)$, comme à la question 9 en remplaçant $L(e)$ par l'union finie des mots de $S$.
 
       Leur automate produit reconnaît $L(e) ∩ "Av"(S)$ : une paire d'états est finale lorsque ses deux composantes le sont.
       Après suppression des états inutiles, un cycle existe si et seulement si cette intersection est infinie.
@@ -201,14 +200,14 @@
       Étant donnée une expression régulière inévitable $e$, expliquer comment calculer un sous-ensemble fini inévitable de $L(e)$.
     ], solution: [
       On commence par tester si $epsilon in L(e)$ ; dans ce cas, ${epsilon}$ est une réponse.
-      Sinon, l'automate de la question 8 reconnaît un langage fini non vide, celui des mots évitant $L(e)$.
+      Sinon, l'automate de la question 9 reconnaît un langage fini non vide, celui des mots évitant $L(e)$.
 
       Son graphe utile est un graphe orienté acyclique.
       Un calcul de plus long chemin dans un ordre topologique donne la longueur maximale $n$ d'un mot accepté.
       On énumère alors les mots $u$ de longueur $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $L(e)$.
       Un tel facteur existe par définition de $n$.
 
-      L'ensemble des facteurs retenus, après suppression des doublons, est une réponse par la question 10.
+      L'ensemble des facteurs retenus, après suppression des doublons, est une réponse par la question 11.
       Toutes les énumérations sont finies ; l'algorithme termine, même si son coût peut être très élevé.
       Le sous-ensemble obtenu n'est pas nécessairement de cardinal minimal.
     ]),

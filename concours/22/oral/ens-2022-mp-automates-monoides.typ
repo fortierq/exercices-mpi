@@ -4,7 +4,6 @@
 // Remarque générale reformulée : rapport 2022, p. 2.
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Automates et monoïdes",
@@ -14,10 +13,11 @@
     concours: (nom: "ENS", annee: 2022, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Questions 1 et 2 : définir les morphismes et fixer le sens du produit des transformations pour que $u↦f_u$ soit un morphisme.
-    - Question 2 : expliciter la dépendance en la taille de l'alphabet dans les complexités.
-    - Question 5 : corriger les types de $I$, $δ$ et la définition de $R_u$.
-    - Question 6 : réparer la phrase incomplète et préciser la base du logarithme ; la borne est $sqrt(log_2 n)$.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Questions 2 et 3 : définir les morphismes et fixer le sens du produit des transformations pour que $u↦f_u$ soit un morphisme.
+    - Question 3 : expliciter la dépendance en la taille de l'alphabet dans les complexités.
+    - Question 6 : corriger les types de $I$, $δ$ et la définition de $R_u$.
+    - Question 7 : réparer la phrase incomplète et préciser la base du logarithme ; la borne est $sqrt(log_2 n)$.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (
@@ -79,7 +79,7 @@
     question([
       Un langage est reconnaissable par monoïde s'il est reconnu par un monoïde fini. Montrer que cela équivaut à être reconnu par un automate fini.
     ], solution: [
-      Un automate fini peut être déterminisé et complété ; la question 2 donne alors un monoïde fini reconnaissant son langage.
+      Un automate fini peut être déterminisé et complété ; la question 3 donne alors un monoïde fini reconnaissant son langage.
       Réciproquement, si $φ:A^*→M$ reconnaît $L$, prendre les états $M$, l'état initial $e$, les finaux $φ(L)$ et $δ(m,a)=m · φ(a)$.
       Après lecture de $u$, l'état est $φ(u)$, par récurrence. Il est final exactement lorsque $u∈φ^(-1)(φ(L))=L$.
     ]),

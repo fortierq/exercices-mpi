@@ -2,7 +2,7 @@
 // Source locale : exos-src/exos/automata ; détails et pages dans docs/conversion-oraux-ens.md.
 // Rapport officiel : https://diplome.di.ens.fr/informatique-ens/annales/2022_InfoU-rapport.pdf
 // Remarque générale reformulée : rapport 2022, p. 2.
-// Question 1 : synthèse du même rapport, p. 2, paragraphe sur le produit.
+// Question 2 : synthèse du même rapport, p. 2, paragraphe sur le produit.
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
 #let dessiner(etats, arcs) = align(center, cetz.canvas({
@@ -33,7 +33,6 @@
 )
 
 #let ex = exercice(
-  debut: 0,
   sujet-ecrit: false,
   meta: (
     titre: "Automates et ordres partiels",
@@ -43,10 +42,10 @@
     concours: (nom: "ENS", annee: 2022, filiere: "MP", oral: true),
   ),
   corrections: [
-    - Numérotation : rétablissement des questions 0 à 4 du sujet officiel.
-    - Question 2 : permettre les automates incomplets ; un automate complet sur un alphabet non vide ne peut être sans cycle.
-    - Question 3 : préciser $i<j$ et le sens du sous-mot dans le lemme de Higman ; sans cette condition, l'énoncé serait trivial.
-    - Question 4 : préciser l'indexation des lettres des monômes et compléter la preuve sur le complémentaire.
+    - Numérotation : commencer à 1 et décaler les renvois d'une unité.
+    - Question 3 : permettre les automates incomplets ; un automate complet sur un alphabet non vide ne peut être sans cycle.
+    - Question 4 : préciser $i<j$ et le sens du sous-mot dans le lemme de Higman ; sans cette condition, l'énoncé serait trivial.
+    - Question 5 : préciser l'indexation des lettres des monômes et compléter la preuve sur le complémentaire.
   ],
   remarques: [- Expliquer les pistes envisagées et les difficultés rencontrées afin de permettre le dialogue avec le jury.],
   contenu: (
@@ -111,7 +110,7 @@
       b) Pour $u=a_1⋯a_n$, prendre les états $0,…,n$, initial $0$, seul final $n$.
       Depuis $k<n$, avancer à $k+1$ sur $a_(k+1)$ et boucler sur toute autre lettre ; depuis $n$, boucler sur toutes les lettres.
       Après chaque préfixe lu, l'état est la longueur du plus long préfixe de $u$ déjà rencontré comme sous-mot, par récurrence.
-      Cet automate reconnaît $↑u$ et ses états ne peuvent que croître. Appliquer la stabilité par union finie de la question 1, y compris pour $F=∅$.
+      Cet automate reconnaît $↑u$ et ses états ne peuvent que croître. Appliquer la stabilité par union finie de la question 2, y compris pour $F=∅$.
 
       c) Si aucune famille finie ne suffit, choisir $w_0∈L$, puis $w_j∈L$ hors de $⋃_(i<j)↑w_i$.
       Cette suite contredit Higman. Il existe donc une famille finie $F⊆L$ couvrant $L$ par ses sur-mots ; l'inclusion inverse vient de la clôture.
@@ -133,7 +132,7 @@
       Réciproquement, supprimer les boucles d'un chemin acceptant laisse un chemin sans répétition d'état. Il n'existe qu'un nombre fini de tels chemins étiquetés.
       Chacun décrit un monôme, avec pour $B_i$ les lettres des boucles de son état $i$. Leur union est le langage reconnu.
 
-      b) Utiliser le produit de la question 1, puis a).
+      b) Utiliser le produit de la question 2, puis a).
 
       c) Supposons $T$ union de monômes. Un monôme contenu dans $T$ ne peut avoir de $B_i$ non vide : si $a∈B_i$ ou $b∈B_i$, choisir dans ce facteur étoilé respectivement $a a$ ou $b b$ et les autres facteurs étoilés vides produirait un mot hors de $T$.
       Tous ces monômes seraient donc des singletons, rendant $T$ fini, contradiction.

@@ -32,9 +32,9 @@ Le contrat détaillé est dans le commentaire de `exercice`. Renseigner les cham
 
 ## Sujets de concours et rapports du jury
 
-- Ranger les sujets dans `concours/<année sur deux chiffres>/` et partir de `templates/sujet-concours.typ`. Garder les questions, définitions et figures dans un seul sujet ; conserver la numérotation des questions source.
+- Ranger les sujets dans `concours/<année sur deux chiffres>/` et partir de `templates/sujet-concours.typ`. Garder les questions, définitions et figures dans un seul sujet ; commencer les questions à 1 et adapter les renvois si la source commence à 0.
 - Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l'énoncé, signaler les parties/questions corrigées dans la liste initiale du corrigé et expliquer brièvement le problème et/ou le changement pour chacune. Ne pas conserver deux versions contradictoires du code.
-- Renseigner `corrections` de `exercice` avec une simple liste des parties/questions corrigées, chacune accompagnée d'une brève explication du problème ou du changement. Le corrigé commence par « Modifications par rapport à l'énoncé initial : » puis cette liste. Placer ensuite les commentaires généraux du jury dans `remarques`, sous forme de liste, sans titre, source ni référence affichés.
+- Renseigner `corrections` de `exercice` avec une simple liste des parties/questions corrigées, chacune accompagnée d'une brève explication du problème ou du changement. Pour les sujets attribués à un concours uniquement, le corrigé commence par « Modifications par rapport à l'énoncé initial : » puis cette liste. Placer ensuite les commentaires généraux du jury dans `remarques`, sous forme de liste, sans titre, source ni référence affichés.
 - Associer les observations relatives à une partie ou sous-partie au paramètre `commentaire` de `partie` ; les afficher dans le corrigé immédiatement après son titre. Tous les commentaires du jury (généraux, de partie et de question) sont en italique.
 - Associer chaque observation pertinente du jury à la question concernée via `commentaire` de `question`. Elle apparaît uniquement dans le corrigé, en italique, immédiatement après l'énoncé de la question et avant sa solution.
 - Chercher d'abord le rapport dans les sources voisines, puis sur le site officiel du concours. Vérifier concours, année, filière et épreuve ; conserver la source, les pages et les questions concernées dans les commentaires du fichier Typst ou dans la documentation, sans les afficher dans le corrigé. Si le rapport est introuvable, le signaler sans inventer d'extrait.
@@ -76,6 +76,7 @@ let f x = (* f x renvoie ... *)
 
 ## Présentation
 
+- Dans chaque exercice ou sujet, la numérotation des questions commence à 1 ; ce départ ne se paramètre pas.
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
 - Dans le corrigé d'un exercice, conserver tout l'énoncé, y compris les blocs libres de `contenu` (préliminaires, définitions, notations et textes de contexte). Uniquement pour un sujet de concours écrit, utiliser `sujet-ecrit: true` dans `exercice` pour masquer ces blocs dans le corrigé. Conserver les titres des parties, les questions, leurs commentaires et leurs solutions. Les figures incluses dans les questions et solutions restent affichées. Les exercices oraux et les extraits autonomes conservent leur contexte, même s'ils portent une attribution de concours.
 

@@ -60,10 +60,9 @@
       La vacuité se décide elle-même par induction : $∅$ est vide, $ε$ et les lettres ne le sont pas,
       une union est vide si ses deux termes le sont, une concaténation si l'un l'est, et une étoile ne l'est jamais.
 
-      Construisons aussi $R(e)$ dénotant le miroir : $R(a)=a$, $R(ε)=ε$, $R(∅)=∅$,
-      $R(e_1|e_2)=R(e_1)|R(e_2)$, $R(e_1 e_2)=R(e_2)R(e_1)$ et $R(e^*)=R(e)^*$.
-      Alors $R(P(R(e)))$ dénote les suffixes et $R(P(R(P(e))))$ les facteurs,
-      par les identités de la question précédente, sans utiliser le théorème de Kleene.
+      La stabilité des langages réguliers par miroir et les identités de la question 3
+      donnent alors la régularité de $"Suff"(L)=tilde("Pref"(tilde(L)))$
+      puis de $"Fact"(L)="Suff"("Pref"(L))$.
     ]),
   ),
 )
