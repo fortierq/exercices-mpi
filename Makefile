@@ -5,66 +5,41 @@ TYPST ?= typst
 PYTHON ?= python3
 OCAML ?= ocaml
 TYPST_FLAGS := --root . --ignore-system-fonts
-E ?= langage/ensembles-inevitables
-F ?= langages
-S ?= 22/centrale-2022-mp-informatique
 C ?= true
 O ?= 1
-E_SANS_EXTENSION := $(patsubst %.typ,%,$(E))
-E_SANS_PREFIXE := $(patsubst exercices/%,%,$(E_SANS_EXTENSION))
-F_SANS_EXTENSION := $(patsubst %.typ,%,$(F))
-F_SANS_PREFIXE := $(patsubst feuilles/%,%,$(F_SANS_EXTENSION))
-S_SANS_EXTENSION := $(patsubst %.typ,%,$(S))
-S_SANS_PREFIXE := $(patsubst concours/%,%,$(S_SANS_EXTENSION))
-# Seuls les raccourcis c/w ont un argument de chemin à déclarer .PHONY.
-# Les PDF demandés par leurs sous-make doivent conserver leurs règles implicites.
 CIBLE := $(if $(filter w c,$(MAKECMDGOALS)),$(filter-out w c,$(MAKECMDGOALS)))
-WATCH_CIBLE := $(if $(filter w,$(MAKECMDGOALS)),$(CIBLE))
-COMPILE_CIBLE := $(if $(filter c,$(MAKECMDGOALS)),$(CIBLE))
+VARIANTE := $(if $(filter true,$(C)),corrige,enonce)
 ifeq ($(shell uname -s),Darwin)
 O_PDF ?= open -a "Visual Studio Code"
 else
 O_PDF ?= code --reuse-window
 endif
 
-EXERCICES := $(patsubst exercices/%.typ,%,$(shell find exercices -mindepth 2 -maxdepth 2 -name '*.typ' | sort))
-FS := $(patsubst feuilles/%.typ,%,$(shell find feuilles -name '*.typ' | sort))
-CONCOURS := $(patsubst concours/%.typ,%,$(shell find concours -name '*.typ' | sort))
-# Dépendances conservatrices : un import ou une image modifiés déclenchent la compilation.
-SOURCES := $(shell find lib templates exercices feuilles concours $(wildcard ressources) -type f | sort)
-PDF_EXERCICES := $(foreach ex,$(EXERCICES),build/exercices/$(ex)/enonce.pdf build/exercices/$(ex)/corrige.pdf)
-PDF_FS := $(foreach f,$(FS),build/feuilles/$(f).pdf build/feuilles/$(f)-corrige.pdf)
-PDF_CONCOURS := $(foreach s,$(CONCOURS),build/concours/$(s)/enonce.pdf build/concours/$(s)/corrige.pdf)
+# Le contenu détermine la catégorie, jamais le dossier.
+EXERCICES := $(shell $(PYTHON) scripts/sources.py --list exercices)
+DOCUMENTS := $(shell $(PYTHON) scripts/sources.py --list documents)
+SOURCES := $(shell find . -type f \( -name '*.typ' -o -name '*.py' -o -name '*.png' -o -name '*.svg' -o -name '*.ml' \) -not -path './build/*' -not -path './.git/*')
+pdfs = $(foreach source,$(1),build/$(patsubst %.typ,%,$(source))/enonce.pdf build/$(patsubst %.typ,%,$(source))/corrige.pdf)
 
-.PHONY: all exercices feuilles concours catalogue check test c w _w-exercice _w-feuille _w-concours clean help $(CIBLE)
-all: exercices feuilles concours catalogue
-exercices: $(PDF_EXERCICES)
-feuilles: $(PDF_FS)
-concours: $(PDF_CONCOURS)
+.PHONY: all exercices documents feuilles devoirs concours catalogue check test c w clean help $(CIBLE)
+all: exercices documents catalogue
+exercices: $(call pdfs,$(EXERCICES))
+documents: $(call pdfs,$(DOCUMENTS))
+# Compatibilité des anciens raccourcis ; documents est désormais la cible commune.
+feuilles devoirs concours: documents
 
-build/concours/%/enonce.pdf: concours/%.typ $(SOURCES) Makefile
-	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$*.typ" templates/fiche.typ "$@"
+build/%/enonce.pdf: %.typ $(SOURCES) Makefile
+	$(PYTHON) scripts/sources.py --typst "$(TYPST)" --source "$<" --output "$@" --variant enonce
 
-build/concours/%/corrige.pdf: concours/%.typ $(SOURCES) Makefile
-	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$*.typ" --input corrige=true templates/fiche.typ "$@"
+build/%/corrige.pdf: %.typ $(SOURCES) Makefile
+	$(PYTHON) scripts/sources.py --typst "$(TYPST)" --source "$<" --output "$@" --variant corrige
 
-build/exercices/%/enonce.pdf: exercices/%.typ $(SOURCES) Makefile
-	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$*.typ" templates/fiche.typ "$@"
-
-build/exercices/%/corrige.pdf: exercices/%.typ $(SOURCES) Makefile
-	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$*.typ" --input corrige=true templates/fiche.typ "$@"
-
+# Anciens chemins PDF des TD, encore utilisables depuis des liens existants.
 build/feuilles/%-corrige.pdf: feuilles/%.typ $(SOURCES) Makefile
-	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true "$<" "$@"
+	$(PYTHON) scripts/sources.py --typst "$(TYPST)" --source "$<" --output "$@" --variant corrige
 
 build/feuilles/%.pdf: feuilles/%.typ $(SOURCES) Makefile
-	@mkdir -p "$(@D)"
-	$(TYPST) compile $(TYPST_FLAGS) "$<" "$@"
+	$(PYTHON) scripts/sources.py --typst "$(TYPST)" --source "$<" --output "$@" --variant enonce
 
 catalogue:
 	@mkdir -p build
@@ -77,11 +52,16 @@ check: all test docs
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/fiche.typ build/templates/exercice-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) templates/feuille.typ build/templates/feuille.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/feuille.typ build/templates/feuille-corrige.pdf
+	$(TYPST) compile $(TYPST_FLAGS) templates/devoir.typ build/templates/devoir.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/devoir.typ build/templates/devoir-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ templates/fiche.typ build/templates/concours.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ --input corrige=true templates/fiche.typ build/templates/concours-corrige.pdf
 
 test:
 	@mkdir -p build/ressources/api
+	$(PYTHON) ressources/api/test_sources.py
+	$(TYPST) compile $(TYPST_FLAGS) ressources/api/points.typ build/ressources/api/points.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/api/points.typ build/ressources/api/points-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) ressources/api/test.typ build/ressources/api/test.pdf
 	$(TYPST) compile $(TYPST_FLAGS) ressources/api/bareme.typ build/ressources/api/bareme.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/api/bareme.typ build/ressources/api/bareme-corrige.pdf
@@ -96,52 +76,14 @@ test:
 	$(PYTHON) ressources/ens-2018-mp-reparation-langage/test.py
 
 c:
-	@case "$(COMPILE_CIBLE)" in \
-	  exercices/*) \
-	    chemin="$(COMPILE_CIBLE)"; nom="$${chemin#exercices/}"; nom="$${nom%.typ}"; \
-	    test -f "exercices/$${nom}.typ" || { echo "Exercice introuvable : $(COMPILE_CIBLE)"; exit 1; }; \
-	    $(MAKE) "build/exercices/$${nom}/enonce.pdf" "build/exercices/$${nom}/corrige.pdf" ;; \
-	  feuilles/*) \
-	    chemin="$(COMPILE_CIBLE)"; nom="$${chemin#feuilles/}"; nom="$${nom%.typ}"; \
-	    test -f "feuilles/$${nom}.typ" || { echo "Feuille introuvable : $(COMPILE_CIBLE)"; exit 1; }; \
-	    $(MAKE) "build/feuilles/$${nom}.pdf" "build/feuilles/$${nom}-corrige.pdf" ;; \
-	  concours/*) \
-	    chemin="$(COMPILE_CIBLE)"; nom="$${chemin#concours/}"; nom="$${nom%.typ}"; \
-	    test -f "concours/$${nom}.typ" || { echo "Sujet introuvable : $(COMPILE_CIBLE)"; exit 1; }; \
-	    $(MAKE) "build/concours/$${nom}/enonce.pdf" "build/concours/$${nom}/corrige.pdf" ;; \
-	  "") echo "Indiquer le chemin d'un exercice, d'une feuille ou d'un sujet"; exit 1 ;; \
-	  *) echo "Chemin à compiler invalide : $(COMPILE_CIBLE)"; exit 1 ;; \
-	esac
+	@test -n "$(CIBLE)" || { echo "Indiquer le chemin du fichier Typst"; exit 1; }
+	$(MAKE) "build/$(patsubst %.typ,%,$(CIBLE))/enonce.pdf" "build/$(patsubst %.typ,%,$(CIBLE))/corrige.pdf"
 
 w:
-	@case "$(WATCH_CIBLE)" in \
-	  "") $(MAKE) _w-exercice E="$(E)" C="$(C)" O="$(O)" ;; \
-	  exercices/*) $(MAKE) _w-exercice E="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
-	  feuilles/*) $(MAKE) _w-feuille F="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
-	  concours/*) $(MAKE) _w-concours S="$(WATCH_CIBLE)" C="$(C)" O="$(O)" ;; \
-	  *) echo "Chemin à surveiller invalide : $(WATCH_CIBLE)"; exit 1 ;; \
-	esac
-
-_w-exercice:
-	@test -f "exercices/$(E_SANS_PREFIXE).typ" || { echo "Exercice introuvable : $(E)"; exit 1; }
-	@mkdir -p "build/exercices/$(E_SANS_PREFIXE)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
-	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"; fi
-	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/exercices/$(E_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/exercices/$(E_SANS_PREFIXE)/apercu.pdf"
-
-_w-feuille:
-	@test -f "feuilles/$(F_SANS_PREFIXE).typ" || { echo "Feuille introuvable : $(F)"; exit 1; }
-	@mkdir -p "build/feuilles/$(dir $(F_SANS_PREFIXE))"
-	$(TYPST) compile $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
-	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"; fi
-	$(TYPST) w $(TYPST_FLAGS) --input "corrige=$(C)" "feuilles/$(F_SANS_PREFIXE).typ" "build/feuilles/$(F_SANS_PREFIXE)-apercu.pdf"
-
-_w-concours:
-	@test -f "concours/$(S_SANS_PREFIXE).typ" || { echo "Sujet introuvable : $(S)"; exit 1; }
-	@mkdir -p "build/concours/$(S_SANS_PREFIXE)"
-	$(TYPST) compile $(TYPST_FLAGS) --input "exercice=/concours/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"
-	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"; fi
-	$(TYPST) w $(TYPST_FLAGS) --input "exercice=/concours/$(S_SANS_PREFIXE).typ" --input "corrige=$(C)" templates/fiche.typ "build/concours/$(S_SANS_PREFIXE)/apercu.pdf"
+	@test -n "$(CIBLE)" || { echo "Indiquer le chemin du fichier Typst"; exit 1; }
+	$(PYTHON) scripts/sources.py --typst "$(TYPST)" --source "$(CIBLE)" --output "build/$(patsubst %.typ,%,$(CIBLE))/apercu.pdf" --variant $(VARIANTE)
+	@if [ "$(O)" = "1" ]; then $(O_PDF) "build/$(patsubst %.typ,%,$(CIBLE))/apercu.pdf"; fi
+	$(PYTHON) scripts/sources.py --typst "$(TYPST)" --source "$(CIBLE)" --output "build/$(patsubst %.typ,%,$(CIBLE))/apercu.pdf" --variant $(VARIANTE) --watch
 
 clean:
 	rm -rf build
@@ -154,14 +96,9 @@ build/docs/api.pdf: docs/api.typ lib/exercices.typ lib/meta.typ
 	$(TYPST) compile $(TYPST_FLAGS) "$<" "$@"
 
 help:
-	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"
-	@echo "make concours         Compiler les sujets de concours et leurs corrigés"
-	@echo "make check            Tout compiler, modèles inclus ; valider les métadonnées"
-	@echo "make c exercices/langages/residuels-minimisation.typ  # Énoncé et corrigé"
-	@echo "make c feuilles/td-kleene.typ"
-	@echo "make c concours/22/centrale-2022-mp-informatique.typ"
-	@echo "make w exercices/langage/ensembles-inevitables.typ [C=true] [O=0]"
-	@echo "make w feuilles/td-kleene.typ [C=true] [O=0]"
-	@echo "make w concours/22/centrale-2022-mp-informatique.typ [C=true] [O=0]"
-	@echo "make catalogue        Régénérer build/catalogue.json"
-	@echo "make clean            Supprimer uniquement build/"
+	@echo "make              Exercices, documents et catalogue"
+	@echo "make check        Tout compiler, modèles et tests inclus"
+	@echo "make c chemin.typ Énoncé et corrigé, quel que soit le dossier"
+	@echo "make w chemin.typ [C=true] [O=0]  Aperçu surveillé"
+	@echo "make catalogue    Régénérer build/catalogue.json"
+	@echo "make docs         Documentation Tidy"

@@ -2,13 +2,11 @@
 #import "/templates/exercice.typ": ex
 
 #show: fiche.with(
-  type: "td",
-  titre: "Travaux dirigés",
+  type: "devoir",
+  titre: "Devoir",
   niveau: "MPI",
   auteur: none,
-  exercices: (ex,), // Importer d'autres exercices sous des alias et les ajouter ici.
+  exercices: (ex,),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
   nouvelle-page: false,
 )
-
-Justifier la correction et la complexité des algorithmes proposés.

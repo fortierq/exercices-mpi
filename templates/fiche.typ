@@ -1,8 +1,9 @@
-// Point d'entrée générique ; le contenu reste dans exercices/.
-#import "/lib/exercices.typ": feuille
+// Aperçu autonome d'un exercice exportant ex, quel que soit son emplacement.
+#import "/lib/exercices.typ": fiche
 #let chemin = sys.inputs.at("exercice",  default: "/templates/exercice.typ")
 #import chemin: ex
-#show: feuille.with(
+#show: fiche.with(
+  type: "exercice",
   titre: ex.meta.titre,
   niveau: ex.meta.niveaux.join(" / "),
   auteur: ex.meta.at("auteur", default: none),

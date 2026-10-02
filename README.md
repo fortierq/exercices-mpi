@@ -6,19 +6,19 @@ Banque d'exercices MPI en Typst.
 
 ```text
 lib/             API Typst partagée et validation des métadonnées
-templates/       Modèles d'exercice, feuille, fiche et sujet de concours
-exercices/       Exercices réutilisables, classés par chapitre
-feuilles/        Feuilles qui importent les exercices dans l'ordre voulu
-concours/        Sujets complets, classés par année
+templates/       Modèles d'exercice, TD, devoir et concours
+exercices/       Classement actuel des exercices (facultatif)
+feuilles/        Classement actuel des TD (facultatif)
+concours/        Classement actuel des sujets complets (facultatif)
 ressources/      Code, tests et ressources associés aux exercices
 docs/            Notes de conversion et résumé du programme
 scripts/         Génération et filtrage du catalogue
 build/           PDF et catalogue générés (ignorés par Git)
 ```
 
-Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Son identifiant, déduit du nom de fichier, est unique dans la banque. Une feuille importe ces objets sous des alias et les assemble. Les sujets de concours utilisent la même API et exportent eux aussi `ex`.
+Les dossiers sont libres. Un exercice exporte `ex` ; son nom de fichier est son identifiant, unique dans la banque. Tous les documents utilisent `fiche.with(type: "td", ...)`, avec le type `td`, `devoir`, `concours` ou un type personnalisé. Les points se placent dans chaque `question(..., points: ...)`.
 
-Voir le [guide utilisateur](docs/utilisation.md) pour créer exercices, feuilles et concours. L'API est documentée dans le code pour Tinymist ; `make docs` génère la référence Tidy dans `build/docs/api.pdf`. [AGENTS.md](AGENTS.md) ne contient que les consignes propres aux assistants.
+Voir le [guide utilisateur](docs/utilisation.md) pour créer exercices, documents et types personnalisés. L'API est documentée dans le code pour Tinymist ; `make docs` génère la référence Tidy dans `build/docs/api.pdf`. [AGENTS.md](AGENTS.md) ne contient que les consignes propres aux assistants.
 
 ## Extension VS Code
 
@@ -42,4 +42,4 @@ Pour travailler sans Nix, installer Typst, GNU Make, Python 3 et OCaml, puis lan
 
 ## Ajouter du contenu
 
-Partir des modèles de `templates/`, conserver les ressources et tests dans `ressources/<identifiant>/`, puis lancer `make check`. Les feuilles sont découvertes automatiquement ; le Makefile n'a pas à être modifié.
+Partir des modèles de `templates/`, conserver les ressources et tests dans `ressources/<identifiant>/`, puis lancer `make check`. Exercices et documents sont découverts par leur contenu, quel que soit leur dossier ; le Makefile n'a pas à être modifié.

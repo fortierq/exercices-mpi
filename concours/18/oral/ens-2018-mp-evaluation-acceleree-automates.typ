@@ -103,3 +103,13 @@ renvoyer (q appartient à F)
     ]),
   ),
 )
+
+#import "/lib/exercices.typ": fiche
+#show: fiche.with(
+  type: "concours",
+  titre: ex.meta.titre,
+  niveau: ex.meta.niveaux.join(" / "),
+  concours: ex.meta.concours,
+  exercices: (ex,),
+  corrige: sys.inputs.at("corrige", default: "false") == "true",
+)

@@ -2,16 +2,25 @@
 
 ## Démarrage
 
-Partir des modèles [exercice](../templates/exercice.typ), [feuille](../templates/feuille.typ) ou [sujet de concours](../templates/sujet-concours.typ).
-Avant de créer un exercice, vérifier qu'il n'existe pas déjà dans `exercices/`.
+Partir des modèles [exercice](../templates/exercice.typ), [TD](../templates/feuille.typ), [devoir](../templates/devoir.typ) ou [sujet de concours](../templates/sujet-concours.typ).
+Avant de créer un exercice, vérifier qu'il n'existe pas déjà dans la banque.
 
-- `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex` ; le nom du fichier sans extension est son identifiant, unique dans la banque.
-- Une feuille importe les objets `ex` sous des alias distincts et les assemble dans `exercices: (alias1, alias2,)`. L'ordre du tableau est l'ordre d'affichage ; `()` crée une feuille vide.
-- Un sujet reste dans un seul fichier `concours/<année sur deux chiffres>/<identifiant>.typ` et exporte aussi `ex`.
+- Les dossiers sont libres, y compris la racine : le type est déclaré dans le code, pas déduit du chemin. Les dossiers actuels peuvent être conservés ou réorganisés. Les répertoires techniques `lib`, `templates`, `ressources`, `docs`, `scripts`, `build`, `node_modules` et les dossiers cachés ne sont pas des entrées du catalogue.
+- Un exercice exporte `ex` ; le nom du fichier sans extension est son identifiant, unique dans la banque.
+- Tous les documents utilisent `#show: fiche.with(type: "td", ...)`. Types fournis : `"td"`, `"devoir"`, `"concours"`. Un TD ou devoir importe les objets `ex` sous des alias distincts dans `exercices: (alias1, alias2,)`. L'ordre du tableau est l'ordre d'affichage ; `()` crée un document vide.
+- Un sujet complet conserve son contenu dans un seul fichier, exporte `ex` et utilise le même appel `fiche.with(type: "concours", exercices: (ex,), ...)`.
 - Réutiliser une partie en exportant une variable puis en l'important, sans copier le sujet ni rechercher une partie par numéro.
 - Introductions et définitions vont dans `contenu`. Reprendre explicitement les rappels de `contexte` dans un exercice autonome.
 
-Dans VS Code, créer une feuille vide, la sélectionner dans **Feuilles**, puis ajouter les exercices depuis la recherche ou par glisser-déposer. Les changements de composition sont enregistrés automatiquement.
+Dans VS Code, **Documents** rassemble tous les types, avec une recherche commune, un filtre de type et des dossiers repliables (ou une liste à plat). **Créer un document** propose le type et le modèle ; le clic droit sur un dossier choisit seulement l'emplacement, jamais le type.
+
+Créer un TD ou devoir vide, le sélectionner dans **Documents**, puis ajouter les exercices depuis la recherche ou par glisser-déposer. Les changements de composition sont enregistrés automatiquement. Les listes calculées et exercices définis localement restent éditables dans le code ; le panneau affiche leurs questions.
+
+Un devoir est simplement un document avec un barème, sans suivi de notes d'élèves ni paramètre `evaluation`. Les points sont placés dans chaque `question`, donc suivent les questions lors des réorganisations.
+
+Pour ajouter un type, copier un modèle dans `templates/`, remplacer son champ littéral `type` (par exemple `type: "colle"`) et adapter son contenu. L'extension découvre automatiquement le modèle pour la création et le nouveau type pour les filtres. Aucun changement du Makefile ni de l'extension n'est nécessaire. Garder `fiche.with` et un `titre` littéral (ou `ex.meta.titre` pour un sujet monolithique) ; les champs calculés ne sont pas évalués par la recherche.
+
+Les anciens appels `feuille.with(...)` restent compatibles et sont interprétés comme des TD. Les noms de fichiers utilisent lettres, chiffres, tirets et traits de soulignement ; les chemins sont relatifs à la banque.
 
 ## Aide de l'API
 
@@ -32,7 +41,7 @@ Le contrat détaillé est dans le commentaire de `exercice`. Renseigner les cham
 
 ## Sujets de concours et rapports du jury
 
-- Ranger les sujets dans `concours/<année sur deux chiffres>/` et partir de `templates/sujet-concours.typ`. Garder les questions, définitions et figures dans un seul sujet ; commencer les questions à 1 et adapter les renvois si la source commence à 0.
+- Partir de `templates/sujet-concours.typ`, dans le dossier souhaité. Garder les questions, définitions et figures dans un seul sujet ; commencer les questions à 1 et adapter les renvois si la source commence à 0.
 - Comparer le corrigé au sujet original, notamment les figures et les hypothèses. Corriger directement les erreurs importantes de l'énoncé, signaler les parties/questions corrigées dans la liste initiale du corrigé et expliquer brièvement le problème et/ou le changement pour chacune. Ne pas conserver deux versions contradictoires du code.
 - Renseigner `corrections` de `exercice` avec une simple liste des parties/questions corrigées, chacune accompagnée d'une brève explication du problème ou du changement. Pour les sujets attribués à un concours uniquement, le corrigé commence par « Modifications par rapport à l'énoncé initial : » puis cette liste. Placer ensuite les commentaires généraux du jury dans `remarques`, sous forme de liste, sans titre, source ni référence affichés.
 - Associer les observations relatives à une partie ou sous-partie au paramètre `commentaire` de `partie` ; les afficher dans le corrigé immédiatement après son titre. Tous les commentaires du jury (généraux, de partie et de question) sont en italique.
@@ -82,12 +91,15 @@ let f x = (* f x renvoie ... *)
 
 ### Barème
 
-Ajouter `bareme: (0.25, 0.5, 1, ...)` à `exercice(...)` pour un exercice ou un sujet,
-ou à `feuille.with(...)` pour une feuille. Le tableau contient une valeur par question,
-dans l'ordre de lecture, sous-parties comprises. Pour une feuille, il suit aussi l'ordre
-des exercices et remplace leurs barèmes sans modifier les objets importés.
-`none` comme barème conserve ceux des exercices ; une entrée `none` omet les points
-pour la question correspondante. Les points figurent uniquement dans la marge droite du corrigé.
+Placer les points dans chaque question :
+
+```typst
+question([Justifier la complexité.], points: 1.5, solution: [ ... ])
+```
+
+`points: none` (valeur par défaut) omet les points de la question. Les points figurent uniquement dans la marge droite du corrigé. Ils sont conservés quand on déplace ou retire un exercice, sans tableau à réaligner.
+
+Les anciens tableaux `bareme` d'exercice ou de document restent lus en priorité pour compatibilité. Les convertir en `points` dans les questions avant de réorganiser automatiquement un document portant un tel tableau ; l'extension bloque cette opération pour éviter un décalage silencieux.
 
 Échelle pédagogique : évidence 0.25, facile 0.5, moyen 1, assez difficile 2,
 difficile 3, très difficile 4. Tenir aussi compte de la longueur de la preuve ou du code ;
@@ -110,6 +122,6 @@ nix develop path:. -c make c exercices/langages/residuels-minimisation.typ
 nix develop path:. -c make docs
 ```
 
-`make check` compile les énoncés, corrigés et modèles, valide le catalogue et lance les tests. Les sorties sont dans `build/`. `make w <chemin> C=true O=0` surveille un corrigé sans ouvrir de lecteur ; utiliser `C=false` pour l'énoncé.
+`make check` compile les énoncés, corrigés et modèles, valide le catalogue et lance les tests. Pour `dossier/nom.typ`, les sorties sont `build/dossier/nom/enonce.pdf` et `corrige.pdf` ; cela fonctionne aussi à la racine. `make w <chemin> C=true O=0` surveille un corrigé sans ouvrir de lecteur ; utiliser `C=false` pour l'énoncé.
 
 Conserver code et tests dans `ressources/<identifiant>/`, afficher ce même code dans le corrigé, et brancher les tests sur `make check`. Une dizaine de tests ciblés suffit. La référence Tidy et les tests de l'API font aussi partie des vérifications.

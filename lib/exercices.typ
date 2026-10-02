@@ -8,11 +8,14 @@
 /// - enonce (content): Énoncé, éventuellement avec sous-questions.
 /// - solution (content, none): Solution ; `none` affiche « Corrigé à compléter ».
 /// - commentaire (content, none): Observation du jury, en italique avant la solution uniquement dans le corrigé.
+/// - points (float, int, none): Barème de la question, affiché en marge du corrigé ; `none` masque les points.
 /// -> dictionary
-#let question(enonce, solution: none, commentaire: none) = {
+#let question(enonce, solution: none, commentaire: none, points: none) = {
   assert(commentaire == none or type(commentaire) == content,
     message: "commentaire doit être un contenu Typst ou none")
-  (type: "question", enonce: enonce, solution: solution, commentaire: commentaire)
+  assert(points == none or points in (0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
+    message: "Points autorisés : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ou none")
+  (type: "question", enonce: enonce, solution: solution, commentaire: commentaire, points: points)
 }
 
 #let texte-duree(duree) = {
@@ -102,7 +105,7 @@
 /// - contenu (array): Textes libres `[...]`, `question(...)` et `partie(...)` ; au moins une question.
 /// - remarques (content, none): Commentaires généraux du jury, en italique au début du corrigé.
 /// - corrections (content, none): Liste des corrections éditoriales affichée uniquement pour les sujets attribués à un concours, précédée du titre « Modifications par rapport à l'énoncé initial : ».
-/// - bareme (array, none): Points par question dans l'ordre, parties comprises ; `none` omet le barème ou une question. Valeurs : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4. Affichés uniquement en marge du corrigé.
+/// - bareme (array, none): Ancien barème global, conservé pour compatibilité. Préférer `points` dans chaque `question`.
 /// - sujet-ecrit (bool): Masque les textes libres du contexte dans le corrigé d'un sujet écrit seulement. Les questions et figures qu'elles contiennent sont conservées.
 /// -> dictionary
 #let exercice(meta: (:), contenu: (), remarques: none, corrections: none, sujet-ecrit: false, bareme: none) = {
@@ -198,7 +201,6 @@
   )
 }
 
-// Présentation inspirée de texmf/tex/latex/{exam.cls,exercise.cls,code.sty}.
 /// Affiche un objet construit avec `exercice` et publie ses métadonnées pour le catalogue.
 /// - ex (dictionary): Exercice à afficher.
 /// - numero (int, none): Numéro romain du titre ; `none` utilise I.
@@ -239,8 +241,8 @@
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
     block(width: 100%, above: 12pt, below: 5pt, {
-      if corrige and bareme != none and bareme.at(i - 1) != none {
-        let points = bareme.at(i - 1)
+      let points = if bareme == none { q.at("points", default: none) } else { bareme.at(i - 1) }
+      if corrige and points != none {
         // Placement hors du corps : la note suit le début de la question sans réserver de hauteur.
         place(top + right, dx: 12mm,
           block(width: 10mm)[
@@ -266,8 +268,9 @@
   }
 }
 
-/// Compose une feuille dans l'ordre du tableau `exercices`.
-/// À utiliser avec `#show: feuille.with(...)` ; les imports d'exercices utilisent des alias distincts.
+/// Compose tout type de document dans l'ordre du tableau `exercices`.
+/// À utiliser avec `#show: fiche.with(...)` ; le type ne dépend pas du dossier.
+/// - type (str): Type libre : `"td"`, `"devoir"`, `"concours"` ou un type personnalisé.
 /// - titre (str): Titre de la feuille.
 /// - niveau (str, none): Niveau affiché dans l'en-tête.
 /// - auteur (str, none): Auteur affiché dans l'en-tête.
@@ -278,7 +281,8 @@
 /// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page.
 /// - body (content): Contenu placé avant les exercices, fourni par la règle show.
 /// -> content
-#let feuille(
+#let fiche(
+  type: "td",
   titre: "Feuille d'exercices",
   niveau: none,
   auteur: none,
@@ -289,11 +293,13 @@
   bareme: none,
   body,
 ) = {
+  assert(type == str(type) and type != "", message: "Le type de document doit être une chaîne non vide")
   verifier-bareme(bareme, exercices.map(ex => nombre-questions(ex.contenu)).sum(default: 0))
   let titre-principal = if concours == none { titre } else { texte-concours(concours) }
   let titre-affiche = titre-principal + if corrige { " : corrigé" } else { "" }
   let duree = if concours == none or exercices.len() != 1 { none } else { exercices.first().meta.duree }
   set document(title: titre-affiche)
+  [#metadata((type: type, titre: titre, niveau: niveau, concours: concours)) <document-meta>]
   set text(font: "New Computer Modern", size: 11pt, lang: "fr")
   set par(justify: true, leading: 0.55em, spacing: 0.8em)
   set page(
@@ -331,3 +337,6 @@
     debut-bareme = fin-bareme
   }
 }
+
+/// Ancien nom de `fiche`, conservé pour les documents existants.
+#let feuille = fiche

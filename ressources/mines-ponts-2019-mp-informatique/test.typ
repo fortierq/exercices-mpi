@@ -3,8 +3,14 @@
 #import "/concours/22/centrale-2022-mp-informatique.typ": ex as centrale
 
 #assert(nombre-questions(ex.contenu) == 37)
-#assert(ex.bareme.len() == 37)
-#assert(ex.bareme.all(points => points != none))
+#assert(ex.bareme == none)
+#assert(aplatir(ex.contenu).filter(b => type(b) == dictionary).map(q => q.points) == (
+  0.25, 0.25, 0.5, 0.5, 0.5,
+  1, 2, 1,
+  0.5, 0.5, 0.5, 0.5, 2, 1.5, 1, 1, 3,
+  1, 1, 1.5, 2, 1, 1.5, 1, 2.5, 3, 1.5, 2.5,
+  0.5, 1.5, 2, 2, 1.5, 0.5, 2, 3.5, 4,
+))
 #assert(aplatir(ex.contenu).filter(b => type(b) == dictionary).all(q => q.solution != none))
 #assert(ex.contenu.filter(est-partie).map(p => nombre-questions(p.contenu)) == (5, 3, 9, 11, 9))
 #assert(ex.meta.concours == (nom: "Mines-Ponts", annee: 2019, filiere: "MP"))

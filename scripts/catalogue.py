@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+from sources import sources
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -13,8 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def catalogue(typst):
     entries = []
     identifiers = set()
-    for source in sorted((ROOT / "exercices").glob("*/*.typ")):
-        relative = source.relative_to(ROOT).as_posix()
+    for relative, kind in sources():
+        if kind != "exercice":
+            continue
+        source = ROOT / relative
         result = subprocess.run(
             [typst, "eval", "--root", str(ROOT), "--ignore-system-fonts",
              "--input", f"exercice=/{relative}", "--in", str(ROOT / "templates/fiche.typ"),
