@@ -7,20 +7,20 @@ Avant de créer un exercice, vérifier qu'il n'existe pas déjà dans la banque.
 
 - Les dossiers sont libres, y compris la racine : le type est déclaré dans le code, pas déduit du chemin. Les dossiers actuels peuvent être conservés ou réorganisés. Les répertoires techniques `lib`, `templates`, `ressources`, `docs`, `scripts`, `build`, `node_modules` et les dossiers cachés ne sont pas des entrées du catalogue.
 - Un exercice exporte `ex` ; le nom du fichier sans extension est son identifiant, unique dans la banque.
-- Tous les documents utilisent `#show: fiche.with(type: "td", ...)`. Types fournis : `"td"`, `"devoir"`, `"concours"`. Un TD ou devoir importe les objets `ex` sous des alias distincts dans `exercices: (alias1, alias2,)`. L'ordre du tableau est l'ordre d'affichage ; `()` crée un document vide.
-- Un sujet complet conserve son contenu dans un seul fichier, exporte `ex` et utilise le même appel `fiche.with(type: "concours", exercices: (ex,), ...)`.
+- Tous les documents utilisent `#show: feuille.with(type: "td", ...)`. Types fournis : `"td"`, `"devoir"`, `"concours"`. Un TD ou devoir importe les objets `ex` sous des alias distincts dans `exercices: (alias1, alias2,)`. L'ordre du tableau est l'ordre d'affichage ; `()` crée un document vide.
+- Un sujet complet conserve son contenu dans un seul fichier, exporte `ex` et utilise le même appel `feuille.with(type: "concours", exercices: (ex,), ...)`.
 - Réutiliser une partie en exportant une variable puis en l'important, sans copier le sujet ni rechercher une partie par numéro.
 - Introductions et définitions vont dans `contenu`. Reprendre explicitement les rappels de `contexte` dans un exercice autonome.
 
-Dans VS Code, **Documents** rassemble tous les types, avec une recherche commune, un filtre de type et des dossiers repliables (ou une liste à plat). **Créer un document** propose le type et le modèle ; le clic droit sur un dossier choisit seulement l'emplacement, jamais le type.
+Dans VS Code, **Feuilles** rassemble tous les types, avec une recherche commune, un filtre de type et des dossiers repliables (ou une liste à plat). **Créer une feuille** propose le type et le modèle ; le clic droit sur un dossier choisit seulement l'emplacement, jamais le type.
 
-Créer un TD ou devoir vide, le sélectionner dans **Documents**, puis ajouter les exercices depuis la recherche ou par glisser-déposer. Les changements de composition sont enregistrés automatiquement. Les listes calculées et exercices définis localement restent éditables dans le code ; le panneau affiche leurs questions.
+Créer un TD ou devoir vide, le sélectionner dans **Feuilles**, puis ajouter les exercices depuis la recherche ou par glisser-déposer. Les changements de composition sont enregistrés automatiquement. Les listes calculées et exercices définis localement restent éditables dans le code ; le panneau affiche leurs questions.
 
 Un devoir est simplement un document avec un barème, sans suivi de notes d'élèves ni paramètre `evaluation`. Les points sont placés dans chaque `question`, donc suivent les questions lors des réorganisations.
 
-Pour ajouter un type, copier un modèle dans `templates/`, remplacer son champ littéral `type` (par exemple `type: "colle"`) et adapter son contenu. L'extension découvre automatiquement le modèle pour la création et le nouveau type pour les filtres. Aucun changement du Makefile ni de l'extension n'est nécessaire. Garder `fiche.with` et un `titre` littéral (ou `ex.meta.titre` pour un sujet monolithique) ; les champs calculés ne sont pas évalués par la recherche.
+Pour ajouter un type, copier un modèle dans `templates/`, remplacer son champ littéral `type` (par exemple `type: "colle"`) et adapter son contenu. L'extension découvre automatiquement le modèle pour la création et le nouveau type pour les filtres. Aucun changement du Makefile ni de l'extension n'est nécessaire. Garder `feuille.with` et un `titre` littéral (ou `ex.meta.titre` pour un sujet monolithique) ; les champs calculés ne sont pas évalués par la recherche.
 
-Les anciens appels `feuille.with(...)` restent compatibles et sont interprétés comme des TD. Les noms de fichiers utilisent lettres, chiffres, tirets et traits de soulignement ; les chemins sont relatifs à la banque.
+Sans champ `type`, `feuille.with(...)` produit un TD. Les noms de fichiers utilisent lettres, chiffres, tirets et traits de soulignement ; les chemins sont relatifs à la banque.
 
 ## Aide de l'API
 

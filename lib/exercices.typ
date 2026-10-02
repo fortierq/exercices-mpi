@@ -269,7 +269,7 @@
 }
 
 /// Compose tout type de document dans l'ordre du tableau `exercices`.
-/// À utiliser avec `#show: fiche.with(...)` ; le type ne dépend pas du dossier.
+/// À utiliser avec `#show: feuille.with(...)` ; le type ne dépend pas du dossier.
 /// - type (str): Type libre : `"td"`, `"devoir"`, `"concours"` ou un type personnalisé.
 /// - titre (str): Titre de la feuille.
 /// - niveau (str, none): Niveau affiché dans l'en-tête.
@@ -281,7 +281,7 @@
 /// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page.
 /// - body (content): Contenu placé avant les exercices, fourni par la règle show.
 /// -> content
-#let fiche(
+#let feuille(
   type: "td",
   titre: "Feuille d'exercices",
   niveau: none,
@@ -337,6 +337,3 @@
     debut-bareme = fin-bareme
   }
 }
-
-/// Ancien nom de `fiche`, conservé pour les documents existants.
-#let feuille = fiche

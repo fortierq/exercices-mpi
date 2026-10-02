@@ -1,4 +1,4 @@
-#import "/lib/exercices.typ": exercice, question, partie, fiche
+#import "/lib/exercices.typ": exercice, question, partie, feuille
 
 #let ex = exercice(
   sujet-ecrit: true, // Mettre false pour un exercice oral ou un extrait autonome.
@@ -33,7 +33,7 @@
   ),
 )
 
-#show: fiche.with(
+#show: feuille.with(
   type: "concours",
   titre: ex.meta.titre,
   niveau: ex.meta.niveaux.join(" / "),

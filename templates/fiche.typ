@@ -1,8 +1,8 @@
 // Aperçu autonome d'un exercice exportant ex, quel que soit son emplacement.
-#import "/lib/exercices.typ": fiche
+#import "/lib/exercices.typ": feuille
 #let chemin = sys.inputs.at("exercice",  default: "/templates/exercice.typ")
 #import chemin: ex
-#show: fiche.with(
+#show: feuille.with(
   type: "exercice",
   titre: ex.meta.titre,
   niveau: ex.meta.niveaux.join(" / "),

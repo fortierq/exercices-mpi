@@ -1,7 +1,7 @@
-#import "/lib/exercices.typ": fiche
+#import "/lib/exercices.typ": feuille
 #import "/templates/exercice.typ": ex
 
-#show: fiche.with(
+#show: feuille.with(
   type: "devoir",
   titre: "Devoir",
   niveau: "MPI",

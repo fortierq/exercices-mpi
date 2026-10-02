@@ -104,8 +104,8 @@ renvoyer (q appartient à F)
   ),
 )
 
-#import "/lib/exercices.typ": fiche
-#show: fiche.with(
+#import "/lib/exercices.typ": feuille
+#show: feuille.with(
   type: "concours",
   titre: ex.meta.titre,
   niveau: ex.meta.niveaux.join(" / "),

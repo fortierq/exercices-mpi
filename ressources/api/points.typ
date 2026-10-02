@@ -1,4 +1,4 @@
-#import "/lib/exercices.typ": fiche, exercice, question, partie
+#import "/lib/exercices.typ": feuille, exercice, question, partie
 
 #let meta = (titre: "Points par question", chapitres: (), algorithmes: (),
   structures: (), langages: (), difficulte: 1)
@@ -13,7 +13,7 @@
   question([Question C], points: 1.5, solution: [Réponse C]),
 ))
 #let corrige = sys.inputs.at("corrige", default: "false") == "true"
-#show: fiche.with(type: "devoir", titre: "Devoir : barème par question",
+#show: feuille.with(type: "devoir", titre: "Devoir : barème par question",
   exercices: (second, premier), corrige: corrige)
 
 #context {

@@ -57,7 +57,7 @@ def mask(text):
 def classify(text, source):
     code = mask(text)
     # Compatibility for legacy feuille and standalone contest exports.
-    if re.search(r'#show\s*:\s*(fiche|feuille)\.with\s*\(', code):
+    if re.search(r'#show\s*:\s*feuille\.with\s*\(', code):
         return "document"
     reexports = any(re.fullmatch(r'(?:ex|[\w-]+\s+as\s+ex)', member.strip())
                     for match in re.finditer(r'#import\s+:\s*([^\n]+)', code)
@@ -98,7 +98,7 @@ def main():
         parser.error('La source doit rester dans la banque.')
     kind = classify(source.read_text(), source.relative_to(ROOT).as_posix())
     if not kind:
-        parser.error('Source non reconnue : exporter ex ou utiliser fiche.with(...).')
+        parser.error('Source non reconnue : exporter ex ou utiliser feuille.with(...).')
     output = ROOT / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
     command = [args.typst, 'watch' if args.watch else 'compile', '--root', str(ROOT), '--ignore-system-fonts', '--input', f'corrige={str(args.variant == "corrige").lower()}']

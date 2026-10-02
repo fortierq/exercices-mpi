@@ -16,7 +16,7 @@ scripts/         Génération et filtrage du catalogue
 build/           PDF et catalogue générés (ignorés par Git)
 ```
 
-Les dossiers sont libres. Un exercice exporte `ex` ; son nom de fichier est son identifiant, unique dans la banque. Tous les documents utilisent `fiche.with(type: "td", ...)`, avec le type `td`, `devoir`, `concours` ou un type personnalisé. Les points se placent dans chaque `question(..., points: ...)`.
+Les dossiers sont libres. Un exercice exporte `ex` ; son nom de fichier est son identifiant, unique dans la banque. Tous les documents utilisent `feuille.with(type: "td", ...)`, avec le type `td`, `devoir`, `concours` ou un type personnalisé. Les points se placent dans chaque `question(..., points: ...)`.
 
 Voir le [guide utilisateur](docs/utilisation.md) pour créer exercices, documents et types personnalisés. L'API est documentée dans le code pour Tinymist ; `make docs` génère la référence Tidy dans `build/docs/api.pdf`. [AGENTS.md](AGENTS.md) ne contient que les consignes propres aux assistants.
 
