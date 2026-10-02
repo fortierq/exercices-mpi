@@ -1,6 +1,14 @@
-#import "meta.typ": chapitres-programme, algorithmes-programme, structures-programme, concours-possibles, filieres-possibles
+/// API commune des exercices, feuilles et sujets de concours.
+/// Guide de rédaction : docs/utilisation.md. Documentation générée : make docs.
+
+#import "meta.typ": chapitres-programme, algorithmes-programme, structures-programme, concours-possibles, filieres-possibles, langages-possibles
 
 // Aucun paquet externe : les exercices sont des données Typst ordinaires.
+/// Construit une question ; son énoncé reste visible dans le corrigé.
+/// - enonce (content): Énoncé, éventuellement avec sous-questions.
+/// - solution (content, none): Solution ; `none` affiche « Corrigé à compléter ».
+/// - commentaire (content, none): Observation du jury, en italique avant la solution uniquement dans le corrigé.
+/// -> dictionary
 #let question(enonce, solution: none, commentaire: none) = {
   assert(commentaire == none or type(commentaire) == content,
     message: "commentaire doit être un contenu Typst ou none")
@@ -38,6 +46,14 @@
 }
 
 // Le contexte contient les rappels à ajouter dans un exercice autonome.
+/// Regroupe des textes, questions et sous-parties sans réinitialiser la numérotation.
+/// - numero (str): Numéro explicite, par exemple `"I.A"`.
+/// - titre (str): Titre non vide.
+/// - contenu (array): Textes Typst, questions et parties dans l'ordre.
+/// - contexte (array): Textes de rappel à reprendre explicitement dans un extrait autonome ; non insérés automatiquement.
+/// - meta (dictionary): Métadonnées de réutilisation de la partie ; non validées ici.
+/// - commentaire (content, none): Observation du jury affichée dans le corrigé après le titre.
+/// -> dictionary
 #let partie(numero, titre, contenu: (), contexte: (), meta: (:), commentaire: none) = {
   assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
   assert(type(titre) == str and titre != "", message: "Titre de partie vide")
@@ -67,6 +83,16 @@
 
 #let nombre-questions(contenu) = aplatir(contenu).filter(bloc => type(bloc) == dictionary).len()
 
+/// Construit et valide un exercice ou un sujet, exporté sous le nom `ex`.
+/// L'identifiant est le nom du fichier, jamais un champ de `meta`.
+/// Les vocabulaires autorisés sont exportés par `lib/meta.typ`.
+/// - meta (dictionary): Champs obligatoires : `titre` (chaîne non vide), `chapitres`, `algorithmes`, `structures`, `langages` (tableaux de chaînes), `difficulte` (entier de 1 à 5). Champs facultatifs : `niveaux` (tableau, défaut `()`), `duree` (couple heures/minutes positif, minutes < 60, ou `none`), `concours` (dictionnaire ou `none`). Concours : `nom`, `annee` (entier positif), `filiere`, `oral` (booléen), tous facultatifs ; aucune filière ajoutée implicitement. Champs supplémentaires libres ; `id` et `reference` interdits.
+/// - contenu (array): Textes libres `[...]`, `question(...)` et `partie(...)` ; au moins une question.
+/// - debut (int): Premier numéro de question, positif ou nul.
+/// - remarques (content, none): Commentaires généraux du jury, en italique au début du corrigé.
+/// - corrections (content, none): Liste des corrections éditoriales, précédée du titre « Modifications par rapport à l'énoncé initial : ».
+/// - sujet-ecrit (bool): Masque les textes libres du contexte dans le corrigé d'un sujet écrit seulement. Les questions et figures qu'elles contiennent sont conservées.
+/// -> dictionary
 #let exercice(meta: (:), contenu: (), debut: 1, remarques: none, corrections: none, sujet-ecrit: false) = {
   assert(type(sujet-ecrit) == bool, message: "sujet-ecrit doit être un booléen")
   let champs = ("titre", "chapitres", "algorithmes", "structures", "langages", "difficulte")
@@ -96,8 +122,8 @@
   // Convention de la banque pour la programmation en MP2I–MPI.
   if "MP2I" in niveaux or "MPI" in niveaux {
     for langage in meta.langages {
-      assert(langage in ("C", "OCaml", "Python"),
-        message: "langages : en MP2I–MPI, utiliser C, OCaml ou Python : " + langage)
+      assert(langage in langages-possibles,
+        message: "langages : en MP2I–MPI, utiliser C, OCaml, Python ou SQL : " + langage)
     }
   }
   let duree = meta.at("duree", default: none)
@@ -161,7 +187,13 @@
 }
 
 // Présentation inspirée de texmf/tex/latex/{exam.cls,exercise.cls,code.sty}.
-#let afficher-exercice(ex, numero: none, corrige: false, details: true, afficher-titre: true) = {
+/// Affiche un objet construit avec `exercice` et publie ses métadonnées pour le catalogue.
+/// - ex (dictionary): Exercice à afficher.
+/// - numero (int, none): Numéro romain du titre ; `none` utilise I.
+/// - corrige (bool): Afficher solutions et commentaires.
+/// - afficher-titre (bool): Afficher le titre de l'exercice.
+/// -> content
+#let afficher-exercice(ex, numero: none, corrige: false, afficher-titre: true) = {
   show strong: it => it.body
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
@@ -209,6 +241,17 @@
   }
 }
 
+/// Compose une feuille dans l'ordre du tableau `exercices`.
+/// À utiliser avec `#show: feuille.with(...)` ; les imports d'exercices utilisent des alias distincts.
+/// - titre (str): Titre de la feuille.
+/// - niveau (str, none): Niveau affiché dans l'en-tête.
+/// - auteur (str, none): Auteur affiché dans l'en-tête.
+/// - concours (dictionary, none): Attribution remplaçant le titre ; mêmes champs que `exercice.meta.concours`.
+/// - exercices (array): Objets `ex` importés, dans l'ordre ; `()` crée une feuille vide.
+/// - corrige (bool): Afficher les corrigés ; brancher sur `sys.inputs.at("corrige", default: "false") == "true"`.
+/// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page.
+/// - body (content): Contenu placé avant les exercices, fourni par la règle show.
+/// -> content
 #let feuille(
   titre: "Feuille d'exercices",
   niveau: none,
@@ -216,7 +259,6 @@
   concours: none,
   exercices: (),
   corrige: false,
-  details: true,
   nouvelle-page: false,
   body,
 ) = {
@@ -255,6 +297,6 @@
   body
   for (i, ex) in exercices.enumerate(start: 1) {
     if nouvelle-page and i > 1 { pagebreak() }
-    afficher-exercice(ex, numero: if exercices.len() > 1 { i } else { none }, corrige: corrige, details: details, afficher-titre: exercices.len() > 1 or titre != ex.meta.titre)
+    afficher-exercice(ex, numero: if exercices.len() > 1 { i } else { none }, corrige: corrige, afficher-titre: exercices.len() > 1 or titre != ex.meta.titre)
   }
 }

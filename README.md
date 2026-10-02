@@ -18,11 +18,11 @@ build/           PDF et catalogue générés (ignorés par Git)
 
 Un fichier `exercices/<chapitre>/<identifiant>.typ` exporte un objet `ex`. Son identifiant, déduit du nom de fichier, est unique dans la banque. Une feuille importe ces objets sous des alias et les assemble. Les sujets de concours utilisent la même API et exportent eux aussi `ex`.
 
-Les métadonnées et les conventions de contenu sont décrites dans [AGENTS.md](AGENTS.md). Le vocabulaire autorisé est résumé dans [docs/programme.md](docs/programme.md).
+Voir le [guide utilisateur](docs/utilisation.md) pour créer exercices, feuilles et concours. L'API est documentée dans le code pour Tinymist ; `make docs` génère la référence Tidy dans `build/docs/api.pdf`. [AGENTS.md](AGENTS.md) ne contient que les consignes propres aux assistants.
 
 ## Extension VS Code
 
-Installer le dernier VSIX de `/Users/qfortier/repo/vscode-exercices-mpi/releases/` dans VS Code, avec **Extensions: Install from VSIX...**, puis ouvrir ce dépôt. L'extension **Exercices Typst** fournit les vues de la banque, la composition des feuilles et les aperçus d'énoncé et de corrigé. Tinymist améliore l'aperçu Typst mais reste facultatif.
+Installer le dernier VSIX de `/Users/qfortier/repo/vscode-exercices-mpi/releases/` dans VS Code, avec **Extensions: Install from VSIX...**, puis ouvrir ce dépôt. L'extension **Exercices Typst** fournit les vues de la banque, la composition des feuilles et les aperçus d'énoncé et de corrigé. Tinymist est recommandé pour l'aide au survol et l'aperçu, mais reste facultatif.
 
 ## Codespaces
 

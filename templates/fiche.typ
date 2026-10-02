@@ -9,5 +9,4 @@
   concours: ex.meta.concours,
   exercices: (ex,),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
-  details: sys.inputs.at("details", default: "true") == "true",
 )

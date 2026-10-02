@@ -11,5 +11,4 @@
   concours: none,
   exercices: (arden, palindromes, inevitables),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
-  details: sys.inputs.at("details", default: "false") == "true",
 )

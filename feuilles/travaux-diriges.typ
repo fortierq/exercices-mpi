@@ -9,7 +9,6 @@
   auteur: none,
   exercices: (ex1, ex2, ex3,),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
-  details: true,
   nouvelle-page: false,
 )
 

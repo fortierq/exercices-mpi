@@ -28,7 +28,7 @@ O_PDF ?= code --reuse-window
 endif
 
 EXERCICES := $(patsubst exercices/%.typ,%,$(shell find exercices -mindepth 2 -maxdepth 2 -name '*.typ' | sort))
-FS := $(patsubst feuilles/%.typ,%,$(wildcard feuilles/*.typ))
+FS := $(patsubst feuilles/%.typ,%,$(shell find feuilles -name '*.typ' | sort))
 CONCOURS := $(patsubst concours/%.typ,%,$(shell find concours -name '*.typ' | sort))
 # Dépendances conservatrices : un import ou une image modifiés déclenchent la compilation.
 SOURCES := $(shell find lib templates exercices feuilles concours $(wildcard ressources) -type f | sort)
@@ -71,7 +71,7 @@ catalogue:
 	$(PYTHON) scripts/catalogue.py --typst "$(TYPST)" --sortie build/catalogue.json
 
 # Compile aussi les modèles, afin qu'ils restent utilisables lors des évolutions de la bibliothèque.
-check: all test
+check: all test docs
 	@mkdir -p build/templates
 	$(TYPST) compile $(TYPST_FLAGS) templates/fiche.typ build/templates/exercice.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/fiche.typ build/templates/exercice-corrige.pdf
@@ -81,6 +81,8 @@ check: all test
 	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ --input corrige=true templates/fiche.typ build/templates/concours-corrige.pdf
 
 test:
+	@mkdir -p build/ressources/api
+	$(TYPST) compile $(TYPST_FLAGS) ressources/api/test.typ build/ressources/api/test.pdf
 	@mkdir -p build/ressources/centrale-2022-mp-informatique
 	$(TYPST) compile $(TYPST_FLAGS) ressources/centrale-2022-mp-informatique/test.typ build/ressources/centrale-2022-mp-informatique/test.pdf
 	$(OCAML) -I ressources/centrale-2022-mp-informatique ressources/centrale-2022-mp-informatique/test.ml
@@ -141,6 +143,13 @@ _w-concours:
 
 clean:
 	rm -rf build
+
+.PHONY: docs
+docs: build/docs/api.pdf
+
+build/docs/api.pdf: docs/api.typ lib/exercices.typ lib/meta.typ
+	@mkdir -p "$(@D)"
+	$(TYPST) compile $(TYPST_FLAGS) "$<" "$@"
 
 help:
 	@echo "make                  Énoncés, corrigés, feuilles, sujets et catalogue JSON"

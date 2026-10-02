@@ -1,5 +1,7 @@
 // Programme MP2I–MPI 2021 : https://prepas.org/index.php?document=73
 // Voir docs/programme.md. Les concepts de langages vont dans chapitres.
+/// Chapitres autorisés dans meta.chapitres (programme MP2I–MPI).
+/// -> array
 #let chapitres-programme = (
   // § 1–2, p. 5–7
   "methodes-de-programmation", "recursivite-et-induction",
@@ -13,6 +15,8 @@
   "decidabilite-et-classes-de-complexite",
 )
 
+/// Structures autorisées dans meta.structures.
+/// -> array
 #let structures-programme = (
   // § 3.1–3.2, p. 8
   "tableau", "liste", "liste-chainee", "pile", "file",
@@ -23,6 +27,8 @@
   // § 3.4, p. 9
   "graphe-oriente", "graphe-non-oriente", "liste-adjacence", "matrice-adjacence",
 )
+/// Algorithmes autorisés dans meta.algorithmes.
+/// -> array
 #let algorithmes-programme = (
   // § 3.3, p. 9
   "parcours-prefixe", "parcours-infixe", "parcours-postfixe", "tri-par-tas",
@@ -39,6 +45,8 @@
 )
 
 // Valeurs autorisées pour les métadonnées de concours.
+/// Noms autorisés dans meta.concours.nom.
+/// -> array
 #let concours-possibles = (
   "Centrale",
   "Mines-Ponts",
@@ -49,6 +57,8 @@
   "X-ENS",
 )
 
+/// Filières autorisées dans meta.concours.filiere.
+/// -> array
 #let filieres-possibles = (
   "MP2I",
   "MPI",
@@ -57,3 +67,8 @@
   "PSI",
   "PT",
 )
+
+/// Langages proposés dans la banque et autorisés en MP2I–MPI, SQL inclus.
+/// Utiliser un tableau vide pour le pseudocode seul ; renseigner les langages de l'énoncé et du corrigé.
+/// -> array
+#let langages-possibles = ("C", "OCaml", "Python", "SQL")

@@ -6,7 +6,7 @@
     chapitres: ("graphes",), // doivent apparaître dans lib/meta.typ
     algorithmes: ("parcours-en-profondeur",), // doivent apparaître dans lib/meta.typ
     structures: ("graphe-oriente",), // doivent apparaître dans lib/meta.typ
-    langages: (), // C, OCaml et/ou Python en MP2I–MPI
+    langages: (), // Voir langages-possibles dans lib/meta.typ (SQL inclus).
     difficulte: 2,
     niveaux: ("MPI",),
     duree: (0, 20), // (Heures, minutes) ; none si non estimée.
