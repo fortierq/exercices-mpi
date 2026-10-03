@@ -1,4 +1,4 @@
-#import "exercices.typ": aplatir, afficher-exercice, verifier-bareme, est-partie, titre-exercice, texte-concours
+#import "exercices.typ": aplatir, afficher-exercice, verifier-bareme, est-partie, titre-exercice, texte-concours, bloc-solution
 
 // Les numéros désignent les questions dans chaque exercice, parties comprises.
 #let questions-copie(sujet) = {
@@ -32,7 +32,9 @@
     assert(repondue or ev.reussite in (none, 0), message: "Une question non répondue ne peut rapporter de points")
     assert(type(ev.commentaire) == str and (not repondue or ev.reussite in (none, 100) or ev.commentaire.trim() != ""),
       message: "Une réponse partiellement correcte doit avoir un commentaire")
-    (..ev, ..q, repondue: repondue, obtenus: if ev.reussite == none or q.points == none { none } else { q.points * ev.reussite / 100 })
+    let commentaire = if repondue and ev.reussite == 100 and ev.commentaire.trim() == "" { "Correct." } else { ev.commentaire }
+    (..ev, ..q, commentaire: commentaire, repondue: repondue,
+      obtenus: if ev.reussite == none or q.points == none { none } else { q.points * ev.reussite / 100 })
   })
   let complet = lignes.all(q => q.obtenus != none)
   (questions: lignes, complet: complet,
@@ -60,11 +62,22 @@
   (blocs: blocs, suivant: numero)
 }
 
+// L'égalité reste neutre, notamment avec une seule copie et un écart-type nul.
+#let couleur-reussite(valeur, moyenne, sigma) = {
+  if valeur == none or moyenne == none or calc.abs(valeur - moyenne) < 0.000000001 { return luma(40%) }
+  let fonce = sigma != none and sigma > 0 and calc.abs(valeur - moyenne) >= sigma
+  if valeur > moyenne {
+    if fonce { rgb("#125226") } else { rgb("#26823d") }
+  } else {
+    if fonce { rgb("#861e1e") } else { rgb("#ce4141") }
+  }
+}
+
 // La colonne est décalée dans la marge ; la grille centre la note sur le commentaire.
-#let marge-copie(valeur, corps, centrage: top, separable: true) = {
+#let marge-copie(valeur, corps, centrage: top, separable: true, couleur: luma(40%)) = {
   move(dx: -12mm, block(width: 100% + 12mm, breakable: separable,
     grid(columns: (10mm, 1fr), column-gutter: 2mm, align: (right + centrage, left),
-      text(size: 9pt, fill: luma(40%), if valeur == none { [—] } else { [#decimal(calc.round(valeur, digits: 1)) %] }),
+      text(size: 9pt, fill: couleur, if valeur == none { [—] } else { [#decimal(calc.round(valeur, digits: 1)) %] }),
       corps,
     ),
   ))
@@ -77,20 +90,19 @@
       afficher-blocs-copie(bloc.contenu, moyennes, niveau: niveau + 1)
     } else {
       let ev = bloc.evaluation
-      let moyenne = moyennes.at(ev.cle, default: (moyenne: none)).moyenne
-      block(width: 100%, above: 12pt, below: 5pt, sticky: ev.commentaire.trim() != "", {
+      let stats = moyennes.at(ev.cle, default: (moyenne: none))
+      let moyenne = stats.moyenne
+      let couleur = couleur-reussite(ev.reussite, moyenne, stats.at("sigma", default: none))
+      block(width: 100%, above: 12pt, below: 5pt, sticky: true, {
         [#metadata((cle: ev.cle, numero: bloc.numero)) <copie-question>]
         marge-copie(moyenne, enum(start: bloc.numero, numbering: "1.", indent: 0pt, body-indent: 0.5em, bloc.enonce))
       })
-      if ev.commentaire.trim() != "" {
-        block(width: 100%, above: 5pt, below: 10pt, {
-          [#metadata(ev.cle) <copie-commentaire>]
-          marge-copie(ev.reussite, eval(ev.commentaire, mode: "markup"), centrage: horizon, separable: false)
-        })
-      } else {
-        block(width: 100%, above: 0pt, below: 6pt,
-          marge-copie(ev.reussite, [], centrage: horizon, separable: false))
-      }
+      block(width: 100%, above: 8pt, below: 10pt, {
+        [#metadata(ev.cle) <copie-commentaire>]
+        let commentaire = if ev.commentaire.trim() == "" { emph[À corriger.] } else { eval(ev.commentaire, mode: "markup") }
+        marge-copie(ev.reussite, bloc-solution(commentaire, above: 0pt, below: 0pt),
+          centrage: horizon, separable: false, couleur: couleur)
+      })
     }
   }
 }
@@ -122,6 +134,7 @@
 
       #text(size: 9pt)[Marge gauche : moyenne de classe devant la question,
         réussite individuelle devant le commentaire.
+        Vert au-dessus de la moyenne, rouge en dessous ; foncé dès un écart-type.
         #if statistiques == (:) { [Moyennes indisponibles.] } else {
           [Moyennes sur les copies corrigées : #statistiques.effectif copie(s),
             #statistiques.effectif-classe élèves dans la liste.

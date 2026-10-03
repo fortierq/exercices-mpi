@@ -124,8 +124,9 @@ peuvent rester dans les données, mais ne sont pas affichés.
 Les sous-questions peuvent être distinguées dans le commentaire de la question qui les contient.
 Une réponse absente reçoit `repondue: false`, `reussite: 0` et un commentaire vide.
 Ne pas déduire l'absence d'une note nulle : une réponse fausse peut recevoir 0 %.
-À 100 %, laisser le commentaire vide si aucune remarque utile n'est nécessaire.
-Une suggestion de solution plus simple peut néanmoins être conservée.
+À 100 %, un commentaire vide produit automatiquement « Correct. » dans le PDF et le CSV.
+Un commentaire explicite, notamment une suggestion de solution plus simple, est conservé.
+Une réponse encore non évaluée affiche « À corriger. ».
 Toutes les questions doivent être présentes ; une correction incomplète ou un barème absent
 laisse le total vide. Les barèmes de feuille, d'exercice puis de question sont lus dans cet ordre.
 
@@ -134,7 +135,11 @@ et les titres des parties contenant au moins une réponse. Chaque question est s
 uniquement de son commentaire utile, sans relevé de réponse ni points dans le corps.
 Dans la marge gauche, la moyenne de classe est placée au niveau de la question,
 et la réussite individuelle est centrée verticalement sur le commentaire.
-Sans commentaire, seul le pourcentage individuel apparaît sous la question, dans la marge.
+Les commentaires reprennent le bloc des solutions : filet gris à gauche, retrait de 10 pt,
+espace vertical intérieur de 3 pt et espacements de 8 pt avant / 10 pt après.
+Le pourcentage individuel est vert au-dessus de la moyenne et rouge en dessous ;
+la teinte est foncée dès que l'écart atteint un écart-type. L'égalité et l'absence
+de moyenne restent neutres ; la moyenne elle-même est toujours neutre.
 La version énoncé conserve le sujet entier.
 Les solutions de référence restent disponibles dans le corrigé de la feuille d'origine.
 Les points obtenus valent `points × reussite / 100` ; le total reste brut, sans conversion sur 20.
@@ -162,7 +167,8 @@ par question. Les élèves sans correction ont des notes vides, jamais zéro.
 Il s'agit d'un export calculé : modifier les évaluations, puis relancer la commande pour l'actualiser.
 Les identités inconnues, doublons et mélanges de sujets ou de barèmes interrompent l'export.
 L'export produit aussi `notes.moyennes.json`, lu par le compilateur des copies.
-La moyenne de chaque question inclut les zéros et exclut les évaluations manquantes.
+La moyenne et l'écart-type de population `sigma` de chaque question incluent les zéros
+et excluent les évaluations manquantes. Avec une seule évaluation, `sigma` vaut zéro.
 Les élèves dont la copie n'est pas corrigée ne sont pas comptés comme ayant zéro.
 Le document précise le nombre de copies évaluées et l'effectif de la liste.
 Sans ce fichier, un tiret remplace les moyennes ; `scripts/copies.py --moyennes chemin.json`

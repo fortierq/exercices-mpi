@@ -201,6 +201,16 @@
   )
 }
 
+/// Présentation commune aux solutions et aux commentaires des copies corrigées.
+/// - body (content): Solution ou commentaire.
+/// - above (length): Espacement avant le bloc.
+/// - below (length): Espacement après le bloc.
+/// -> content
+#let bloc-solution(body, above: 8pt, below: 10pt) = block(
+  width: 100%, stroke: (left: 0.4pt + luma(60%)),
+  inset: (left: 10pt, y: 3pt), above: above, below: below, body,
+)
+
 /// Affiche un objet construit avec `exercice` et publie ses métadonnées pour le catalogue.
 /// - ex (dictionary): Exercice à afficher.
 /// - numero (int, none): Numéro romain du titre ; `none` utilise I.
@@ -258,9 +268,7 @@
       if q.commentaire != none {
         block(width: 100%, above: 5pt, below: 5pt, text(style: "italic", q.commentaire))
       }
-      block(
-        width: 100%, stroke: (left: 0.4pt + luma(60%)),
-        inset: (left: 10pt, y: 3pt), above: 8pt, below: 10pt,
+      bloc-solution(
         if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
       )
     }

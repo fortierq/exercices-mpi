@@ -6,6 +6,7 @@ import csv
 import json
 from pathlib import Path
 import subprocess
+from statistics import pstdev
 from copies import source_copie
 
 
@@ -99,6 +100,7 @@ def moyennes(eleves, copies):
                    if c['questions'][i]['reussite'] is not None]
         questions[question['cle']] = {
             'moyenne': sum(valeurs) / len(valeurs) if valeurs else None,
+            'sigma': pstdev(valeurs) if valeurs else None,
             'effectif': len(valeurs),
         }
     return {'feuille': copies[0]['feuille'], 'effectif-classe': len(eleves),
