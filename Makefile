@@ -10,9 +10,9 @@ O ?= 1
 CIBLE := $(if $(filter w c,$(MAKECMDGOALS)),$(filter-out w c,$(MAKECMDGOALS)))
 VARIANTE := $(if $(filter true,$(C)),corrige,enonce)
 ifeq ($(shell uname -s),Darwin)
-O_PDF ?= open -a "Visual Studio Code"
+O_PDF ?= $(if $(BROWSER),$(BROWSER),open -a "Visual Studio Code")
 else
-O_PDF ?= code --reuse-window
+O_PDF ?= $(if $(BROWSER),$(BROWSER),code --reuse-window)
 endif
 
 # Le contenu détermine la catégorie, jamais le dossier.
