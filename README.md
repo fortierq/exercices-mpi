@@ -22,7 +22,7 @@ Voir le [guide utilisateur](docs/utilisation.md) pour créer exercices, document
 
 ## Extension VS Code
 
-Installer le dernier VSIX de `/Users/qfortier/repo/vscode-exercices-mpi/releases/` dans VS Code, avec **Extensions: Install from VSIX...**, puis ouvrir ce dépôt. L'extension **Exercices Typst** fournit les vues de la banque, la composition des feuilles et les aperçus d'énoncé et de corrigé. Tinymist est recommandé pour l'aide au survol et l'aperçu, mais reste facultatif.
+Installer [Exercices Typst](https://marketplace.visualstudio.com/items?itemName=qfortier.vscode-exercices-mpi) depuis le Marketplace VS Code, puis ouvrir ce dépôt. L'extension fournit les vues de la banque, la composition des feuilles et les aperçus d'énoncé et de corrigé. Tinymist est recommandé pour l'aide au survol et l'aperçu, mais reste facultatif.
 
 ## Codespaces
 

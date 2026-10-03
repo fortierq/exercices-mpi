@@ -16,7 +16,7 @@
   ),
   contenu: (
     question([Rappeler la définition d'un langage régulier.], solution: [
-      Sur un alphabet $Σ$, les langages réguliers forment la plus petite famille contenant les langages finis et stable par union, concaténation et étoile de Kleene.
+      Sur un alphabet $Σ$, les langages réguliers forment la plus petite famille contenant les langages finis et stable par union, concaténation et étoile de Kleende.
     ]),
     question([
       Les langages suivants sont-ils réguliers ?

@@ -10,5 +10,3 @@
   corrige: sys.inputs.at("corrige", default: "false") == "true",
   nouvelle-page: false,
 )
-
-Justifier la correction et la complexité des algorithmes proposés.

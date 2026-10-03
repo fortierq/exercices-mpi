@@ -6,7 +6,7 @@
 #import "/exercices/langages/residuels-minimisation.typ": ex as residuels
 
 #show: feuille.with(
-  titre: "Théorème de Kleene",
+  titre: "TD : Théorème de Kleene",
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (locaux, ccp, stabilite, dynamique, residuels),

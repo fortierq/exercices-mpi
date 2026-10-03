@@ -3,7 +3,6 @@
 #import "/lib/exercices.typ": exercice, question, partie
 #import "@preview/cetz:0.4.2" as cetz
 
-// Sources : cours-src/langage/ds/cmp19/{cmp19.pdf,cmp19_cor.tex,rapport.pdf}.
 #let source = read("/ressources/mines-ponts-2019-mp-informatique/corrige.ml")
 #let code = code-region.with(source)
 

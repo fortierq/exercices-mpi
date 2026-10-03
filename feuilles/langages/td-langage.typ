@@ -7,7 +7,7 @@
 #import "/exercices/langages/cloture-sur-mots.typ": ex as sur-mots
 
 #show: feuille.with(
-  titre: "Langages réguliers",
+  titre: "TD : Langages réguliers",
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (commutation, fibonacci, regles, exemples, hamming, sur-mots),

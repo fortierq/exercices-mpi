@@ -7,7 +7,7 @@
     algorithmes: ("parcours-en-profondeur",), // doivent apparaître dans lib/meta.typ
     structures: ("graphe-oriente",), // doivent apparaître dans lib/meta.typ
     langages: (), // Voir langages-possibles dans lib/meta.typ (SQL inclus).
-    difficulte: 2,
+    difficulte: 2, // Entre 1 et 5, 1 étant le plus facile
     niveaux: ("MPI",),
     duree: (0, 20), // (Heures, minutes) ; none si non estimée.
     concours: none, // Ou (nom: "ENS", annee: 2019, filiere: "MP", oral: true) ; champs facultatifs.

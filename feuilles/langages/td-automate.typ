@@ -1,4 +1,4 @@
-#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, style-automates
+#import "/lib/automates.typ": unite-automates, rayon-etat, rayon-grand-etat, dist-lettre, style-automates
 #import "/lib/exercices.typ": feuille, exercice, question
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
@@ -9,8 +9,6 @@
 #import "/exercices/langages/ensembles-distinguants-automates.typ": ex as distinguant
 #import "/exercices/langages/automates-palindromes.typ": ex as palindromes
 
-// Source : cours-src/langage/automate/td/td_automate.tex.
-// Figures : /Users/qfortier/tikz/automata/a4/a4.tex et a4_det/a4_det.tex.
 #let determinisation = exercice(
   meta: (
     titre: "Algorithme de déterminisation",
@@ -28,16 +26,16 @@
       Déterminiser l'automate suivant en utilisant l'algorithme du cours :
       #align(center, cetz.canvas(length: unite-automates, {
         import finite.draw: state, transition
-        cetz.draw.set-style(..style-automates, state: (radius: rayon-grand-etat))
+        cetz.draw.set-style(..style-automates, state: (radius: rayon-etat))
         state((0,0), "1", label: $1$, initial: (label: none))
         state((3,0), "2", label: $2$, final: true)
         state((0,-2.5), "3", label: $3$)
         state((3,-2.5), "4", label: $4$)
         transition("1", "2", label: $a$, curve: 0)
-        transition("1", "3", label: (text: $a$, dist: -0.33), curve: 0)
+        transition("1", "3", label: (text: $a$, dist: dist-lettre), curve: 0)
         transition("2", "4", label: $a$, curve: 0)
-        transition("3", "4", label: (text: $b$, dist: -0.33), curve: 0)
-        transition("4", "1", label: (text: $b$, dist: -0.33), curve: 0)
+        transition("3", "4", label: (text: $b$, dist: dist-lettre), curve: 0)
+        transition("4", "1", label: (text: $b$, dist: -dist-lettre), curve: 0)
         transition("4", "4", label: $b$, anchor: right)
       }))
     ], solution: [
@@ -53,11 +51,11 @@
         state((9,0), "14", label: ${1,4}$)
         state((3,-3), "vide", label: $∅$)
         transition("1", "23", label: $a$, curve: 0)
-        transition("1", "vide", label: (text: $b$, dist: -0.33), curve: 0)
+        transition("1", "vide", label: (text: $b$, dist: -dist-lettre), curve: 0)
         transition("23", "4", label: $a,b$, curve: 0)
         transition("4", "vide", label: $a$, curve: 0)
         transition("4", "14", label: $b$, curve: 0)
-        transition("14", "23", label: (text: $a$, dist: -0.33), curve: -2.2)
+        transition("14", "23", label: (text: $a$, dist: -dist-lettre), curve: -2.2)
         transition("14", "14", label: $b$, anchor: right)
         transition("vide", "vide", label: $a,b$, anchor: bottom)
       }))
