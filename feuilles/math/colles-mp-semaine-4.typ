@@ -1,13 +1,13 @@
 #import "/lib/exercices.typ": feuille, afficher-exercice, bloc-solution
-#import "/exercices/math/determinant-max-indices.typ": ex as max-indices
-#import "/exercices/math/rang-comatrice.typ": ex as comatrice
-#import "/exercices/math/determinant-perturbation-rang-un.typ": ex as rang-un
-#import "/exercices/math/vandermonde-sommes-cycliques.typ": ex as sommes-cycliques
-#import "/exercices/math/interpolation-puissances-trois-quatre.typ": ex as puissances
-#import "/exercices/math/interpolation-nulle-en-zero.typ": ex as interpolation
-#import "/exercices/math/somme-autres-colonnes.typ": ex as autres-colonnes
-#import "/exercices/math/blocs-symetriques-inverse.typ": ex as blocs-symetriques
-#import "/exercices/math/determinant-schur-blocs.typ": ex as schur
+#import "/exercices/math/determinants-10-structure-complexe.typ": ex as ex10
+#import "/exercices/math/determinants-11-derivee-exponentielle.typ": ex as ex11
+#import "/exercices/math/determinants-14-dominance-diagonale.typ": ex as ex14
+#import "/exercices/math/determinants-31-sommes-partielles.typ": ex as ex31
+#import "/exercices/math/determinants-43-antisymetrique.typ": ex as ex43
+#import "/exercices/math/determinants-44-hors-diagonale-un.typ": ex as ex44
+#import "/exercices/math/determinants-46-binomiaux.typ": ex as ex46
+#import "/exercices/math/determinants-49-tridiagonal-ab.typ": ex as ex49
+#import "/exercices/math/determinants-53-tridiagonal-a.typ": ex as ex53
 
 // Programme « semaine 4 », reçu dans le mail Gmail 1a10223c3e6d40ec du 3 octobre 2026.
 #let corrige = sys.inputs.at("corrige", default: "false") == "true"
@@ -17,9 +17,9 @@
   titre: "Colles MP - semaine 4",
   niveau: "MP",
   exercices: (
-    max-indices, rang-un, comatrice,
-    sommes-cycliques, puissances, interpolation,
-    autres-colonnes, blocs-symetriques, schur,
+    ex10, ex43, ex49,
+    ex11, ex44, ex53,
+    ex31, ex46, ex14,
   ),
   corrige: corrige,
   afficher-exercices: false,
@@ -57,9 +57,9 @@
 )
 
 #let sujets = (
-  (cours: cours.at(0), exercices: (max-indices, rang-un, comatrice)),
-  (cours: cours.at(1), exercices: (sommes-cycliques, puissances, interpolation)),
-  (cours: cours.at(2), exercices: (autres-colonnes, blocs-symetriques, schur)),
+  (cours: cours.at(0), exercices: (ex10, ex43, ex49)),
+  (cours: cours.at(1), exercices: (ex11, ex44, ex53)),
+  (cours: cours.at(2), exercices: (ex31, ex46, ex14)),
 )
 
 #let composer-sujet(numero, sujet, avec-solutions: false) = {
