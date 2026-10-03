@@ -125,3 +125,5 @@ nix develop path:. -c make docs
 `make check` compile les énoncés, corrigés et modèles, valide le catalogue et lance les tests. Pour `dossier/nom.typ`, les sorties sont `build/dossier/nom/enonce.pdf` et `corrige.pdf` ; cela fonctionne aussi à la racine. `make w <chemin> C=true O=0` surveille un corrigé sans ouvrir de lecteur ; utiliser `C=false` pour l'énoncé.
 
 Conserver code et tests dans `ressources/<identifiant>/`, afficher ce même code dans le corrigé, et brancher les tests sur `make check`. Une dizaine de tests ciblés suffit. La référence Tidy et les tests de l'API font aussi partie des vérifications.
+
+Les tests Typst de régression de l'API restent dans `ressources/api/test.typ`. Ne pas ajouter de `test.typ` aux sujets de concours ; conserver les tests OCaml ou Python qui vérifient le code publié dans leurs corrigés.

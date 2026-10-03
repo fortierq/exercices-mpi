@@ -65,12 +65,7 @@ test:
 	$(TYPST) compile $(TYPST_FLAGS) ressources/api/test.typ build/ressources/api/test.pdf
 	$(TYPST) compile $(TYPST_FLAGS) ressources/api/bareme.typ build/ressources/api/bareme.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/api/bareme.typ build/ressources/api/bareme-corrige.pdf
-	@mkdir -p build/ressources/centrale-2022-mp-informatique
-	$(TYPST) compile $(TYPST_FLAGS) ressources/centrale-2022-mp-informatique/test.typ build/ressources/centrale-2022-mp-informatique/test.pdf
 	$(OCAML) -I ressources/centrale-2022-mp-informatique ressources/centrale-2022-mp-informatique/test.ml
-	@mkdir -p build/ressources/mines-ponts-2019-mp-informatique
-	$(TYPST) compile $(TYPST_FLAGS) ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test.pdf
-	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/mines-ponts-2019-mp-informatique/test.typ build/ressources/mines-ponts-2019-mp-informatique/test-corrige.pdf
 	$(OCAML) -I ressources/mines-ponts-2019-mp-informatique ressources/mines-ponts-2019-mp-informatique/test.ml
 	$(OCAML) -I ressources/grammaires-lineaires ressources/grammaires-lineaires/test.ml
 	$(PYTHON) ressources/ens-2018-mp-reparation-langage/test.py
