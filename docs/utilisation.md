@@ -139,7 +139,13 @@ Les commentaires reprennent le bloc des solutions : filet gris à gauche, retrai
 espace vertical intérieur de 3 pt et espacements de 8 pt avant / 10 pt après.
 Le pourcentage individuel est vert au-dessus de la moyenne et rouge en dessous ;
 la teinte est foncée dès que l'écart atteint un écart-type. L'égalité et l'absence
-de moyenne restent neutres ; la moyenne elle-même est toujours neutre.
+de moyenne restent neutres ; la moyenne en marge reste neutre.
+Le barème figure dans la marge droite, sous forme de nombre sans unité.
+Un tableau initial donne, pour chaque question et le total, moyenne, écart-type,
+minimum et maximum. Les colonnes sont regroupées par dix pour rester lisibles.
+Les moyennes du tableau suivent une échelle rouge–vert de 0 à 100 %.
+Le total est un pourcentage pondéré par le barème, calculé uniquement sur les copies
+entièrement corrigées ; les écarts-types sont en points de pourcentage.
 La version énoncé conserve le sujet entier.
 Les solutions de référence restent disponibles dans le corrigé de la feuille d'origine.
 Les points obtenus valent `points × reussite / 100` ; le total reste brut, sans conversion sur 20.

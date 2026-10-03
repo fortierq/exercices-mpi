@@ -98,14 +98,20 @@ def moyennes(eleves, copies):
     for i, question in enumerate(copies[0]['questions']):
         valeurs = [c['questions'][i]['reussite'] for c in copies
                    if c['questions'][i]['reussite'] is not None]
-        questions[question['cle']] = {
-            'moyenne': sum(valeurs) / len(valeurs) if valeurs else None,
-            'sigma': pstdev(valeurs) if valeurs else None,
-            'effectif': len(valeurs),
-        }
+        questions[question['cle']] = statistiques(valeurs)
+    totaux = [100 * c['total'] / c['maximum'] for c in copies
+              if c['complet'] and c['total'] is not None and c['maximum']]
     return {'feuille': copies[0]['feuille'], 'effectif-classe': len(eleves),
             'effectif': sum(any(q['reussite'] is not None for q in c['questions']) for c in copies),
-            'questions': questions}
+            'questions': questions, 'total': statistiques(totaux)}
+
+
+def statistiques(valeurs):
+    return {'moyenne': sum(valeurs) / len(valeurs) if valeurs else None,
+            'sigma': pstdev(valeurs) if valeurs else None,
+            'min': min(valeurs) if valeurs else None,
+            'max': max(valeurs) if valeurs else None,
+            'effectif': len(valeurs)}
 
 
 if __name__ == '__main__':

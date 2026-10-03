@@ -95,6 +95,12 @@
       let couleur = couleur-reussite(ev.reussite, moyenne, stats.at("sigma", default: none))
       block(width: 100%, above: 12pt, below: 5pt, sticky: true, {
         [#metadata((cle: ev.cle, numero: bloc.numero)) <copie-question>]
+        if ev.points != none {
+          place(top + right, dx: 12mm, block(width: 10mm)[
+            #metadata((cle: ev.cle, points: ev.points)) <copie-bareme>
+            #text(size: 9pt, decimal(ev.points))
+          ])
+        }
         marge-copie(moyenne, enum(start: bloc.numero, numbering: "1.", indent: 0pt, body-indent: 0.5em, bloc.enonce))
       })
       block(width: 100%, above: 8pt, below: 10pt, {
@@ -104,6 +110,40 @@
           centrage: horizon, separable: false, couleur: couleur)
       })
     }
+  }
+}
+
+// Des groupes de dix colonnes gardent les statistiques lisibles sur une page A4.
+#let tableau-statistiques(questions, statistiques, plusieurs-exercices: false) = {
+  let moyennes = statistiques.at("questions", default: (:))
+  let colonnes = questions.map(q => (
+    titre: if plusieurs-exercices { q.cle } else { q.cle.split(".").last() },
+    stats: moyennes.at(q.cle, default: (:)),
+  ))
+  colonnes.push((titre: "Total", stats: statistiques.at("total", default: (:))))
+  text(size: 9pt)[
+    *Réussite de la classe* — valeurs en %, écart-type en points de pourcentage.
+    Total pondéré par le barème, sur les copies entièrement corrigées.
+  ]
+  for debut in range(0, colonnes.len(), step: 10) {
+    let groupe = colonnes.slice(debut, calc.min(debut + 10, colonnes.len()))
+    let cellules = ([Question], ..groupe.map(c => strong(c.titre)))
+    for (champ, titre) in (("moyenne", "Moyenne"), ("sigma", "Écart-type"), ("min", "Min"), ("max", "Max")) {
+      cellules.push(titre)
+      for colonne in groupe {
+        let valeur = colonne.stats.at(champ, default: none)
+        let couleur = if champ == "moyenne" and valeur != none {
+          color.mix((rgb("#ce4141"), (100 - valeur) * 1%), (rgb("#26823d"), valeur * 1%))
+        } else { black }
+        cellules.push(text(fill: couleur, if valeur == none { [—] } else { decimal(calc.round(valeur, digits: 1)) }))
+      }
+    }
+    block(above: 5pt, below: 5pt, breakable: false, {
+      set text(size: 9pt)
+      table(columns: (21mm, ..groupe.map(_ => 1fr)), inset: 3pt,
+        stroke: 0.3pt + luma(75%), align: center,
+        fill: (x, y) => if y == 0 { luma(94%) }, ..cellules)
+    })
   }
 }
 
@@ -143,6 +183,7 @@
 
       #if donnees.at("source", default: "") != "" { link(donnees.source)[Copie originale] }
     ]
+    tableau-statistiques(bilan.questions, statistiques, plusieurs-exercices: sujet.exercices.len() > 1)
   }
   for (e, ex) in sujet.exercices.enumerate(start: 1) {
     if not corrige {

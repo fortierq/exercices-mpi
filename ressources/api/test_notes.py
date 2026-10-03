@@ -49,14 +49,22 @@ class NotesTest(unittest.TestCase):
         autre.update(self.autre)
         autre['questions'][0]['reussite'] = 100
         stats = moyennes([self.eleve, self.autre], [self.copie, autre])
-        self.assertEqual(stats['questions']['1.1'], {'moyenne': 50, 'sigma': 50, 'effectif': 2})
+        self.assertEqual(stats['questions']['1.1'], {'moyenne': 50, 'sigma': 50, 'min': 0, 'max': 100, 'effectif': 2})
         autre['questions'][0]['reussite'] = None
         stats = moyennes([self.eleve, self.autre], [self.copie, autre])
-        self.assertEqual(stats['questions']['1.1'], {'moyenne': 0, 'sigma': 0, 'effectif': 1})
+        self.assertEqual(stats['questions']['1.1'], {'moyenne': 0, 'sigma': 0, 'min': 0, 'max': 0, 'effectif': 1})
         self.assertEqual(stats['effectif-classe'], 2)
         self.copie['questions'][0]['reussite'] = None
         stats = moyennes([self.eleve, self.autre], [self.copie, autre])
-        self.assertEqual(stats['questions']['1.1'], {'moyenne': None, 'sigma': None, 'effectif': 0})
+        self.assertEqual(stats['questions']['1.1'], {'moyenne': None, 'sigma': None, 'min': None, 'max': None, 'effectif': 0})
+
+    def test_total_pondere_et_incomplet(self):
+        self.copie.update(total=1, maximum=4)
+        stats = moyennes([self.eleve], [self.copie])
+        self.assertEqual(stats['total'], dict(moyenne=25, sigma=0, min=25, max=25, effectif=1))
+        self.copie.update(complet=False, total=None)
+        stats = moyennes([self.eleve], [self.copie])
+        self.assertEqual(stats['total'], dict(moyenne=None, sigma=None, min=None, max=None, effectif=0))
 
     def test_doublons_et_inconnus(self):
         for eleves, copies in [([self.eleve] * 2, [self.copie]),
