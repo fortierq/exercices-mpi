@@ -206,7 +206,7 @@
     algorithmes: ("determinisation", "diviser-pour-regner"),
     structures: ("liste", "tableau", "arbre"),
     langages: ("OCaml",), difficulte: 4,
-    niveaux: ("MP", "MPI"), duree: (3, 0),
+    niveaux: ("MP", "MPI"), duree: (4, 0),
     concours: concours,
   ),
   // Rapport Centrale-Supélec 2022, MP, option informatique, p. E–34 à E–36 (PDF p. 40–42).
