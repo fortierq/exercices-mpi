@@ -36,16 +36,22 @@ def source_copie(fichier):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--typst', default='typst')
+    parser.add_argument('--moyennes', type=Path, help='JSON des moyennes ; sinon notes.moyennes.json voisin')
     parser.add_argument('copies', nargs='+', type=Path)
     args = parser.parse_args()
     for fichier in args.copies:
         fichier = fichier.resolve(strict=True)
         sortie = fichier.parent / 'build' / fichier.stem
         sortie.mkdir(parents=True, exist_ok=True)
+        moyennes = args.moyennes or fichier.parent / 'notes.moyennes.json'
+        statistiques = moyennes.read_text(encoding='utf-8') if moyennes.exists() else '{}'
+        if args.moyennes and not moyennes.exists():
+            parser.error(f'Fichier de moyennes introuvable : {moyennes}')
         with source_copie(fichier) as (racine, source):
             for variante in ('enonce', 'corrige'):
                 subprocess.run([args.typst, 'compile', '--root', str(racine), '--ignore-system-fonts',
                                 '--input', f'corrige={str(variante == "corrige").lower()}',
+                                '--input', f'moyennes={statistiques}',
                                 str(source), str(sortie / f'{variante}.pdf')], check=True)
         print(f'PDF générés : {sortie}')
 

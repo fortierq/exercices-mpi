@@ -9,7 +9,7 @@
   appreciation: "Appréciation à compléter.",
   // Pour une vraie copie, saisir les évaluations dans un JSON du dossier privé.
   evaluations: questions-copie(sujet).map(q => (q.cle, (
-    reussite: none, commentaire: "", reponse: "", repere: "",
+    repondue: false, reussite: none, commentaire: "",
   ))).to-dict(),
 )
 #let corrige = sys.inputs.at("corrige", default: "false") == "true"

@@ -1,5 +1,5 @@
 #import "/lib/exercices.typ": exercice, question, partie
-#import "/lib/copies.typ": bilan-copie
+#import "/lib/copies.typ": bilan-copie, blocs-copie, afficher-blocs-copie
 #let ex = exercice(meta: (titre: "Copie", chapitres: (), algorithmes: (), structures: (), langages: (), difficulte: 1),
   contenu: (question([A], points: 1), partie("I", "Partie", contenu: (question([B], points: 2),))),
 )
@@ -17,3 +17,32 @@
 #let deux = bilan-copie((exercices: (ex, ex)), (..evaluations, "2.1": evaluations.at("1.1"), "2.2": evaluations.at("1.2")))
 #assert(deux.questions.map(q => q.cle) == ("1.1", "1.2", "2.1", "2.2"))
 #assert(deux.total == 1)
+
+// Les parties vides disparaissent, les numéros et les réponses fausses restent.
+#let filtre = exercice(meta: ex.meta, contenu: (
+  partie("I", "Partie traitée", contenu: (
+    question([Réponse juste], points: 1),
+    partie("I.A", "Sous-partie vide", contenu: (question([Absente], points: 1),)),
+    partie("I.B", "Sous-partie traitée", contenu: (question([Réponse fausse], points: 1),)),
+  )),
+  partie("II", "Partie vide", contenu: (question([Absente aussi], points: 1),)),
+))
+#let notes = bilan-copie((exercices: (filtre,)), (
+  "1.1": (repondue: true, reussite: 100, commentaire: ""),
+  "1.2": (repondue: false, reussite: 0, commentaire: ""),
+  "1.3": (repondue: true, reussite: 0, commentaire: "Utiliser $x^2$ et `let x = 1`."),
+  "1.4": (repondue: false, reussite: 0, commentaire: ""),
+))
+#let selection = blocs-copie(filtre.contenu, notes.questions)
+#assert(selection.suivant == 5 and selection.blocs.len() == 1)
+#assert(selection.blocs.first().contenu.map(b => b.at("numero")) == (1, "I.B"))
+#assert(notes.total == 1 and notes.maximum == 4)
+#afficher-blocs-copie(selection.blocs, ("1.1": (moyenne: 75), "1.3": (moyenne: 25)))
+#context {
+  assert(query(<copie-question>).map(m => m.value.numero) == (1, 3))
+  assert(query(<copie-commentaire>).map(m => m.value) == ("1.3",))
+  assert(query(enum).map(q => q.start) == (1, 3))
+  assert(query(heading).len() == 2)
+  assert(query(math.equation).len() == 1)
+  assert(query(raw).map(r => r.text) == ("let x = 1",))
+}

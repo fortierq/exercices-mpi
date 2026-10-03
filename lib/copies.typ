@@ -1,4 +1,4 @@
-#import "exercices.typ": aplatir, afficher-exercice, verifier-bareme
+#import "exercices.typ": aplatir, afficher-exercice, verifier-bareme, est-partie, titre-exercice, texte-concours
 
 // Les numéros désignent les questions dans chaque exercice, parties comprises.
 #let questions-copie(sujet) = {
@@ -27,9 +27,12 @@
     let ev = evaluations.at(q.cle)
     assert(ev.reussite == none or (type(ev.reussite) in (int, float) and 0 <= ev.reussite and ev.reussite <= 100),
       message: "La réussite doit être entre 0 et 100, ou none")
-    assert(type(ev.commentaire) == str and (ev.reussite == none or ev.commentaire.trim() != ""),
-      message: "Toute réponse évaluée doit avoir un commentaire")
-    (..q, ..ev, obtenus: if ev.reussite == none or q.points == none { none } else { q.points * ev.reussite / 100 })
+    let repondue = ev.at("repondue", default: true)
+    assert(type(repondue) == bool, message: "repondue doit être un booléen")
+    assert(repondue or ev.reussite in (none, 0), message: "Une question non répondue ne peut rapporter de points")
+    assert(type(ev.commentaire) == str and (not repondue or ev.reussite in (none, 100) or ev.commentaire.trim() != ""),
+      message: "Une réponse partiellement correcte doit avoir un commentaire")
+    (..ev, ..q, repondue: repondue, obtenus: if ev.reussite == none or q.points == none { none } else { q.points * ev.reussite / 100 })
   })
   let complet = lignes.all(q => q.obtenus != none)
   (questions: lignes, complet: complet,
@@ -39,13 +42,70 @@
 
 #let decimal(n) = str(calc.round(n, digits: 4)).replace(".", ",")
 
-/// Affiche une correction individuelle liée à la composition d'une feuille.
-/// - sujet (dictionary): Export de la feuille : titre, exercices et éventuel bareme.
-/// - donnees (dictionary): Identité, feuille, appréciation et évaluations par clé exercice.question.
-/// - corrige (bool): Affiche les commentaires personnels ; false conserve l'énoncé.
+// Filtrer récursivement sans changer les numéros des questions conservées.
+#let blocs-copie(contenu, evaluations, debut: 1) = {
+  let blocs = ()
+  let numero = debut
+  for bloc in contenu {
+    if est-partie(bloc) {
+      let suite = blocs-copie(bloc.contenu, evaluations, debut: numero)
+      numero = suite.suivant
+      if suite.blocs.len() > 0 { blocs.push((..bloc, contenu: suite.blocs)) }
+    } else if type(bloc) == dictionary {
+      let ev = evaluations.at(numero - 1)
+      if ev.repondue { blocs.push((..bloc, numero: numero, evaluation: ev)) }
+      numero += 1
+    }
+  }
+  (blocs: blocs, suivant: numero)
+}
+
+// La colonne est décalée dans la marge ; la grille centre la note sur le commentaire.
+#let marge-copie(valeur, corps, centrage: top, separable: true) = {
+  move(dx: -12mm, block(width: 100% + 12mm, breakable: separable,
+    grid(columns: (10mm, 1fr), column-gutter: 2mm, align: (right + centrage, left),
+      text(size: 9pt, fill: luma(40%), if valeur == none { [—] } else { [#decimal(calc.round(valeur, digits: 1)) %] }),
+      corps,
+    ),
+  ))
+}
+
+#let afficher-blocs-copie(blocs, moyennes, niveau: 1) = {
+  for bloc in blocs {
+    if est-partie(bloc) {
+      titre-exercice(bloc.titre, bloc.numero, niveau: niveau)
+      afficher-blocs-copie(bloc.contenu, moyennes, niveau: niveau + 1)
+    } else {
+      let ev = bloc.evaluation
+      let moyenne = moyennes.at(ev.cle, default: (moyenne: none)).moyenne
+      block(width: 100%, above: 12pt, below: 5pt, sticky: ev.commentaire.trim() != "", {
+        [#metadata((cle: ev.cle, numero: bloc.numero)) <copie-question>]
+        marge-copie(moyenne, enum(start: bloc.numero, numbering: "1.", indent: 0pt, body-indent: 0.5em, bloc.enonce))
+      })
+      if ev.commentaire.trim() != "" {
+        block(width: 100%, above: 5pt, below: 10pt, {
+          [#metadata(ev.cle) <copie-commentaire>]
+          marge-copie(ev.reussite, eval(ev.commentaire, mode: "markup"), centrage: horizon, separable: false)
+        })
+      } else {
+        block(width: 100%, above: 0pt, below: 6pt,
+          marge-copie(ev.reussite, [], centrage: horizon, separable: false))
+      }
+    }
+  }
+}
+
+/// Affiche seulement les questions traitées, suivies des commentaires personnels utiles.
+/// Les commentaires sont du balisage Typst ($...$, `...`) écrit par le correcteur.
+/// Les moyennes de classe sont transmises par l'entrée système `moyennes` (JSON).
 #let copie(sujet, donnees, corrige: true) = {
   let bilan = bilan-copie(sujet, donnees.evaluations)
   [#metadata((..donnees, ..bilan, evaluations: none)) <copie-notes>]
+  let statistiques = json(bytes(sys.inputs.at("moyennes", default: "{}")))
+  if statistiques != (:) {
+    assert(statistiques.feuille == donnees.feuille, message: "Les moyennes concernent un autre sujet")
+  }
+  let moyennes = statistiques.at("questions", default: (:))
   if corrige {
     block[
       #text(weight: "bold")[#donnees.prenom #donnees.nom — #donnees.classe]
@@ -60,36 +120,28 @@
 
       #donnees.appreciation
 
+      #text(size: 9pt)[Marge gauche : moyenne de classe devant la question,
+        réussite individuelle devant le commentaire.
+        #if statistiques == (:) { [Moyennes indisponibles.] } else {
+          [Moyennes sur les copies corrigées : #statistiques.effectif copie(s),
+            #statistiques.effectif-classe élèves dans la liste.
+            Une question sans évaluation est exclue de sa moyenne.]
+        }]
+
       #if donnees.at("source", default: "") != "" { link(donnees.source)[Copie originale] }
     ]
   }
-  let global = 0
   for (e, ex) in sujet.exercices.enumerate(start: 1) {
-    let contenu = ()
-    for bloc in aplatir(ex.contenu, textes: not (corrige and ex.sujet-ecrit)) {
-      if type(bloc) == content { contenu.push(bloc) } else {
-        let ev = bilan.questions.at(global)
-        global += 1
-        contenu.push((..bloc, commentaire: none, solution: [
-          #if ev.reussite == none {
-            [À corriger.]
-          } else {
-            [Réussite : #decimal(ev.reussite) %.
-              #if ev.obtenus != none [Points obtenus : #decimal(ev.obtenus) / #decimal(ev.points).]]
-          }
-
-          #if ev.at("repere", default: "") != "" [Copie : #ev.repere.]
-          #if ev.at("reponse", default: "") != "" [
-
-            Réponse relevée : #ev.reponse
-          ]
-
-          #ev.commentaire
-        ]))
+    if not corrige {
+      afficher-exercice(ex, numero: e, corrige: false)
+    } else {
+      let evaluations = bilan.questions.filter(q => q.cle.starts-with(str(e) + "."))
+      let blocs = blocs-copie(ex.contenu, evaluations).blocs
+      if blocs.len() > 0 {
+        let titre = if ex.meta.concours == none { ex.meta.titre } else { texte-concours(ex.meta.concours) }
+        titre-exercice(titre, numbering("I", e), duree: ex.meta.duree)
+        afficher-blocs-copie(blocs, moyennes)
       }
     }
-    let adapte = (..ex, contenu: contenu, sujet-ecrit: false, remarques: none, corrections: none)
-    afficher-exercice(adapte, numero: e, corrige: corrige,
-      bareme: bilan.questions.filter(q => q.cle.starts-with(str(e) + ".")).map(q => q.points))
   }
 }

@@ -6,7 +6,7 @@ import unittest
 from tempfile import TemporaryDirectory
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
-from notes import tableau
+from notes import tableau, moyennes
 from copies import source_copie, ROOT
 
 
@@ -43,6 +43,20 @@ class NotesTest(unittest.TestCase):
         _, lignes = tableau([self.eleve], [self.copie])
         self.assertEqual(lignes[0]['statut'], 'incomplète')
         self.assertIsNone(lignes[0]['note_brute'])
+
+    def test_moyennes_zero_et_absence(self):
+        autre = deepcopy(self.copie)
+        autre.update(self.autre)
+        autre['questions'][0]['reussite'] = 100
+        stats = moyennes([self.eleve, self.autre], [self.copie, autre])
+        self.assertEqual(stats['questions']['1.1'], {'moyenne': 50, 'effectif': 2})
+        autre['questions'][0]['reussite'] = None
+        stats = moyennes([self.eleve, self.autre], [self.copie, autre])
+        self.assertEqual(stats['questions']['1.1'], {'moyenne': 0, 'effectif': 1})
+        self.assertEqual(stats['effectif-classe'], 2)
+        self.copie['questions'][0]['reussite'] = None
+        stats = moyennes([self.eleve, self.autre], [self.copie, autre])
+        self.assertEqual(stats['questions']['1.1'], {'moyenne': None, 'effectif': 0})
 
     def test_doublons_et_inconnus(self):
         for eleves, copies in [([self.eleve] * 2, [self.copie]),

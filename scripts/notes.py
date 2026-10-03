@@ -82,7 +82,28 @@ def main():
             writer.writerow({k: str(round(v, 6)).replace('.', ',') if isinstance(v, float) else v
                              for k, v in ligne.items()})
     temporaire.replace(args.sortie)
+    statistiques = moyennes(eleves, copies)
+    sortie_moyennes = args.sortie.with_suffix('.moyennes.json')
+    temporaire = sortie_moyennes.with_suffix('.json.tmp')
+    temporaire.write_text(json.dumps(statistiques, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    temporaire.replace(sortie_moyennes)
     print(f'{len(lignes)} élèves, {len(copies)} copie(s) exportée(s) : {args.sortie}')
+
+
+def moyennes(eleves, copies):
+    """Moyenne par question : zéros inclus, évaluations absentes exclues."""
+    tableau(eleves, copies)  # Même contrôle des identités, du sujet et du barème que le CSV.
+    questions = {}
+    for i, question in enumerate(copies[0]['questions']):
+        valeurs = [c['questions'][i]['reussite'] for c in copies
+                   if c['questions'][i]['reussite'] is not None]
+        questions[question['cle']] = {
+            'moyenne': sum(valeurs) / len(valeurs) if valeurs else None,
+            'effectif': len(valeurs),
+        }
+    return {'feuille': copies[0]['feuille'], 'effectif-classe': len(eleves),
+            'effectif': sum(any(q['reussite'] is not None for q in c['questions']) for c in copies),
+            'questions': questions}
 
 
 if __name__ == '__main__':

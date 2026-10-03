@@ -117,15 +117,25 @@ dans le dossier privé de la classe. Seuls les modèles, outils et tests fictifs
 Les évaluations sont dans un JSON voisin : identité, chemin de la feuille, lien de la copie,
 appréciation et dictionnaire `evaluations`. Chaque clé `"1.13"` désigne la question 13
 du premier exercice, y compris les questions dans des parties imbriquées.
-Une évaluation contient `reussite` (nombre entre 0 et 100, ou `null` pour « à corriger »),
-`commentaire`, et éventuellement `reponse` (relevé ou résumé) et `repere` (page manuscrite).
+Une évaluation contient `repondue` (booléen), `reussite` (nombre entre 0 et 100,
+ou `null` pour « à corriger »), et `commentaire` (balisage Typst : `$...$` pour les
+mathématiques, accents graves pour le code). Les anciens champs `reponse` et `repere`
+peuvent rester dans les données, mais ne sont pas affichés.
 Les sous-questions peuvent être distinguées dans le commentaire de la question qui les contient.
-Une réponse absente de la copie complète reçoit explicitement 0 et un commentaire.
+Une réponse absente reçoit `repondue: false`, `reussite: 0` et un commentaire vide.
+Ne pas déduire l'absence d'une note nulle : une réponse fausse peut recevoir 0 %.
+À 100 %, laisser le commentaire vide si aucune remarque utile n'est nécessaire.
+Une suggestion de solution plus simple peut néanmoins être conservée.
 Toutes les questions doivent être présentes ; une correction incomplète ou un barème absent
 laisse le total vide. Les barèmes de feuille, d'exercice puis de question sont lus dans cet ordre.
 
-Le PDF corrigé conserve les questions, affiche la réussite et les points obtenus,
-puis le relevé et le commentaire personnel. La version énoncé conserve le sujet.
+Le PDF corrigé affiche uniquement les questions traitées, avec leurs numéros d'origine,
+et les titres des parties contenant au moins une réponse. Chaque question est suivie
+uniquement de son commentaire utile, sans relevé de réponse ni points dans le corps.
+Dans la marge gauche, la moyenne de classe est placée au niveau de la question,
+et la réussite individuelle est centrée verticalement sur le commentaire.
+Sans commentaire, seul le pourcentage individuel apparaît sous la question, dans la marge.
+La version énoncé conserve le sujet entier.
 Les solutions de référence restent disponibles dans le corrigé de la feuille d'origine.
 Les points obtenus valent `points × reussite / 100` ; le total reste brut, sans conversion sur 20.
 Après modification de l'ordre ou du contenu du sujet, relire l'association des évaluations :
@@ -137,7 +147,7 @@ Les PDF sont écrits dans `build/eleve/` à côté de la copie.
 Une racine Typst temporaire, créée sous `copies/tmp/` puis supprimée, relie la banque
 et les sources privées sans les recopier. Les imports `/lib/...`, `/concours/...`, etc.
 et la lecture du JSON voisin restent inchangés.
-Exporter ensuite les copies du même devoir dans un CSV commun :
+Exporter les notes avant de compiler les copies pour actualiser les moyennes :
 
 ```sh
 nix develop path:. -c python3 scripts/notes.py \
@@ -151,6 +161,12 @@ contient une ligne par élève, la note brute, le barème, les pourcentages, poi
 par question. Les élèves sans correction ont des notes vides, jamais zéro.
 Il s'agit d'un export calculé : modifier les évaluations, puis relancer la commande pour l'actualiser.
 Les identités inconnues, doublons et mélanges de sujets ou de barèmes interrompent l'export.
+L'export produit aussi `notes.moyennes.json`, lu par le compilateur des copies.
+La moyenne de chaque question inclut les zéros et exclut les évaluations manquantes.
+Les élèves dont la copie n'est pas corrigée ne sont pas comptés comme ayant zéro.
+Le document précise le nombre de copies évaluées et l'effectif de la liste.
+Sans ce fichier, un tiret remplace les moyennes ; `scripts/copies.py --moyennes chemin.json`
+permet de choisir un autre fichier. Dans le Makefile privé, faire dépendre `pdf` de `notes`.
 
 ## Figures
 
