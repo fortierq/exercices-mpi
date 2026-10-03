@@ -85,7 +85,7 @@ let f x = (* f x renvoie ... *)
 
 ## Présentation
 
-- Dans chaque exercice ou sujet, la numérotation des questions commence à 1 ; ce départ ne se paramètre pas.
+- Dans chaque exercice ou sujet comportant plusieurs questions, la numérotation commence à 1 ; ce départ ne se paramètre pas. Une question unique s'affiche sans numéro.
 - Titres des exercices en gras ; corps, numéros des questions et solutions sans gras. Titres au format « I - Titre », questions au format « 1. », sans préfixe Q.
 - Dans le corrigé d'un exercice, conserver tout l'énoncé, y compris les blocs libres de `contenu` (préliminaires, définitions, notations et textes de contexte). Uniquement pour un sujet de concours écrit, utiliser `sujet-ecrit: true` dans `exercice` pour masquer ces blocs dans le corrigé. Conserver les titres des parties, les questions, leurs commentaires et leurs solutions. Les figures incluses dans les questions et solutions restent affichées. Les exercices oraux et les extraits autonomes conservent leur contexte, même s'ils portent une attribution de concours.
 

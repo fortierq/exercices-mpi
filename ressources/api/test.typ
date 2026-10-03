@@ -23,10 +23,12 @@
   corrections: [#metadata("modification") <correction-test> Correction.])
 #let sujet = exercice(meta: (..meta, concours: (nom: "ENS", oral: true)),
   contenu: contenu, corrections: ordinaire.corrections)
+#let unique = exercice(meta: meta, contenu: (question([Question unique], solution: [Solution]),))
 #assert("debut" not in ordinaire and "debut" not in sujet)
 #show: feuille.with(exercices: (), corrige: true)
 #afficher-exercice(ordinaire, corrige: true)
 #afficher-exercice(sujet, corrige: true)
+#afficher-exercice(unique, corrige: true)
 #context {
   assert(query(enum).map(q => q.start) == (1, 2, 1, 2))
   assert(query(<correction-test>).len() == 1)

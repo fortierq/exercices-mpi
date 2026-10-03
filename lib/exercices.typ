@@ -220,7 +220,8 @@
 /// -> content
 #let afficher-exercice(ex, numero: none, corrige: false, afficher-titre: true, bareme: none) = {
   let bareme = if bareme == none { ex.bareme } else { bareme }
-  verifier-bareme(bareme, nombre-questions(ex.contenu))
+  let nombre = nombre-questions(ex.contenu)
+  verifier-bareme(bareme, nombre)
   show strong: it => it.body
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]
@@ -261,8 +262,11 @@
               str(points).replace(".", ",") + if points <= 1 { " pt" } else { " pts" })
           ])
       }
-      enum(start: i, numbering: "1.",
-        indent: 0pt, body-indent: 0.5em, q.enonce)
+      if nombre == 1 { q.enonce }
+      else {
+        enum(start: i, numbering: "1.",
+          indent: 0pt, body-indent: 0.5em, q.enonce)
+      }
     })
     if corrige {
       if q.commentaire != none {
