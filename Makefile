@@ -18,7 +18,7 @@ endif
 # Le contenu détermine la catégorie, jamais le dossier.
 EXERCICES := $(shell $(PYTHON) scripts/sources.py --list exercices)
 DOCUMENTS := $(shell $(PYTHON) scripts/sources.py --list documents)
-SOURCES := $(shell find . -type f \( -name '*.typ' -o -name '*.py' -o -name '*.png' -o -name '*.svg' -o -name '*.ml' \) -not -path './build/*' -not -path './.git/*')
+SOURCES := $(shell find . -type f \( -name '*.typ' -o -name '*.py' -o -name '*.json' -o -name '*.png' -o -name '*.svg' -o -name '*.ml' \) -not -path './build/*' -not -path './.git/*')
 pdfs = $(foreach source,$(1),build/$(patsubst %.typ,%,$(source))/enonce.pdf build/$(patsubst %.typ,%,$(source))/corrige.pdf)
 
 .PHONY: all exercices documents feuilles devoirs concours catalogue check test c w clean help $(CIBLE)
@@ -56,10 +56,14 @@ check: all test docs
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/devoir.typ build/templates/devoir-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ templates/fiche.typ build/templates/concours.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input exercice=/templates/sujet-concours.typ --input corrige=true templates/fiche.typ build/templates/concours-corrige.pdf
+	$(TYPST) compile $(TYPST_FLAGS) templates/copie.typ build/templates/copie.pdf
+	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true templates/copie.typ build/templates/copie-corrige.pdf
 
 test:
 	@mkdir -p build/ressources/api
 	$(PYTHON) ressources/api/test_sources.py
+	$(PYTHON) ressources/api/test_notes.py
+	$(TYPST) compile $(TYPST_FLAGS) ressources/api/copies.typ build/ressources/api/copies.pdf
 	$(TYPST) compile $(TYPST_FLAGS) ressources/api/points.typ build/ressources/api/points.pdf
 	$(TYPST) compile $(TYPST_FLAGS) --input corrige=true ressources/api/points.typ build/ressources/api/points-corrige.pdf
 	$(TYPST) compile $(TYPST_FLAGS) ressources/api/test.typ build/ressources/api/test.pdf

@@ -16,7 +16,7 @@ Dans VS Code, **Feuilles** rassemble tous les types, avec une recherche commune,
 
 Créer un TD ou devoir vide, le sélectionner dans **Feuilles**, puis ajouter les exercices depuis la recherche ou par glisser-déposer. Les changements de composition sont enregistrés automatiquement. Les listes calculées et exercices définis localement restent éditables dans le code ; le panneau affiche leurs questions.
 
-Un devoir est simplement un document avec un barème, sans suivi de notes d'élèves ni paramètre `evaluation`. Les points sont placés dans chaque `question`, donc suivent les questions lors des réorganisations.
+Un devoir est simplement un document avec un barème, sans paramètre `evaluation`. Les points sont placés dans chaque `question`, donc suivent les questions lors des réorganisations. Le suivi individuel reste dans des copies séparées, liées au sujet (voir ci-dessous).
 
 Pour ajouter un type, copier un modèle dans `templates/`, remplacer son champ littéral `type` (par exemple `type: "colle"`) et adapter son contenu. L'extension découvre automatiquement le modèle pour la création et le nouveau type pour les filtres. Aucun changement du Makefile ni de l'extension n'est nécessaire. Garder `feuille.with` et un `titre` littéral (ou `ex.meta.titre` pour un sujet monolithique) ; les champs calculés ne sont pas évalués par la recherche.
 
@@ -105,6 +105,52 @@ Les anciens tableaux `bareme` d'exercice ou de document restent lus en priorité
 difficile 3, très difficile 4. Tenir aussi compte de la longueur de la preuve ou du code ;
 1.5, 2.5 et 3.5 permettent d'affiner. Le total reste brut, sans normalisation.
 Un barème pédagogique de concours n'est pas un barème officiel.
+
+## Copies corrigées et notes de classe
+
+Partir de [templates/copie.typ](../templates/copie.typ). La feuille d'origine exporte
+`sujet = (titre: ..., exercices: (...), bareme: none)` et utilise cette même composition
+dans `feuille.with`. Une copie importe `sujet` : les énoncés et les points ne sont pas recopiés.
+Les copies nominatives, notes, scans et sorties sont conservés hors de cette banque,
+dans le dossier privé de la classe. Seuls les modèles, outils et tests fictifs restent ici.
+
+Les évaluations sont dans un JSON voisin : identité, chemin de la feuille, lien de la copie,
+appréciation et dictionnaire `evaluations`. Chaque clé `"1.13"` désigne la question 13
+du premier exercice, y compris les questions dans des parties imbriquées.
+Une évaluation contient `reussite` (nombre entre 0 et 100, ou `null` pour « à corriger »),
+`commentaire`, et éventuellement `reponse` (relevé ou résumé) et `repere` (page manuscrite).
+Les sous-questions peuvent être distinguées dans le commentaire de la question qui les contient.
+Une réponse absente de la copie complète reçoit explicitement 0 et un commentaire.
+Toutes les questions doivent être présentes ; une correction incomplète ou un barème absent
+laisse le total vide. Les barèmes de feuille, d'exercice puis de question sont lus dans cet ordre.
+
+Le PDF corrigé conserve les questions, affiche la réussite et les points obtenus,
+puis le relevé et le commentaire personnel. La version énoncé conserve le sujet.
+Les solutions de référence restent disponibles dans le corrigé de la feuille d'origine.
+Les points obtenus valent `points × reussite / 100` ; le total reste brut, sans conversion sur 20.
+Après modification de l'ordre ou du contenu du sujet, relire l'association des évaluations :
+les clés sont des numéros, pas des identifiants stables.
+
+Depuis la banque, compiler une copie privée avec
+`nix develop path:. -c python3 scripts/copies.py /chemin/prive/copies/eleve.typ`.
+Les PDF sont écrits dans `build/eleve/` à côté de la copie.
+Une racine Typst temporaire, créée sous `copies/tmp/` puis supprimée, relie la banque
+et les sources privées sans les recopier. Les imports `/lib/...`, `/concours/...`, etc.
+et la lecture du JSON voisin restent inchangés.
+Exporter ensuite les copies du même devoir dans un CSV commun :
+
+```sh
+nix develop path:. -c python3 scripts/notes.py \
+  --classe /chemin/prive/liste-classe.csv \
+  --sortie /chemin/prive/copies/notes.csv /chemin/prive/copies/*.typ
+```
+
+La liste source est un CSV sans en-tête `classe;nom;prenom;...`.
+Seuls ces trois premiers champs sont repris. Le CSV produit, en UTF-8 avec BOM et séparateur `;`,
+contient une ligne par élève, la note brute, le barème, les pourcentages, points et commentaires
+par question. Les élèves sans correction ont des notes vides, jamais zéro.
+Il s'agit d'un export calculé : modifier les évaluations, puis relancer la commande pour l'actualiser.
+Les identités inconnues, doublons et mélanges de sujets ou de barèmes interrompent l'export.
 
 ## Figures
 

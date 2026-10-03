@@ -533,11 +533,13 @@
 )
 
 #import "/lib/exercices.typ": feuille
+// Composition réutilisée par les copies corrigées, sans recopier les questions.
+#let sujet = (titre: ex.meta.titre, exercices: (ex,), bareme: none)
 #show: feuille.with(
   type: "concours",
   titre: ex.meta.titre,
   niveau: ex.meta.niveaux.join(" / "),
   concours: ex.meta.concours,
-  exercices: (ex,),
+  exercices: sujet.exercices,
   corrige: sys.inputs.at("corrige", default: "false") == "true",
 )
