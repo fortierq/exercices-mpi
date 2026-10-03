@@ -287,6 +287,9 @@
 /// - corrige (bool): Afficher les corrigés ; brancher sur `sys.inputs.at("corrige", default: "false") == "true"`.
 /// - bareme (array, none): Points dans l'ordre de toutes les questions de la feuille ; remplace les barèmes des exercices. `none` conserve ceux des exercices ; une entrée `none` masque les points de cette question.
 /// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page.
+/// - afficher-exercices (bool): Composer automatiquement le tableau d'exercices ; false permet une composition personnalisée dans body.
+/// - en-tete, pied-de-page (bool): Afficher l'en-tête et le pied de page standard.
+/// - marge (dictionary): Marges de la page.
 /// - body (content): Contenu placé avant les exercices, fourni par la règle show.
 /// -> content
 #let feuille(
@@ -298,6 +301,10 @@
   exercices: (),
   corrige: false,
   nouvelle-page: false,
+  afficher-exercices: true,
+  en-tete: true,
+  pied-de-page: true,
+  marge: (x: 14mm, top: 25mm, bottom: 18mm),
   bareme: none,
   body,
 ) = {
@@ -311,9 +318,9 @@
   set text(font: "New Computer Modern", size: 11pt, lang: "fr")
   set par(justify: true, leading: 0.55em, spacing: 0.8em)
   set page(
-    paper: "a4", margin: (x: 14mm, top: 25mm, bottom: 18mm),
+    paper: "a4", margin: marge,
     header-ascent: 9mm,
-    header: context if counter(page).get().first() == 1 [
+    header: if en-tete { context if counter(page).get().first() == 1 [
       #set text(size: 10pt)
       #grid(
         columns: (24mm, 1fr, 24mm), align: (left, center, right),
@@ -323,8 +330,8 @@
       )
       #v(4pt)
       #line(length: 100%, stroke: 0.4pt)
-    ],
-    footer: context align(center, text(size: 9pt, counter(page).display("1 / 1", both: true))),
+    ] } else { none },
+    footer: if pied-de-page { context align(center, text(size: 9pt, counter(page).display("1 / 1", both: true))) } else { none },
   )
   set heading(numbering: none)
   show heading.where(level: 1): set text(size: 15pt)
@@ -338,7 +345,7 @@
   )
   body
   let debut-bareme = 0
-  for (i, ex) in exercices.enumerate(start: 1) {
+  for (i, ex) in if afficher-exercices { exercices.enumerate(start: 1) } else { () } {
     if nouvelle-page and i > 1 { pagebreak() }
     let fin-bareme = debut-bareme + nombre-questions(ex.contenu)
     afficher-exercice(ex, bareme: if bareme == none { none } else { bareme.slice(debut-bareme, fin-bareme) }, numero: if exercices.len() > 1 { i } else { none }, corrige: corrige, afficher-titre: exercices.len() > 1 or titre != ex.meta.titre)
