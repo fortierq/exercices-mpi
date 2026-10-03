@@ -9,7 +9,12 @@
     matiere: "mathématiques",
   ),
   contenu: (
-    [Pour $n>=1$, on pose $A_n=(binom(i,j-1))_(1<=i,j<=n)$, avec $binom(i,k)=0$ si $k>i$, et $D_n=det A_n$.],
+    [Pour $n>=1$, en convenant que $binom(i,k)=0$ si $k>i$, on pose
+    $D_n=mat(delim: "|",
+      binom(1,0), binom(1,1), 0, dots.h, 0;
+      binom(2,0), binom(2,1), binom(2,2), dots.h, 0;
+      dots.v, dots.v, dots.v, dots.down, dots.v;
+      binom(n,0), binom(n,1), binom(n,2), dots.h, binom(n,n-1))$.],
     question(
       [Calculer $D_n$.],
       solution: [Pour $i$ allant de $n$ à $2$, remplaçons $L_i$ par $L_i-L_(i-1)$.

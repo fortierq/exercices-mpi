@@ -9,7 +9,13 @@
     matiere: "mathématiques",
   ),
   contenu: (
-    [Soit $a in RR$ non nul. Pour $n>=1$, on note $D_n$ le déterminant de la matrice tridiagonale d'ordre $n$ dont la diagonale vaut $2a$ et les deux diagonales voisines valent $a$.],
+    [Soit $a in RR$ non nul. Pour $n>=1$, on pose
+    $D_n=mat(delim: "|",
+      2a, a, 0, dots.h, 0;
+      a, 2a, a, dots.down, dots.v;
+      0, a, dots.down, dots.down, 0;
+      dots.v, dots.down, dots.down, 2a, a;
+      0, dots.h, 0, a, 2a)$.],
     question(
       [Calculer $D_n$.],
       solution: [On pose $D_0=1$ ; alors $D_1=2a$.

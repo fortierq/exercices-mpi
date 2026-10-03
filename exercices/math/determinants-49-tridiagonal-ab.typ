@@ -9,7 +9,13 @@
     matiere: "mathématiques",
   ),
   contenu: (
-    [Soient $a,b in RR$. Pour $n>=1$, on note $D_n$ le déterminant de la matrice tridiagonale d'ordre $n$ dont la diagonale vaut $a+b$, la surdiagonale $b$ et la sous-diagonale $a$.],
+    [Soient $a,b in RR$. Pour $n>=1$, on pose
+    $D_n=mat(delim: "|",
+      a+b, b, 0, dots.h, 0;
+      a, a+b, b, dots.down, dots.v;
+      0, a, dots.down, dots.down, 0;
+      dots.v, dots.down, dots.down, a+b, b;
+      0, dots.h, 0, a, a+b)$.],
     question(
       [Calculer $D_n$.],
       solution: [Avec la convention $D_0=1$, on a $D_1=a+b$. Le développement suivant la dernière ligne, puis la dernière colonne du mineur utile, donne pour $n>=2$

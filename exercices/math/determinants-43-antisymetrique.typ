@@ -9,7 +9,12 @@
     matiere: "mathématiques",
   ),
   contenu: (
-    [Pour $n>=1$, soit $A_n=(a_(i,j))_(1<=i,j<=n)$, où $a_(i,j)=1$ si $i<j$, $a_(i,j)=0$ si $i=j$ et $a_(i,j)=-1$ si $i>j$. On pose $D_n=det A_n$.],
+    [Pour $n>=1$, on pose
+    $D_n=mat(delim: "|",
+      0, 1, dots.h, 1;
+      -1, 0, dots.h, 1;
+      dots.v, dots.v, dots.down, dots.v;
+      -1, -1, dots.h, 0)$.],
     question(
       [Calculer $D_n$ en établissant une relation de récurrence.],
       solution: [Pour $n>=3$, effectuons $C_1 arrow C_1+C_n$, puis $L_1 arrow L_1+L_n$.
